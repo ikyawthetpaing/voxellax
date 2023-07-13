@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
-  adapter: PrismaAdapter(db as any),
+  adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt",
   },
@@ -39,9 +39,14 @@ export const authOptions: NextAuthOptions = {
 
       if (!dbUser) {
         if (user) {
-          token.id = user?.id;
+          token.id = user.id;
+          token.role = user.email === env.ADMIN_EMAIL ? "admin" : "user";
         }
         return token;
+      }
+
+      if (user) {
+        dbUser.role = user.email === env.ADMIN_EMAIL ? "admin" : "user";
       }
 
       return {
@@ -49,6 +54,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        role: dbUser.role,
       };
     },
   },

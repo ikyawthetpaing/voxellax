@@ -1,65 +1,115 @@
-"use client";
-
-import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { Icons } from "./icons";
-import { IconButton } from "./icon-button";
-import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
+import { formatPrice } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Skeleton } from "./ui/skeleton";
+import { Product } from "@prisma/client";
+import { db } from "@/lib/db";
 
 interface ProductCardProps {
   product: Product;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  return (
-    <div className="relative group flex flex-col gap-3">
-      <div className="aspect-4/3 overflow-hidden">
-        <Link href={"/product" + "/" + product.id}>
-          <Image
-            src={product.images[0]}
-            alt={product.title}
-            width={9999}
-            height={9999}
-            className={cn(
-              "ease-in-out object-cover w-full h-full",
-              isLoading ? "blur-md" : "blur-0"
-            )}
-            onLoadingComplete={() => setIsLoading(false)}
-          />
-        </Link>
-      </div>
+export async function ProductCard({ product }: ProductCardProps) {
+  const store = await db.store.findFirst({
+    where: { id: product.storeId || undefined },
+  });
+  const license = await db.license.findFirst({where: {productId: product.id}, select: {price: true}})
+  const images = await db.image.findMany({ where: { productId: product.id } });
 
-      <div>
-        <div className="flex justify-between gap-3">
-          <h1 className="flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium">
-            {product.title}
-          </h1>
+  return (
+    <Card className="overflow-hidden rounded-lg group relative">
+      <CardHeader className="border-b p-0">
+        <AspectRatio ratio={4 / 3}>
+          <Link
+            aria-label={`View ${product.name} details`}
+            href={`/listing/${product.id}`}
+          >
+            <Image
+              src={images[0].url}
+              alt={images[0].id}
+              fill
+              className="object-cover"
+              loading="lazy"
+            />
+          </Link>
+        </AspectRatio>
+      </CardHeader>
+      <CardContent className="p-2">
+        <div className="flex gap-2 justify-between">
+          <h1 className="text-base font-medium line-clamp-1">{product.name}</h1>
           <div className="font-semibold flex items-center text-sm bg-accent text-accent-foreground px-1 rounded-md">
-            <Icons.dollarSign className="w-4 h-4" />
-            <span>
-              {product.license && product.license.length > 0
-                ? product.license[0].price
-                : 0}
-            </span>
+            {formatPrice(license?.price ?? 0)}
           </div>
         </div>
-
-        <div>
-          <span className="text-xs">by Voxellax in Ebook</span>
+        <div className="text-xs">
+          <span className="text-foreground/75">by </span>
+          <Link href={`/store/${product.storeId}`}>{store?.name}</Link>
+          <span className="text-foreground/75"> in </span>
+          <Link href={`/category/${product.category}`}>{product.category}</Link>
         </div>
-      </div>
-
-      <div className="absolute top-0 group-hover:top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 duration-100 animate-in">
-        <IconButton variant="secondary" size="sm">
-          <Icons.heart className="w-4 h-4" />
-        </IconButton>
-        <IconButton variant="secondary" size="sm">
+      </CardContent>
+      <CardFooter className="sm:hidden p-2 pt-0">
+        <Button variant="outline" size="sm" className="w-full flex gap-2">
           <Icons.shoppingCart className="w-4 h-4" />
-        </IconButton>
+          Add to cart
+        </Button>
+      </CardFooter>
+      <div className="hidden sm:flex absolute top-0 group-hover:top-2 right-2 flex-col gap-2 opacity-0 group-hover:opacity-100 duration-100 animate-in">
+        <Button
+          variant="secondary"
+          size="sm"
+          className="gap-2 p-2 rounded-full justify-center"
+        >
+          <Icons.heart className="w-4 h-4" />
+          <span>Like</span>
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          className="gap-2 p-2 rounded-full justify-center"
+        >
+          <Icons.shoppingCart className="w-4 h-4" />
+          <span>Cart</span>
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          className="gap-2 p-2 rounded-full justify-center"
+        >
+          <Icons.bookmark className="w-4 h-4" />
+          <span>Save</span>
+        </Button>
       </div>
-    </div>
+    </Card>
+  );
+}
+
+export function ProductCardSkeleton() {
+  return (
+    <Card className="overflow-hidden rounded-lg group relative">
+      <CardHeader className="border-b p-0">
+        <AspectRatio ratio={4 / 3}>
+          <Skeleton className="w-full h-full rounded-b-none" />
+        </AspectRatio>
+      </CardHeader>
+      <CardContent className="flex gap-2 p-2 justify-between">
+        <Skeleton className="flex-1 h-5" />
+        <Skeleton className="w-10 h-5" />
+      </CardContent>
+      <CardFooter className="sm:hidden p-2 pt-0">
+        <Skeleton className="w-full h-9" />
+      </CardFooter>
+    </Card>
   );
 }

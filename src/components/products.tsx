@@ -1,14 +1,32 @@
 import { ProductCard } from "@/components/product-card";
+import { ProductCardSkeleton } from "@/components/product-card";
+import { Grid } from "@/components/layout/grid";
+import { Product } from "@prisma/client";
 
-// for dev
-import data from "@/helpers/data.json";
+interface ProductsProps {
+  products: Product[];
+}
 
-export function Products() {
+export function Products({ products }: ProductsProps) {
+  if (!products) {
+    return null;
+  }
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {data.products.map((product, index) => (
+    <Grid>
+      {products.map((product, index) => (
         <ProductCard key={index} product={product} />
       ))}
-    </div>
+    </Grid>
+  );
+}
+
+export function ProductsSkeleton() {
+  return (
+    <Grid>
+      {Array.from({ length: 8 }, (_, i) => i).map((index) => (
+        <ProductCardSkeleton key={index} />
+      ))}
+    </Grid>
   );
 }

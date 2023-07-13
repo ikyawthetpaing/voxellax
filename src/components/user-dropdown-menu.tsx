@@ -2,6 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import { User } from "next-auth";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
-  DropdownMenuShortcut,
+  // DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
+import { lobbyUserDropdownConfig } from "@/config/lobby";
+import { dashboardConfig } from "@/config/dashboard";
 
 interface UserDropdownMenuProps {
   user: User;
@@ -20,6 +23,7 @@ interface UserDropdownMenuProps {
 }
 
 export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,7 +36,7 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push("/profile/activity")}>
           <div className="flex gap-3">
             <Avatar className="cursor-pointer w-9 h-9">
               <AvatarImage
@@ -49,33 +53,39 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Icons.package className="mr-2 h-4 w-4" />
-            <span>Purchases</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Icons.bookmark className="mr-2 h-4 w-4" />
-            <span>Collections</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Icons.heart className="mr-2 h-4 w-4" />
-            <span>Likes</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Icons.shoppingCart className="mr-2 h-4 w-4" />
-            <span>Cart</span>
-          </DropdownMenuItem>
-          {isAdmin && (
-            <DropdownMenuItem>
-              <Icons.store className="mr-2 h-4 w-4" />
-              <span>Manage Store</span>
-            </DropdownMenuItem>
-          )}
-          <DropdownMenuItem>
-            <Icons.settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-          </DropdownMenuItem>
+          {lobbyUserDropdownConfig.navItems.map((navItem) => {
+            const Icon = Icons[navItem.icon ?? "check"];
+            return (
+              <DropdownMenuItem
+                key={navItem.title}
+                onClick={() => router.push(navItem.href)}
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{navItem.title}</span>
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuGroup>
+        {isAdmin && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {dashboardConfig.navItems.map((navItem) => {
+                const Icon = Icons[navItem.icon ?? "check"];
+
+                return (
+                  <DropdownMenuItem
+                    key={navItem.title}
+                    onClick={() => router.push(navItem.href)}
+                  >
+                    <Icon className="mr-2 h-4 w-4" />
+                    <span>{navItem.title}</span>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuGroup>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
           <Icons.logout className="mr-2 h-4 w-4" />

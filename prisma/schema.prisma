@@ -43,11 +43,12 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-}
-
-model Product {
-  id   String @id @default(cuid())
-  name String
+  stores        Store[]
+  likes         Like[]
+  reviews       Review[]
+  role          String    @default("user")
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 }
 
 model VerificationToken {
@@ -56,4 +57,68 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Store {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @default(now()) @map(name: "updated_at")
+  products    Product[]
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  category    String
+  subcategory String?
+  licenses    License[]
+  images    Image[]
+  reviews   Review[]
+  likes     Like[]
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  store     Store?   @relation(fields: [storeId], references: [id])
+  storeId   String?
+}
+
+model License {
+  id        String   @id @default(cuid())
+  type      String
+  price     Float
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  message   String
+  rate      Int
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }

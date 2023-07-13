@@ -2,10 +2,8 @@
   "products": [
     {
       "id": "someid",
-      "title": "Unsplash your potenial",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
+      "name": "Unsplash your potenial",
+      "description": "Best ebook to unsplash your potenial",
       "images": [
         "https://fakeimg.pl/600x400",
         "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
@@ -186,19 +184,71 @@
           "rate": 4
         }
       ],
-      "categories": ["Ebooks", "Canva Themplateslkafjjjjjjjjjjjjjjjjjjjjjlllllllllllllll"],
-      "license": [
-        { "type": "Personal", "price": 19 },
-        { "type": "Commercial ", "price": 21 },
-        { "type": " Extended Commercial ", "price": 3400000000000 }
+      "categories": [
+        "Ebooks",
+        "Canva Themplates"
+      ],
+      "licenses": [
+        { "type": "personal", "price": 19.0 },
+        { "type": "commercial", "price": 21000 },
+        { "type": "extended commercial", "price": 1200000 }
       ]
     },
     {
       "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
+      "name": "Other long content name for long long long long long long long long long long long long long long long long long long long long",
+      "description": "Best ebook to unsplash your potenial",
+      "images": [
+        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
+        "https://picsum.photos/id/237/200/300",
+        "https://picsum.photos/seed/picsum/200/300",
+        "https://picsum.photos/200/300?grayscale",
+        "https://picsum.photos/200/300/?blur=5",
+        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
+        "https://fakeimg.pl/600x400",
+        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
+      ],
+      "reviews": [
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 4
+        },
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 5
+        },
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 3
+        },
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 5
+        },
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 5
+        },
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 5
+        },
+        {
+          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
+          "rate": 5
+        }
+      ],
+      "categories": ["Graphics"],
+      "licenses": [
+        { "type": "personal", "price": 23 },
+        { "type": "commercial", "price": 2500 },
+        { "type": "extended commercial", "price": 2900000 }
+      ]
+    },
+    {
+      "id": "fklajflk",
+      "name": "Other long content name for long long long long long long long long long long long long long long long long long long long long",
       "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
       "images": [
         "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
         "https://picsum.photos/id/237/200/300",
@@ -240,18 +290,16 @@
         }
       ],
       "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
+      "licenses": [
+        { "type": "personal", "price": 0 },
+        { "type": "commercial", "price": 2500 },
+        { "type": "extended commercial", "price": 2900000 }
       ]
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
+      "id": "dkajfkl",
+      "name": "Other long content name for long long long long long long long long long long long long long long long long long long long long",
       "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
       "images": [
         "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
         "https://picsum.photos/id/237/200/300",
@@ -261,6 +309,12 @@
         "https://picsum.photos/id/870/200/300?grayscale&blur=2",
         "https://fakeimg.pl/600x400",
         "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
+      ],
+      "categories": ["Graphics", "Canva Themplates"],
+      "licenses": [
+        { "type": "personal", "price": 0 },
+        { "type": "commercial", "price": 2500 },
+        { "type": "extended commercial", "price": 2900000 }
       ],
       "reviews": [
         {
@@ -281,43 +335,6 @@
         },
         {
           "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
-      ]
-    },
-    {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
           "rate": 4
         },
         {
@@ -334,43 +351,6 @@
         },
         {
           "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
-      ]
-    },
-    {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
           "rate": 4
         },
         {
@@ -384,397 +364,251 @@
         {
           "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
           "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
         }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
+      ]
+    }
+  ],
+  "cartItems": [
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "someid",
+      "licenseType": "personal"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal"
+    }
+  ],
+  "likes": [
+    {
+      "productId": "someid"
+    },
+    {
+      "productId": "otherid"
+    },
+    {
+      "productId": "fklajflk"
+    }
+  ],
+  "invoices": [
+    {
+      "productId": "someid",
+      "licenseType": "personal",
+      "date": "Jul 1, 2023"
+    },
+    {
+      "productId": "otherid",
+      "licenseType": "commercial",
+      "date": "Jul 1, 2023"
+    },
+    {
+      "productId": "fklajflk",
+      "licenseType": "personal",
+      "date": "Jul 1, 2023"
+    }
+  ],
+  "collections": [
+    {
+      "id": "one",
+      "name": "Wish List",
+      "products": [
+        {
+          "id": "dkajfkl"
+        }
       ]
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
+      "id": "paper",
+      "name": "Paper",
+      "products": [
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
+          "id": "fklajflk"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "dkajfkl"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
+          "id": "otherid"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "otherid"
         }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
       ]
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
+      "id": "one",
+      "name": "Wish List",
+      "products": [
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "dkajfkl"
         }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
       ]
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
+      "id": "paper",
+      "name": "Paper",
+      "products": [
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
+          "id": "fklajflk"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "dkajfkl"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
+          "id": "otherid"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "otherid"
         }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
       ]
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
+      "id": "one",
+      "name": "Wish List",
+      "products": [
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "dkajfkl"
         }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
       ]
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
+      "id": "paper",
+      "name": "Paper",
+      "products": [
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
+          "id": "fklajflk"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "dkajfkl"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
+          "id": "otherid"
         },
         {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
+          "id": "otherid"
         }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
       ]
+    }
+  ],
+  "activities": [
+    {
+      "action": "liked",
+      "date": "Jul 1, 2023",
+      "productId": "fklajflk"
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
-      ]
+      "action": "liked",
+      "date": "Jul 1, 2023",
+      "productId": "otherid"
     },
     {
-      "id": "otherid",
-      "title": "Other long content title for long long long long long long long long long long long long long long long long long long long long",
-      "description": "Best ebook to Unsplash your potenial",
-      "price": 50,
-      "currency": "usd",
-      "images": [
-        "https://fakeimg.pl/1080x1080/d17777/402f2f?font=museo",
-        "https://picsum.photos/id/237/200/300",
-        "https://picsum.photos/seed/picsum/200/300",
-        "https://picsum.photos/200/300?grayscale",
-        "https://picsum.photos/200/300/?blur=5",
-        "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-        "https://fakeimg.pl/600x400",
-        "https://fakeimg.pl/1080x600/d17777/402f2f?font=museo"
-      ],
-      "reviews": [
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 4
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 3
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        },
-        {
-          "message": "Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good! Verry good!",
-          "rate": 5
-        }
-      ],
-      "categories": ["Graphics", "Canva Themplates"],
-      "license": [
-        { "type": "Personal", "price": 23 },
-        { "type": "Commercial ", "price": 25 },
-        { "type": " Extended Commercial ", "price": 2900000 }
-      ]
+      "action": "added",
+      "date": "Jul 1, 2023",
+      "productId": "fklajflk"
+    },
+    {
+      "action": "added",
+      "date": "Jul 1, 2023",
+      "productId": "otherid"
+    }
+  ],
+  "stores": [
+    {
+      "id": "ebooks",
+      "name": "Ebooks",
+      "description": "elvate your digital life style."
+    },
+    {
+      "id": "graphics",
+      "name": "Graphics",
+      "description": "elvate your digital life style."
     }
   ]
 }

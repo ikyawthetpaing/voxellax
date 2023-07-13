@@ -9,6 +9,7 @@ export default withAuth(
     const isAuthPage =
       req.nextUrl.pathname.startsWith("/login") ||
       req.nextUrl.pathname.startsWith("/register");
+    const isAdminPage = req.nextUrl.pathname.startsWith("/dashboard");
 
     if (isAuthPage) {
       if (isAuth) {
@@ -28,6 +29,10 @@ export default withAuth(
         new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
       );
     }
+
+    if (isAdminPage && req.nextauth.token?.role !== "admin") {
+      return new NextResponse("You're not authorized!");
+    }
   },
   {
     callbacks: {
@@ -42,5 +47,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/login", "/register"],
+  matcher: ["/login", "/register", "/dashboard/:path*"],
 };
