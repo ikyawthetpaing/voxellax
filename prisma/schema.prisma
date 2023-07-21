@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id @default(uuid())
   userId            String
   type              String
   provider          String
@@ -28,7 +28,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(uuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -36,7 +36,7 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -60,65 +60,73 @@ model VerificationToken {
 }
 
 model Store {
-  id          String    @id @default(cuid())
+  id          String    @id @default(uuid())
   name        String
-  description String
+  description String    @db.VarChar(256)
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime  @default(now()) @map(name: "updated_at")
   products    Product[]
-  user        User?     @relation(fields: [userId], references: [id])
   userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Product {
-  id          String    @id @default(cuid())
+  id          String    @id @default(uuid())
   name        String
-  description String
+  description String    @db.VarChar(256)
   category    String
   subcategory String?
   licenses    License[]
-  images    Image[]
-  reviews   Review[]
-  likes     Like[]
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
-  store     Store?   @relation(fields: [storeId], references: [id])
-  storeId   String?
+  images      File[]    @relation(name: "ProductImages")
+  files       File[]    @relation(name: "ProductFiles")
+  reviews     Review[]
+  likes       Like[]
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @default(now()) @map(name: "updated_at")
+  storeId     String?
+  store       Store?    @relation(fields: [storeId], references: [id], onDelete: Cascade)
 }
 
 model License {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   type      String
   price     Float
-  product   Product? @relation(fields: [productId], references: [id])
   productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-model Image {
-  id        String   @id @default(cuid())
-  url       String
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
-  product   Product? @relation(fields: [productId], references: [id])
-  productId String?
+model File {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  name            String
+  size            Int
+  url             String
+  isThumnail      Boolean? // Thumnail of product images
+  index           Int? // Order of product images
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @default(now()) @map(name: "updated_at")
+  productImagesId String?
+  productFilesId  String?
+  productImages   Product? @relation(fields: [productImagesId], references: [id], name: "ProductImages", onDelete: Cascade)
+  productFiles    Product? @relation(fields: [productFilesId], references: [id], name: "ProductFiles", onDelete: Cascade)
 }
 
 model Review {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   message   String
   rate      Int
-  product   Product? @relation(fields: [productId], references: [id])
-  productId String?
-  user      User?    @relation(fields: [userId], references: [id])
   userId    String?
+  productId String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Like {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
-  product   Product? @relation(fields: [productId], references: [id])
-  productId String?
-  user      User?    @relation(fields: [userId], references: [id])
   userId    String?
+  productId String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

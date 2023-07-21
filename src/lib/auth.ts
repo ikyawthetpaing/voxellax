@@ -1,8 +1,8 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { db } from "@/lib/db";
+import { env } from "@/env.mjs";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { env } from "@/env.mjs";
-import { db } from "@/lib/db";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
@@ -22,31 +22,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ token, session }) {
       if (token) {
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.image = token.picture;
+        session.user.id = token.id
+        session.user.name = token.name
+        session.user.email = token.email
+        session.user.image = token.picture
       }
 
-      return session;
+      return session
     },
     async jwt({ token, user }) {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
         },
-      });
+      })
 
       if (!dbUser) {
         if (user) {
-          token.id = user.id;
-          token.role = user.email === env.ADMIN_EMAIL ? "admin" : "user";
+          token.id = user?.id
         }
-        return token;
-      }
-
-      if (user) {
-        dbUser.role = user.email === env.ADMIN_EMAIL ? "admin" : "user";
+        return token
       }
 
       return {
@@ -54,8 +49,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
-        role: dbUser.role,
-      };
+      }
     },
   },
 };

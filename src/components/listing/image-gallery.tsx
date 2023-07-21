@@ -7,10 +7,12 @@ import { cn } from "@/lib/utils";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Button } from "../ui/button";
 // import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { Image as ImageSchema } from "@prisma/client";
+import { File } from "@prisma/client";
+import { siteConfig } from "@/config/site";
+import { Skeleton } from "../ui/skeleton";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
-  images: ImageSchema[];
+  images: File[];
 }
 
 export function ImageGallery({
@@ -27,8 +29,8 @@ export function ImageGallery({
         className="rounded-lg overflow-hidden relative group border"
       >
         <Image
-          src={images[currentImageIndex].url}
-          alt={images[currentImageIndex].id}
+          src={images[currentImageIndex]?.url ?? siteConfig.placeholderImageUrl}
+          alt={images[currentImageIndex]?.id ?? ""}
           fill
           className="object-cover"
           loading="lazy"

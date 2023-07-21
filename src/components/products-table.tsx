@@ -67,10 +67,6 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { LoadingButton } from "./loading-button";
 import { revalidatePath } from "next/cache";
-// import {
-//   deleteProductAction,
-//   deleteProductsAction,
-// } from "@/app/_actions/product"
 
 interface ProductsTableProps {
   products: Product[];
@@ -89,9 +85,10 @@ export function ProductsTable({
 
   // This lets us update states without blocking the UI
   // Read more: https://react.dev/reference/react/useTransition#usage
-  const [isPending, startTransition] = React.useTransition();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const deleteProducts = async (products: Product[]) => {
+    setIsLoading(true);
     try {
       await Promise.all(
         products.map(async ({ id }) => {
@@ -118,12 +115,13 @@ export function ProductsTable({
           });
     }
 
-    // router.refresh();
-    // revalidatePath("/stores/")
+    router.refresh();
 
     toast({
       description: "Sucessfully deleted selected rows",
     });
+
+    setIsLoading(false);
   };
 
   // Memoize the columns so they don't re-render on every render
@@ -171,11 +169,11 @@ export function ProductsTable({
           );
         },
       },
-      {
-        accessorKey: "price",
-        header: "Price",
-        cell: ({ cell }) => formatPrice(cell.getValue() as number),
-      },
+      // {
+      //   accessorKey: "",
+      //   header: "Price",
+      //   cell: ({ cell }) => formatPrice(cell.getValue() as number),
+      // },
       // {
       //   accessorKey: "inventory",
       //   header: "Inventory",
@@ -222,7 +220,7 @@ export function ProductsTable({
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href={`/products/${product.id}`}>
+                  <Link href={`/listing/${product.id}`}>
                     <Icons.eye
                       className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
                       aria-hidden="true"
@@ -232,11 +230,11 @@ export function ProductsTable({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => {
-                    startTransition(async () => {
-                      await deleteProducts([product]);
-                      toast({ description: "Product deleted" });
-                    });
+                  onClick={async () => {
+                    setIsLoading(true);
+                    await deleteProducts([product]);
+                    toast({ description: "Product deleted" });
+                    setIsLoading(false);
                   }}
                 >
                   <Icons.trash
@@ -304,16 +302,16 @@ export function ProductsTable({
   ]);
 
   React.useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          page,
-          sort: sorting[0]?.id
-            ? `${sorting[0]?.id}.${sorting[0]?.desc ? "desc" : "asc"}`
-            : null,
-        })}`
-      );
-    });
+    setIsLoading(true);
+    router.push(
+      `${pathname}?${createQueryString({
+        page,
+        sort: sorting[0]?.id
+          ? `${sorting[0]?.id}.${sorting[0]?.desc ? "desc" : "asc"}`
+          : null,
+      })}`
+    );
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting]);
 
@@ -330,18 +328,20 @@ export function ProductsTable({
           // update start_date and end_date when the popover is closed
           onOpenChange={(isOpen) => {
             if (!isOpen && isDateChanged) {
-              startTransition(() => {
-                router.push(
-                  `${pathname}?${createQueryString({
-                    page: 1,
-                    date_range: dateFilter
-                      ? `${dayjs(dateFilter.from).format(
-                          "YYYY-MM-DD"
-                        )}to${dayjs(dateFilter.to).format("YYYY-MM-DD")}`
-                      : null,
-                  })}`
-                );
-              });
+              setIsLoading(true);
+
+              router.push(
+                `${pathname}?${createQueryString({
+                  page: 1,
+                  date_range: dateFilter
+                    ? `${dayjs(dateFilter.from).format("YYYY-MM-DD")}to${dayjs(
+                        dateFilter.to
+                      ).format("YYYY-MM-DD")}`
+                    : null,
+                })}`
+              );
+
+              setIsLoading(false);
             }
             setIsDateChanged(false);
           }}
@@ -409,14 +409,14 @@ export function ProductsTable({
                     value={nameFilter}
                     onChange={(value) => {
                       setNameFilter(String(value));
-                      startTransition(() => {
-                        router.push(
-                          `${pathname}?${createQueryString({
-                            page: 1,
-                            name: String(value),
-                          })}`
-                        );
-                      });
+                      setIsLoading(true);
+                      router.push(
+                        `${pathname}?${createQueryString({
+                          page: 1,
+                          name: String(value),
+                        })}`
+                      );
+                      setIsLoading(false);
                     }}
                   />
                   <div className="ml-auto flex items-center space-x-2">
@@ -444,7 +444,7 @@ export function ProductsTable({
                             className="h-8"
                             disabled={
                               !tableInstance.getSelectedRowModel().rows
-                                .length || isPending
+                                .length || isLoading
                             }
                           >
                             <Icons.trash className="mr-2 h-4 w-4" aria-hidden />
@@ -466,47 +466,48 @@ export function ProductsTable({
                           <DialogFooter>
                             <Button
                               variant="destructive"
-                              onClick={() => {
-                                startTransition(async () => {
-                                  try {
-                                    await Promise.all(
-                                      tableInstance
-                                        .getSelectedRowModel()
-                                        .rows.map(async (row) => {
-                                          const response = await fetch(
-                                            `/api/products/${row.original.id}`,
-                                            { method: "DELETE" }
-                                          );
-                                          if (!response.ok) {
-                                            toast({
-                                              description: `Failed to delete product with ID: ${row.original.id}`,
-                                              variant: "destructive",
-                                            });
-                                          }
-                                        })
-                                    );
-                                  } catch (error) {
-                                    error instanceof Error
-                                      ? toast({
-                                          description: error.message,
-                                          variant: "destructive",
-                                        })
-                                      : toast({
-                                          description: "Something went wrong",
-                                          variant: "destructive",
-                                        });
-                                  }
+                              onClick={async () => {
+                                setIsLoading(true);
 
-                                  // Reset row selection
-                                  tableInstance.resetRowSelection();
+                                try {
+                                  await Promise.all(
+                                    tableInstance
+                                      .getSelectedRowModel()
+                                      .rows.map(async (row) => {
+                                        const response = await fetch(
+                                          `/api/products/${row.original.id}`,
+                                          { method: "DELETE" }
+                                        );
+                                        if (!response.ok) {
+                                          toast({
+                                            description: `Failed to delete product with ID: ${row.original.id}`,
+                                            variant: "destructive",
+                                          });
+                                        }
+                                      })
+                                  );
+                                } catch (error) {
+                                  error instanceof Error
+                                    ? toast({
+                                        description: error.message,
+                                        variant: "destructive",
+                                      })
+                                    : toast({
+                                        description: "Something went wrong",
+                                        variant: "destructive",
+                                      });
+                                }
 
-                                  router.refresh();
+                                // Reset row selection
+                                tableInstance.resetRowSelection();
 
-                                  toast({
-                                    description:
-                                      "Sucessfully deleted selected rows",
-                                  });
+                                router.refresh();
+
+                                toast({
+                                  description:
+                                    "Sucessfully deleted selected rows",
                                 });
+                                setIsLoading(false);
                               }}
                             >
                               Confirm delete
@@ -655,7 +656,7 @@ export function ProductsTable({
             <TableBody>
               {products.length
                 ? children
-                : !isPending && (
+                : !isLoading && (
                     <TableRow>
                       <TableCell
                         colSpan={columns.length}
@@ -670,7 +671,7 @@ export function ProductsTable({
           bodyRow: ({ children }) => <TableRow>{children}</TableRow>,
           bodyCell: ({ children }) => (
             <TableCell>
-              {isPending ? <Skeleton className="h-6 w-20" /> : children}
+              {isLoading ? <Skeleton className="h-6 w-20" /> : children}
             </TableCell>
           ),
           filterInput: ({}) => null,
@@ -688,17 +689,17 @@ export function ProductsTable({
                     <Select
                       value={per_page}
                       onValueChange={(value) => {
-                        startTransition(() => {
-                          router.push(
-                            `${pathname}?${createQueryString({
-                              page: 1,
-                              per_page: value,
-                              sort,
-                            })}`
-                          );
-                        });
+                        setIsLoading(true);
+                        router.push(
+                          `${pathname}?${createQueryString({
+                            page: 1,
+                            per_page: value,
+                            sort,
+                          })}`
+                        );
+                        setIsLoading(false);
                       }}
-                      disabled={isPending}
+                      disabled={isLoading}
                     >
                       <SelectTrigger className="h-8 w-16">
                         <SelectValue placeholder={per_page} />
@@ -721,17 +722,17 @@ export function ProductsTable({
                       size="icon"
                       className="h-8 w-8"
                       onClick={() => {
-                        startTransition(() => {
-                          router.push(
-                            `${pathname}?${createQueryString({
-                              page: 1,
-                              per_page,
-                              sort,
-                            })}`
-                          );
-                        });
+                        setIsLoading(true);
+                        router.push(
+                          `${pathname}?${createQueryString({
+                            page: 1,
+                            per_page,
+                            sort,
+                          })}`
+                        );
+                        setIsLoading(false);
                       }}
-                      disabled={Number(page) === 1 || isPending}
+                      disabled={Number(page) === 1 || isLoading}
                     >
                       <Icons.chevronLeft
                         className="h-5 w-5"
@@ -744,17 +745,17 @@ export function ProductsTable({
                       size="icon"
                       className="h-8 w-8"
                       onClick={() => {
-                        startTransition(() => {
-                          router.push(
-                            `${pathname}?${createQueryString({
-                              page: Number(page) - 1,
-                              per_page,
-                              sort,
-                            })}`
-                          );
-                        });
+                        setIsLoading(true);
+                        router.push(
+                          `${pathname}?${createQueryString({
+                            page: Number(page) - 1,
+                            per_page,
+                            sort,
+                          })}`
+                        );
+                        setIsLoading(false);
                       }}
-                      disabled={Number(page) === 1 || isPending}
+                      disabled={Number(page) === 1 || isLoading}
                     >
                       <Icons.chevronLeft
                         className="h-5 w-5"
@@ -767,17 +768,17 @@ export function ProductsTable({
                       size="icon"
                       className="h-8 w-8"
                       onClick={() => {
-                        startTransition(() => {
-                          router.push(
-                            `${pathname}?${createQueryString({
-                              page: Number(page) + 1,
-                              per_page,
-                              sort,
-                            })}`
-                          );
-                        });
+                        setIsLoading(true);
+                        router.push(
+                          `${pathname}?${createQueryString({
+                            page: Number(page) + 1,
+                            per_page,
+                            sort,
+                          })}`
+                        );
+                        setIsLoading(false);
                       }}
-                      disabled={Number(page) === (pageCount ?? 10) || isPending}
+                      disabled={Number(page) === (pageCount ?? 10) || isLoading}
                     >
                       <Icons.chevronRight
                         className="h-5 w-5"
@@ -798,7 +799,7 @@ export function ProductsTable({
                           })}`
                         );
                       }}
-                      disabled={Number(page) === (pageCount ?? 10) || isPending}
+                      disabled={Number(page) === (pageCount ?? 10) || isLoading}
                     >
                       <Icons.chevronRight
                         className="h-5 w-5"

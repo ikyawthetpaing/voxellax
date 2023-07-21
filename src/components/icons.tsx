@@ -25,8 +25,10 @@ import {
   Trash2,
   Menu,
   Users,
-  Activity, CreditCard,
+  Activity,
+  CreditCard,
   MoreVertical,
+  MoreHorizontal,
   Edit,
   Eye,
   PlusCircle,
@@ -37,6 +39,8 @@ import {
   Crop,
   RefreshCw,
   MapPin,
+  ImageOff,
+  ImagePlus,
   LucideProps,
 } from "lucide-react";
 
@@ -70,6 +74,7 @@ export const Icons = {
   creditCard: CreditCard,
   menu: Menu,
   moreVertical: MoreVertical,
+  moreHorizontal: MoreHorizontal,
   eye: Eye,
   edit: Edit,
   plusCircle: PlusCircle,
@@ -80,6 +85,8 @@ export const Icons = {
   crop: Crop,
   reset: RefreshCw,
   mapPin: MapPin,
+  imagePlus: ImagePlus,
+  imageOff: ImageOff,
   voxellax: ({ ...props }: LucideProps) => (
     <svg
       data-v-423bf9ae=""

@@ -105,7 +105,7 @@ function ReviewsSkeleton() {
       {/* PaginationButton Skeleton */}
       <div className="flex items-center justify-center gap-2">
         {Array.from({ length: 5 }, (_, i) => i).map((index) => (
-          <Skeleton className="w-8 h-8" />
+          <Skeleton className="w-8 h-8" key={index}/>
         ))}
       </div>
     </div>
@@ -137,8 +137,8 @@ function DetailCardSkeleton() {
             <Skeleton className="w-1/3 h-5" />
           </div>
 
-          {Array.from({ length: 3 }, (_, i) => i).map(() => (
-            <Skeleton className="w-full h-5" />
+          {Array.from({ length: 3 }, (_, i) => i).map((index) => (
+            <Skeleton className="w-full h-5" key={index}/>
           ))}
         </div>
 

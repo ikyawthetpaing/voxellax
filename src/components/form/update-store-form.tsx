@@ -186,16 +186,6 @@ export function UpdateStoreForm({
                 Update
                 <span className="sr-only">Update store</span>
               </LoadingButton>
-              {/* <LoadingButton
-                type="button"
-                onClick={deleteStore}
-                variant="destructive"
-                disabled={isLoading || isDeleteLoading}
-                isLoading={isDeleteLoading}
-              >
-                Delete
-                <span className="sr-only">Delete store</span>
-              </LoadingButton> */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button

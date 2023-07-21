@@ -21,6 +21,7 @@ import {
 import { Card, CardHeader } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Grid } from "@/components/layout/grid";
 
 interface StorePageProps {
   params: {
@@ -111,8 +112,8 @@ export default async function StorePage({ params }: StorePageProps) {
         <div className="grid gap-6 w-full">
           <div className="flex flex-col items-center gap-2 w-full">
             <AspectRatio ratio={4 / 1} className="w-full">
-              <div className="w-full h-full bg-white relative">
-                <Avatar className="cursor-pointer w-24 h-24 absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 border-background">
+              <div className="w-full h-full bg-accent relative">
+                <Avatar className="cursor-pointer w-24 h-24 absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 border-4 border-background">
                   <AvatarImage
                     // src={store.image?.toString()}
                     alt={store.name?.toString()}
@@ -126,22 +127,21 @@ export default async function StorePage({ params }: StorePageProps) {
                 </Avatar>
               </div>
             </AspectRatio>
-            <Heading size="xs" className="mt-11">{store.name}</Heading>
+            <Heading size="lg" className="mt-11">
+              {store.name}
+            </Heading>
           </div>
-
-          <p className="text-sm text-center">{store.description}</p>
-          <div className="flex items-center justify-center gap-2 text-foreground/75">
+          <div className="max-w-sm mx-auto text-center">
+            <p className="text-sm text-foreground/75">{store.description}</p>
+          </div>
+          <div className="flex items-center justify-center gap-2">
             <Icons.mapPin className="w-4 h-4" />
             <p className="text-sm">Florida, United States</p>
           </div>
-          {/* <div className="flex flex-col items-center gap-6">
-
-          </div> */}
           <div className="grid grid-cols-2 gap-6 w-fit mx-auto">
             <Button>Follow</Button>
             <Button variant="outline">Messsage</Button>
           </div>
-          {/* <Tabs items={publicStoreConfig(store.id).navItems} className="grid-cols-4"/> */}
         </div>
       </div>
       <div className="flex-1">
@@ -153,8 +153,8 @@ export default async function StorePage({ params }: StorePageProps) {
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
           </TabsList>
           <TabsContent value="shop" className="grid gap-8">
-            <div className="flex justify-between gap-8">
-              <Input placeholder="Seach something in this store..." />
+            {/* <div className="flex justify-between gap-8"> */}
+              {/* <Input placeholder="Seach something in this store..." />
               <Select value={"all"}>
                 <SelectTrigger className="capitalize">
                   <SelectValue />
@@ -179,17 +179,47 @@ export default async function StorePage({ params }: StorePageProps) {
                     ))}
                   </SelectGroup>
                 </SelectContent>
-              </Select>
-            </div>
+              </Select> */}
+              <Grid>
+                <Input placeholder="Seach something in this store..." />
+                <div className="hidden lg:block"></div>
+                <div className="hidden md:block"></div>
+                <Select value={"all"}>
+                  <SelectTrigger className="capitalize">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem
+                        key={"all"}
+                        value={"all"}
+                        className="capitalize"
+                      >
+                        all
+                      </SelectItem>
+                      {productCategories.map(({ title }) => (
+                        <SelectItem
+                          key={title}
+                          value={title}
+                          className="capitalize"
+                        >
+                          {title}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Grid>
+            {/* </div> */}
             <Products products={storeProducts} />
           </TabsContent>
           <TabsContent value="about" className="flex justify-between gap-8">
             {seller && (
               <div className="flex flex-col gap-8">
-                <Heading size="sm"> About the seller</Heading>
+                <Heading> About the seller</Heading>
 
                 <div className="flex gap-6 items-center">
-                  <Avatar className="cursor-pointer w-24 h-24">
+                  <Avatar className="cursor-pointer w-16 h-16">
                     <AvatarImage
                       src={seller.image?.toString()}
                       alt={seller.name?.toString()}
@@ -201,7 +231,7 @@ export default async function StorePage({ params }: StorePageProps) {
                         .join("")}
                     </AvatarFallback>
                   </Avatar>
-                  <Heading size="xs">{seller.name}</Heading>
+                  <Heading size="sm">{seller.name}</Heading>
                   {/* <<h1 className="text-xl font-medium capitalize"></h1>> */}
                 </div>
                 <p className="text-foreground/75">
@@ -218,11 +248,11 @@ export default async function StorePage({ params }: StorePageProps) {
               <CardHeader>
                 <div className="flex gap-8">
                   <div>
-                    <Heading size="sm">3,500</Heading>
+                    <Heading size="lg">3,500</Heading>
                     <p className="text-foreground/75">Followers</p>
                   </div>
                   <div>
-                    <Heading size="sm">3,500</Heading>
+                    <Heading size="lg">3,500</Heading>
                     <p className="text-foreground/75">Following</p>
                   </div>
                 </div>

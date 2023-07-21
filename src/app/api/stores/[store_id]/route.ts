@@ -24,17 +24,14 @@ export async function DELETE(
       return new Response(null, { status: 403 });
     }
 
-    // Delete the products under the store
+    // Delete the products from the store
     await db.store.update({
       where: { id: params.store_id },
       data: {
         products: {
           deleteMany: {},
         },
-      },
-      include: {
-        products: true,
-      },
+      }
     });
 
     // Delete the store.

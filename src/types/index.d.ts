@@ -1,4 +1,14 @@
 import { Icons } from "@/components/icons";
+import {
+  productImagePostSchema,
+  productImagesPatchSchema,
+  productLicenseSchema,
+  productPatchSchema,
+  productPostSchema,
+  productFormSchema,
+} from "@/lib/validations/product";
+import { FileWithPath } from "react-dropzone";
+import * as z from "zod";
 
 export type SiteConfig = {
   name: string;
@@ -9,6 +19,7 @@ export type SiteConfig = {
   //   twitter: string;
   //   github: string;
   // };
+  placeholderImageUrl: string;
 };
 
 export type NavItem = {
@@ -17,21 +28,35 @@ export type NavItem = {
   icon?: keyof typeof Icons;
 };
 
-// export type MarketingConfig = {
-//   navItems: NavItem[];
-// };
-
-// export type ProfileConfig = {
-//   navItems: NavItem[];
-// };
-
-// export type DropdownConfig = {
-//   navItems: NavItem[];
-// };
-
 export type NavItemsConfig = {
   navItems: NavItem[];
 };
+
+export type FileWithPreview = FileWithPath & {
+  uploaded?: {
+    uploadthingKey: string,
+    size: number
+  }
+  preview: string;
+  index: number | null;
+};
+
+export type Option = {
+  label: string;
+  value: string;
+};
+
+export type MimeType = {
+  extension: string;
+  template: string;
+};
+
+export type ProductLicenseSchema = z.infer<typeof productLicenseSchema>;
+export type ProductFormSchema = z.infer<typeof productFormSchema>;
+export type ProductPostSchema = z.infer<typeof productPostSchema>;
+export type ProductPatchSchema = z.infer<typeof productPatchSchema>;
+export type ProdcutImagePostSchema = z.infer<typeof productImagePostSchema>;
+export type ProductImagesPatchSchema = z.infer<typeof productImagesPatchSchema>;
 
 type Review = {
   message?: string;
@@ -69,12 +94,3 @@ export type Activity = {
   date: string;
   productId: string;
 };
-
-export type FileWithPreview = FileWithPath & {
-  preview: string
-}
-
-export type Option = {
-  label: string
-  value: string
-}

@@ -56,7 +56,7 @@ export default async function StoresPage() {
                 <AvatarFallback>{store.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <CardTitle className="line-clamp-1">{store.name}</CardTitle>
-              <CardDescription className="line-clamp-2">
+              <CardDescription className="line-clamp-1">
                 {store.description}
               </CardDescription>
             </CardHeader>

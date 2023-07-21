@@ -1,10 +1,6 @@
-import type { NavItem, NavItemsConfig } from "@/types";
+import type { NavItemsConfig } from "@/types";
 
-export type DashboardConfig = {
-  navItems: NavItem[];
-};
-
-export const dashboardConfig: DashboardConfig = {
+export const dashboardConfig: NavItemsConfig = {
   navItems: [
     {
       title: "Overview",

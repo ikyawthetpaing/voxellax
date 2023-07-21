@@ -1,9 +1,9 @@
 import * as z from "zod";
-import { productLicensesSchema } from "@/lib/validations/product";
+import { productLicenseSchema } from "@/lib/validations/product";
 
-type Licenses = z.infer<typeof productLicensesSchema>;
+type License = z.infer<typeof productLicenseSchema>;
 
-export const licenses: Licenses = [
+export const licenses: License[] = [
   { type: "Personal" },
   { type: "Commercial" },
   { type: "Extended Commercial" },

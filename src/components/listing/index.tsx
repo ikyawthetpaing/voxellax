@@ -4,12 +4,13 @@ import { Infos } from "./infos";
 import { Reviews } from "./reviews";
 import { Product } from "@prisma/client";
 import { db } from "@/lib/db";
+import { Heading } from "../ui/heading";
 
 export async function Listing({ product }: { product: Product }) {
   const reviews = await db.review.findMany({
     where: { productId: product.id },
   });
-  const images = await db.image.findMany({ where: { productId: product.id } });
+  const images = await db.file.findMany({ where: { productImagesId: product.id }, orderBy: {index: "asc"} });
   const licenses = await db.license.findMany({
     where: { productId: product.id },
   });
@@ -66,7 +67,7 @@ export async function Listing({ product }: { product: Product }) {
         </div>
       </div>
       <div className="space-y-4">
-        <h1 className="text-xl font-medium capitalize">You may also like</h1>
+        <Heading>You may also like</Heading>
         {/* <Products products={data.products} /> */}
       </div>
       {reviews.length > 0 && (

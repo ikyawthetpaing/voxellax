@@ -1,6 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { env } from "./env.mjs";
 
 export default withAuth(
   async function middleware(req) {
@@ -30,7 +31,7 @@ export default withAuth(
       );
     }
 
-    if (isAdminPage && req.nextauth.token?.role !== "admin") {
+    if (isAdminPage && req.nextauth.token?.email !== env.ADMIN_EMAIL) {
       return new NextResponse("You're not authorized!");
     }
   },

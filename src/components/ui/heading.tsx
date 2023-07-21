@@ -2,14 +2,26 @@ import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 
 const headingVariants = cva(
-  "font-medium leading-tight tracking-tighter capitalize",
+  "font-medium leading-tight capitalize",
   {
     variants: {
       size: {
-        default: "text-4xl md:text-5xl lg:text-6xl",
-        lg: "text-5xl md:text-6xl lg:text-7xl",
-        sm: "text-2xl",
-        xs: "text-xl",
+        // _9xl: "text-9xl",
+        // _8xl: "text-8xl",
+        // _7xl: "text-7xl",
+        // _6xl: "text-6xl",
+        // _5xl: "text-5xl",
+        // _4xl: "text-4xl",
+        // _3xl: "text-3xl",
+        // _2xl: "text-2xl",
+        // xl: "text-xl",
+        // default: "text-base",
+        // lg: "text-lg",
+        // sm: "text-sm",
+        // xs: "text-xs",
+        default: "text-lg md:text-xl",
+        lg: "text-xl md:text-2xl",
+        sm: "text-base md:text-lg",
       },
     },
     defaultVariants: {

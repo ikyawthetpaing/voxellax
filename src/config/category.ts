@@ -23,6 +23,7 @@ export const sortOptions = [
 export const productCategories = [
   {
     title: "Graphics",
+    slug: "graphics",
     image: "/images/skateboard-one.webp",
     subcategories: [
       {
@@ -59,6 +60,7 @@ export const productCategories = [
   },
   {
     title: "E-Books",
+    slug: "e-books",
     image: "/images/clothing-one.webp",
     subcategories: [
       {
@@ -105,6 +107,7 @@ export const productCategories = [
   },
   {
     title: "Digital Art",
+    slug: "digital-art",
     image: "/images/shoe-one.webp",
     subcategories: [
       {
@@ -146,11 +149,12 @@ export const productCategories = [
         title: "Icon Packs",
         description: "Effortless style with rad slip-on shoes.",
         slug: "icon-packs",
-      }
+      },
     ],
   },
   {
     title: "Online Courses",
+    slug: "online-courses",
     image: "/images/backpack-one.webp",
     subcategories: [
       {
@@ -208,11 +212,12 @@ export const productCategories = [
         title: "Fitness",
         description: "Keep your board gliding smoothly with our rad skate wax.",
         slug: "fitness",
-      }
+      },
     ],
   },
 ] satisfies {
-  title: Product["category"];
+  title: string;
+  slug: string;
   image: string;
   subcategories: {
     title: string;
@@ -233,12 +238,21 @@ export const productTags = [
   "exclusive",
 ];
 
+export function getCategories() {
+  const categories = productCategories.map(({ title, slug }) => ({
+    label: title,
+    value: slug,
+  }));
+
+  return categories;
+}
+
 export function getSubcategories(category?: string): Option[] {
   if (!category) return [];
 
   const subcategories =
     productCategories
-      .find((c) => c.title === category)
+      .find((c) => c.slug === category)
       ?.subcategories.map((s) => ({
         label: s.title,
         value: s.slug,

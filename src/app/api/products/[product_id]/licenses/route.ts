@@ -15,14 +15,14 @@ export async function GET(
     // Validate the route params.
     const { params } = routeContextSchema.parse(context);
 
-    // Find the product images.
-    const images = await db.file.findMany({
+    // Find the product licenses.
+    const licenses = await db.license.findMany({
       where: {
-        productImagesId: params.product_id,
+        productId: params.product_id,
       },
     });
 
-    return new Response(JSON.stringify(images));
+    return new Response(JSON.stringify(licenses));
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });

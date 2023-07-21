@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { RenderStars } from "@/components/listing/render-stars";
 import { License } from "@prisma/client";
+import Link from "next/link";
 
 interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -98,8 +99,12 @@ export function DetailsCard({
           )}
           <div className="flex min-w-0 justify-between items-center gap-3">
             <h1 className="font-semibold text-sm">Category</h1>
-            <div className="text-xs overflow-hidden whitespace-nowrap overflow-ellipsis">
-              {category}
+            <div className="text-xs overflow-hidden whitespace-nowrap overflow-ellipsis capitalize">
+              <Link href={`/category/${category}`}>{category}</Link>
+              <span> / </span>
+              <Link href={`/category/${category}/${subCategory}`}>
+                {subCategory}
+              </Link>
             </div>
           </div>
         </CardContent>

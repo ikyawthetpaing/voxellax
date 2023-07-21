@@ -20,7 +20,7 @@ export function SiteHeader({ user, navItems }: SiteHeaderProps) {
 
   return (
     <header className="border-b z-40 bg-background sticky top-0">
-        <div className="container flex justify-between h-20 items-center gap-6 py-6">
+        <div className="container flex justify-between items-center gap-6 py-4">
           <div className="sm:hidden">
             <MobileNav navItems={navItems} />
           </div>

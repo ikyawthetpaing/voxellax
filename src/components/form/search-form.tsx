@@ -44,7 +44,7 @@ const categories = [
 ];
 
 const searchFormVariants = cva(
-  "rounded-full border hover:border-blue-500 duration-500",
+  "rounded-full border",
   {
     variants: {
       size: {
@@ -64,20 +64,22 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
   const [query, setQuery] = useState<string>();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(categories[0].value);
+  const [focus, setFocus] = useState(false);
 
   return (
     <form
-      className={cn(searchFormVariants({ size }), "flex items-center")}
+      className={cn(searchFormVariants({ size }), "flex items-center hover:border-primary/50 transition-colors", {"border-primary/50": focus})}
       {...props}
     >
       <button type="submit">
         <Icons.search className="w-4 h-4" />
       </button>
       <Input
+      onFocus={() => setFocus(true)}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search"
-        className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-full"
       />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

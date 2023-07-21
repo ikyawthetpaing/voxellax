@@ -10,4 +10,5 @@ export const siteConfig: SiteConfig = {
   //   twitter: "https://twitter.com/voxellax",
   //   github: "https://github.com/ikyawthetpaing/voxellax",
   // },
+  placeholderImageUrl: "/img/placeholder.png"
 };

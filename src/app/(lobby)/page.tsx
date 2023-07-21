@@ -1,5 +1,6 @@
 import { SearchForm } from "@/components/form/search-form";
 import { Products } from "@/components/products";
+import { Heading } from "@/components/ui/heading";
 
 import { db } from "@/lib/db";
 
@@ -23,8 +24,8 @@ export default async function IndexPage() {
       </section>
 
       <section>
-        <div className="container space-y-3">
-          <h1 className="text-2xl font-medium capitalize">For you</h1>
+        <div className="container space-y-4">
+          <Heading>Popular products</Heading>
           <Products products={products}/>
         </div>
       </section>

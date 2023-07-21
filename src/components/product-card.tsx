@@ -15,6 +15,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "./ui/skeleton";
 import { Product } from "@prisma/client";
 import { db } from "@/lib/db";
+import { siteConfig } from "@/config/site";
 
 interface ProductCardProps {
   product: Product;
@@ -24,8 +25,11 @@ export async function ProductCard({ product }: ProductCardProps) {
   const store = await db.store.findFirst({
     where: { id: product.storeId || undefined },
   });
-  const license = await db.license.findFirst({where: {productId: product.id}, select: {price: true}})
-  const images = await db.image.findMany({ where: { productId: product.id } });
+  const license = await db.license.findFirst({
+    where: { productId: product.id },
+    select: { price: true },
+  });
+  const images = await db.file.findMany({ where: { productImagesId: product.id } });
 
   return (
     <Card className="overflow-hidden rounded-lg group relative">
@@ -36,8 +40,8 @@ export async function ProductCard({ product }: ProductCardProps) {
             href={`/listing/${product.id}`}
           >
             <Image
-              src={images[0].url}
-              alt={images[0].id}
+              src={images[0]?.url ?? siteConfig.placeholderImageUrl}
+              alt={product.name}
               fill
               className="object-cover"
               loading="lazy"
@@ -45,25 +49,25 @@ export async function ProductCard({ product }: ProductCardProps) {
           </Link>
         </AspectRatio>
       </CardHeader>
-      <CardContent className="p-2">
+      <CardContent className="p-2 pb-0">
         <div className="flex gap-2 justify-between">
           <h1 className="text-base font-medium line-clamp-1">{product.name}</h1>
           <div className="font-semibold flex items-center text-sm bg-accent text-accent-foreground px-1 rounded-md">
-            {formatPrice(license?.price ?? 0)}
+            {formatPrice(license?.price ?? 0, 0)}
           </div>
         </div>
-        <div className="text-xs">
+      </CardContent>
+      <CardFooter className="p-2 pt-0">
+      <div className="text-xs">
           <span className="text-foreground/75">by </span>
           <Link href={`/store/${product.storeId}`}>{store?.name}</Link>
           <span className="text-foreground/75"> in </span>
-          <Link href={`/category/${product.category}`}>{product.category}</Link>
+          <Link href={`/category/${product.category}`} className="capitalize">{product.category}</Link>
         </div>
-      </CardContent>
-      <CardFooter className="sm:hidden p-2 pt-0">
-        <Button variant="outline" size="sm" className="w-full flex gap-2">
+        {/* <Button variant="outline" size="sm" className="w-full flex gap-2">
           <Icons.shoppingCart className="w-4 h-4" />
           Add to cart
-        </Button>
+        </Button> */}
       </CardFooter>
       <div className="hidden sm:flex absolute top-0 group-hover:top-2 right-2 flex-col gap-2 opacity-0 group-hover:opacity-100 duration-100 animate-in">
         <Button

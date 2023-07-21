@@ -1,63 +1,86 @@
-// import { products } from "@/db/schema"
+import {
+  PRODUCT_DIGITAL_FILE_MAX_COUNT,
+  PRODUCT_IMAGE_FILE_MAX_COUNT,
+  PRODUCT_IMAGE_FILE_MIN_COUNT,
+  PRODUCT_DIGITAL_FILE_MIN_COUNT,
+} from "@/constants/product";
 import * as z from "zod";
 
-export const productImagesSchema = z.array(z.object({ url: z.string() })).min(1).max(12);
-
-export const productLicensesSchema = z.array(
-  z.object({
-    type: z.string(),
-    price: z.string().regex(/^\d+(\.\d{1,2})?$/, {
-      message: "Must be a valid price",
-    }).optional(),
-  })
-);
-
-export const productSchema = z.object({
-  name: z.string().min(1, {
-    message: "Must be at least 1 character",
-  }),
-  description: z.any(),
-  category: z.string(),
-  subcategory: z.string().optional(),
-  licenses: productLicensesSchema,
-  images: productImagesSchema,
+export const productFileSchema = z.object({
+  key: z.string(),
 });
 
-// export const filterProductsSchema = z.object({
-//   query: z.string(),
-// })
+export const productImagePostSchema = z.object({
+  key: z.string(),
+  index: z.number(),
+});
 
-// export const getProductSchema = z.object({
-//   id: z.number(),
-//   storeId: z.number(),
-// })
+export const productLicenseSchema = z.object({
+  type: z.string(),
+  price: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Must be a valid price",
+    })
+    .optional(),
+});
 
-// export const getProductsSchema = z.object({
-//   limit: z.number().default(10),
-//   offset: z.number().default(0),
-//   categories: z
-//     .string()
-//     .regex(/^\d+.\d+$/)
-//     .optional()
-//     .nullable(),
-//   subcategories: z
-//     .string()
-//     .regex(/^\d+.\d+$/)
-//     .optional()
-//     .nullable(),
-//   sort: z
-//     .string()
-//     .regex(/^\w+.(asc|desc)$/)
-//     .optional()
-//     .nullable(),
-//   price_range: z
-//     .string()
-//     .regex(/^\d+-\d+$/)
-//     .optional()
-//     .nullable(),
-//   store_ids: z
-//     .string()
-//     .regex(/^\d+.\d+$/)
-//     .optional()
-//     .nullable(),
-// })
+export const productFormSchema = z.object({
+  name: z.string().min(3).max(191),
+  description: z.string().min(3).max(256),
+  category: z.string().min(3).max(191),
+  subcategory: z.string().min(3).max(191).optional(),
+  licenses: z.array(productLicenseSchema),
+  images: z
+    .unknown()
+    .refine((val) => {
+      if (!Array.isArray(val)) return false;
+      if (val.some((file) => !(file instanceof File))) return false;
+      return true;
+    }, "Must be an array of File")
+    .optional()
+    .nullable()
+    .default(null),
+});
+
+export const productPostSchema = z.object({
+  name: z.string().min(3).max(191),
+  description: z.string().min(3).max(256),
+  category: z.string().min(3).max(191),
+  subcategory: z.string().min(3).max(191).optional(),
+  licenses: z.array(productLicenseSchema),
+  images: z
+    .array(productImagePostSchema)
+    .min(PRODUCT_IMAGE_FILE_MIN_COUNT)
+    .max(PRODUCT_IMAGE_FILE_MAX_COUNT),
+  files: z
+    .array(productFileSchema)
+    .min(PRODUCT_DIGITAL_FILE_MIN_COUNT)
+    .max(PRODUCT_DIGITAL_FILE_MAX_COUNT)
+    .optional(),
+});
+
+export const productImagesPatchSchema = z.object({
+  deleted: z.array(z.object({ key: z.string() })),
+  added: z.array(
+    z.object({
+      key: z.string(),
+      index: z.number(),
+    })
+  ),
+  updated: z.array(z.object({ index: z.number(), key: z.string() })),
+});
+
+export const productPatchSchema = z.object({
+  name: z.string().min(3).max(191).optional(),
+  description: z.string().min(3).max(256).optional(),
+  category: z.string().min(3).max(191).optional(),
+  subcategory: z.string().min(3).max(191).optional(),
+  licenses: z.array(productLicenseSchema).optional(),
+  images: productImagesPatchSchema,
+  files: z
+    .array(productFileSchema)
+    .min(PRODUCT_DIGITAL_FILE_MIN_COUNT)
+    .max(PRODUCT_DIGITAL_FILE_MAX_COUNT)
+    .optional(),
+});

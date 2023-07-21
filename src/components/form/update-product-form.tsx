@@ -3,12 +3,12 @@
 import type {
   FileWithPreview,
   ProductLicenseSchema,
-  ProdcutImagePostSchema,
-  ProductFormSchema,
-  ProductPostSchema,
+  ProductImagesPatchSchema,
+  ProductPatchSchema,
 } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { type z } from "zod";
 import { productFormSchema } from "@/lib/validations/product";
 import {
   Form,
@@ -40,40 +40,83 @@ import { useEffect, useState } from "react";
 import { isArrayOfFile } from "@/lib/utils";
 import { generateReactHelpers } from "@uploadthing/react/hooks";
 import type { OurFileRouter } from "@/app/api/uploadthing/core";
+import { File as dbFile, License, Product } from "@prisma/client";
+import { ProductImageFileForm } from "./product-image-file-form";
 import {
   PRODUCT_DEFAULT_PRICE,
   PRODUCT_IMAGE_FILE_MAX_COUNT,
   PRODUCT_IMAGE_FILE_MAX_SIZE_BYTES,
 } from "@/constants/product";
-import { ProductImageFileForm } from "./product-image-file-form";
 
-interface AddProductFormProps {
+interface UpdateProductFormProps {
   storeId: string;
+  product: Product;
+  licenses: License[];
+  images: dbFile[];
 }
+
+type Inputs = z.infer<typeof productFormSchema>;
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
-export function AddProductForm({ storeId }: AddProductFormProps) {
+export function UpdateProductForm({
+  storeId,
+  product,
+  licenses,
+  images,
+}: UpdateProductFormProps) {
+  const parsedLicenses: ProductLicenseSchema[] = licenses.map((license) => {
+    return {
+      type: license.type,
+      price: license.price.toString(),
+    };
+  });
+
+  // react state
   const [imagesWithPreview, setImagesWithPreview] = useState<FileWithPreview[]>(
     []
   );
-  // const [images, setImages] = useState<ProdcutImageSchema[]>([]);
-  const [licenses, setLicenses] = useState<ProductLicenseSchema[]>([]);
-  const [totalLicenses, setTotalLicenses] = useState(1);
+  const [deletedImages, setDeletedImages] = useState<string[]>([]);
+  const [licensesState, setLicensesState] =
+    useState<ProductLicenseSchema[]>(parsedLicenses);
+  const [totalLicenses, setTotalLicenses] = useState(licenses.length);
   const [isLoading, setIsLoading] = useState(false);
   const [imagesUploadProgress, setImagesUploadProgress] = useState(0);
   const router = useRouter();
 
-  const categories = getCategories();
+  // Set files from product
+  useEffect(() => {
+    if (images && images.length > 0) {
+      setImagesWithPreview(
+        images.map((image) => {
+          const file = new File([], image.name, {
+            type: "image",
+            lastModified: image.updatedAt.getSeconds(),
+          });
+          const fileWithPreview: FileWithPreview = Object.assign(file, {
+            preview: image.url,
+            index: image.index,
+            uploaded: {
+              uploadthingKey: image.key,
+              size: image.size,
+            },
+          });
+
+          return fileWithPreview;
+        })
+      );
+    }
+  }, [product]);
 
   // react-hook-form
-  const form = useForm<ProductFormSchema>({
+  const form = useForm<Inputs>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
-      name: "69 T-shrits",
-      category: categories[0].value,
-      licenses: licenses,
-      description: "some description",
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      subcategory: product.subcategory ?? undefined,
+      licenses: parsedLicenses,
     },
   });
 
@@ -92,23 +135,50 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
     });
 
   useEffect(() => {
-    form.setValue("licenses", licenses);
+    form.setValue("licenses", licensesState);
   }, [licenses]);
 
   // Get subcategories based on category
   const subcategories = getSubcategories(form.watch("category"));
+  const categories = getCategories();
 
-  async function onSubmit(data: ProductFormSchema) {
+  async function onSubmit(data: Inputs) {
     setIsLoading(true);
     try {
-      let images: ProdcutImagePostSchema[] = [];
+      let patchImages: ProductImagesPatchSchema = {
+        deleted: [],
+        added: [],
+        updated: [],
+      };
 
-      if (isArrayOfFile(imagesWithPreview)) {
+      // Assign delete images
+      Array.from(deletedImages).map((key) => {
+        patchImages.deleted.push({
+          key: key,
+        });
+      });
+
+      // Assing updated images index
+      Array.from(imagesWithPreview).map((image) => {
+        if (image.uploaded && image.index) {
+          patchImages.updated.push({
+            key: image.uploaded.uploadthingKey,
+            index: image.index,
+          });
+        }
+      });
+
+      // Upload add files and assign
+      const newAddedFiles = imagesWithPreview.filter(
+        (image) => !image.uploaded
+      );
+
+      if (isArrayOfFile(newAddedFiles)) {
         await Promise.all(
-          imagesWithPreview.map(async (newAddedFile) => {
+          newAddedFiles.map(async (newAddedFile) => {
             const res = await startImagesUpload([newAddedFile]);
             res?.forEach(({ fileKey }) =>
-              images.push({
+              patchImages.added.push({
                 key: fileKey,
                 index: newAddedFile.index ?? Number.MAX_SAFE_INTEGER,
               })
@@ -117,23 +187,19 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
         );
       }
 
-      if (!images.length) {
-        throw new Error("Array must contain at least 1 element(s)!");
-      }
-
-      const postData: ProductPostSchema = {
+      const postData: ProductPatchSchema = {
         name: data.name,
         category: data.category,
         licenses: data.licenses,
         description: data.description,
         subcategory: data.subcategory,
-        images: images,
+        images: patchImages,
       };
 
       console.log(postData);
 
-      await fetch(`/api/stores/${storeId}/products`, {
-        method: "POST",
+      const _response = await fetch(`/api/products/${product.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -142,13 +208,13 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
 
       form.reset();
       router.push(`/dashboard/stores/${storeId}/products`);
-      router.refresh(); // Workaround for the inconsistency of cache revalidation
+      router.refresh();
       toast({
-        description: "Your new product created successfully.",
+        description: "Your product updated successfully.",
       });
     } catch (error) {
       toast({
-        title: "Your new product was not created.",
+        title: "Your product was not updated.",
         description: `${error}`,
         variant: "destructive",
       });
@@ -180,6 +246,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
           <FormControl>
             <Textarea
               placeholder="Type product description here."
+              // className="hide-scrollbar"
               {...form.register("description")}
             />
           </FormControl>
@@ -195,12 +262,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
               <FormItem className="w-full">
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Select
-                    value={field.value}
-                    onValueChange={(value: typeof field.value) =>
-                      field.onChange(value)
-                    }
-                  >
+                  <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="capitalize">
                       <SelectValue placeholder={field.value} />
                     </SelectTrigger>
@@ -230,10 +292,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
               <FormItem className="w-full">
                 <FormLabel>Subcategory</FormLabel>
                 <FormControl>
-                  <Select
-                    value={field.value?.toString()}
-                    onValueChange={field.onChange}
-                  >
+                  <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a subcategory" />
                     </SelectTrigger>
@@ -265,12 +324,12 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                     <div key={index} className="grid grid-cols-2 gap-6">
                       <FormControl className="w-1/2 flex-1">
                         <Select
-                          value={licenses[index]?.type}
+                          value={licensesState[index]?.type}
                           onValueChange={(e) => {
-                            const newLicenses = [...licenses];
+                            const newLicenses = [...licensesState];
                             newLicenses[index] = { type: e };
 
-                            setLicenses(newLicenses);
+                            setLicensesState(newLicenses);
                           }}
                         >
                           <SelectTrigger>
@@ -283,7 +342,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                                   key={license.type}
                                   value={license.type}
                                   disabled={
-                                    licenses.find(
+                                    licensesState.find(
                                       (_license) =>
                                         _license?.type === license.type
                                     ) !== undefined
@@ -299,18 +358,20 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                       <div className="flex gap-6">
                         <div className="flex-1">
                           <Input
+                            type="number"
                             onChange={(e) => {
-                              const newLicenses = [...licenses];
-                              newLicenses[index] = {
-                                ...newLicenses[index],
+                              const newLicensesState = [...licensesState];
+                              newLicensesState[index] = {
+                                ...newLicensesState[index],
                                 price: e.target.value,
                               };
-                              setLicenses(newLicenses);
+                              setLicensesState(newLicensesState);
                             }}
-                            disabled={licenses[index]?.type === undefined}
+                            disabled={licensesState[index]?.type === undefined}
                             placeholder="Type license price here..."
                             value={
-                              licenses[index]?.price ?? PRODUCT_DEFAULT_PRICE
+                              licensesState[index]?.price ??
+                              PRODUCT_DEFAULT_PRICE
                             }
                           />
                           <UncontrolledFormMessage
@@ -326,9 +387,9 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                           className="px-3"
                           variant="outline"
                           onClick={() => {
-                            const newLicenses = [...licenses];
-                            newLicenses.splice(index, 1);
-                            setLicenses(newLicenses);
+                            const newLicensesState = [...licensesState];
+                            newLicensesState.splice(index, 1);
+                            setLicensesState(newLicensesState);
                             setTotalLicenses(totalLicenses - 1);
                           }}
                         >
@@ -348,6 +409,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                     </Button>
                   )}
                 </div>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -360,6 +422,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
               maxSize={PRODUCT_IMAGE_FILE_MAX_SIZE_BYTES}
               files={imagesWithPreview}
               setFiles={setImagesWithPreview}
+              setDeletedFiles={setDeletedImages}
               // isUploading={isUploading}
               disabled={isLoading}
             />
@@ -369,15 +432,20 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
           />
           <h1>Progress: {imagesUploadProgress}</h1>
         </FormItem>
-        <LoadingButton
-          type="submit"
-          isLoading={isLoading}
-          disabled={isLoading}
-          className="w-fit"
-        >
-          Add Product
-          <span className="sr-only">Add Product</span>
-        </LoadingButton>
+        <div className="grid grid-cols-2 gap-4">
+          <LoadingButton
+            type="submit"
+            isLoading={isLoading}
+            disabled={isLoading}
+          >
+            Update
+            <span className="sr-only">Update Product</span>
+          </LoadingButton>
+          <Button variant="destructive" disabled={isLoading}>
+            Delete
+            <span className="sr-only">Delete product</span>
+          </Button>
+        </div>
       </form>
     </Form>
   );

@@ -1,7 +1,9 @@
+import { PRODUCT_DEFAULT_PRICE } from "@/constants/product";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { productSchema } from "@/lib/validations/product";
+import { productPostSchema } from "@/lib/validations/product";
 import { getServerSession } from "next-auth";
+import { utapi } from "uploadthing/server";
 import * as z from "zod";
 
 const routeContextSchema = z.object({
@@ -23,23 +25,26 @@ export async function POST(
     }
 
     const json = await req.json();
-    const body = productSchema.parse(json);
+    const body = productPostSchema.parse(json);
+
+    console.log(body);
+
+    // Convert license price to number
     const licenses = body.licenses.map((license) => {
       if (!license.price) {
-
-        return { type: license.type, price: 0.00 };
+        return { type: license.type, price: PRODUCT_DEFAULT_PRICE };
       }
       return { type: license.type, price: Number(license.price) };
     });
 
-    const store = await db.product.create({
+    // First create product data on database
+    const product = await db.product.create({
       data: {
         name: body.name,
         description: body.description,
         licenses: { create: licenses },
         category: body.category,
         subcategory: body.subcategory,
-        images: { create: body.images },
         storeId: params.store_id,
       },
       select: {
@@ -47,7 +52,41 @@ export async function POST(
       },
     });
 
-    return new Response(JSON.stringify(store));
+    // Link images to product images
+    body.images.forEach(async ({key, index}) => {
+      const file = await db.file.findUnique({
+        where: { key: key },
+        select: { id: true },
+      });
+
+      await db.file.update({
+        where: {
+          id: file?.id,
+        },
+        data: {
+          index: index,
+          productImagesId: product.id
+        },
+      });
+    });
+
+    // Link files to product files
+    body.files?.forEach(async ({key}) => {
+      const file = await db.file.findUnique({
+        where: { key: key },
+        select: { id: true }
+      });
+
+      await db.file.update({
+        where: {
+          id: file?.id,
+        },
+        data: {
+          productFilesId: product.id,
+        },
+      });
+    });
+    return new Response(JSON.stringify(product), { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });

@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { authOptions } from "@/lib/auth";
 import { getCurrentUser } from "@/lib/session";
 import { dashboardStoreConfig } from "@/config/dashboard";
+import { Heading } from "@/components/ui/heading";
 
 interface StoreLayoutProps {
   children: React.ReactNode;
@@ -43,7 +44,7 @@ export default async function StoreLayout({
 
   return (
     <Shell>
-      <div>
+      {/* <div>
         <BackButton variant="ghost" />
       </div>
       <div className="flex justify-center">
@@ -59,13 +60,12 @@ export default async function StoreLayout({
             </p>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <Tabs
+      </div> */}
+      <Heading size="lg">{store.name}</Heading>
+      <Tabs
           items={dashboardStoreConfig(store_id).navItems}
           className="grid-cols-4"
         />
-      </div>
       {children}
     </Shell>
   );
