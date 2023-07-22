@@ -12,7 +12,7 @@ Voxellax is built using the following technologies:
 - [NextAuth](https://next-auth.js.org/): An authentication library for Next.js applications.
 - [Prisma](https://www.prisma.io/): A modern database toolkit that simplifies database access and management.
 - [Radix UI](https://radix-ui.com/): A set of high-quality, accessible UI components for building modern web applications.
-- [Google Drive API](https://developers.google.com/drive/): Utilized for uploading, managing, downloading, and searching media files.
+- [Uploadthing](https://uploadthing.com/): Utilized for uploading, managing, downloading, and searching media files.
 
 ## Features
 
@@ -25,7 +25,7 @@ Voxellax offers the following features:
 - Cart functionality for adding and managing products.
 - Secure checkout process with payment integration.
 - User account management for order history and preferences.
-- Integration with Google Drive API for media file management.
+- Integration with Uploadthing for media file management.
 
 ## Getting Started
 
@@ -41,17 +41,17 @@ To get started with Voxellax on your local development environment, follow these
 
    ```
    cd voxellax
-   yarn install
+   npm install
    ```
 
 3. Set up the environment variables:
-   
+
    Rename the `.env.example` file to `.env` and update the values accordingly.
 
 4. Run the development server:
 
    ```
-   yarn dev
+   npm run dev
    ```
 
 5. Open your browser and visit `http://localhost:3000` to access Voxellax.
