@@ -49,7 +49,7 @@ export async function CartSheet() {
           {data.cartItems.length > 0 && (
             <Badge
               variant="secondary"
-              className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-2 text-[9px] flex justify-center items-center"
+              className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-2 text-[9px]"
             >
               {data.cartItems.length}
             </Badge>
@@ -68,11 +68,11 @@ export async function CartSheet() {
               <ScrollArea className="h-full">
                 <div className="flex flex-col gap-5 pr-6">
                   {data.cartItems.map((item) => {
-                    let product = data.products.find(({id}) => id === item.productId);
+                    const product = data.products.find(({id}) => id === item.productId);
                     if (!product) {
                       return null;
                     }
-                    let license = product.licenses.find(({type}) => type === item.licenseType);
+                    const license = product.licenses.find(({type}) => type === item.licenseType);
                     return (
                       <div key={item.productId} className="space-y-3">
                       <div className="flex items-center space-x-4">

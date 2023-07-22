@@ -45,7 +45,7 @@ export function UpdateCart({productId, licenseType}: UpdateCartProps) {
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
-                  className="flex justify-end capitalize h-8 p-3"
+                  className="flex h-8 justify-end p-3 capitalize"
                 >
                   {licenseType}
                   <Icons.chevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -62,8 +62,8 @@ export function UpdateCart({productId, licenseType}: UpdateCartProps) {
                           setOpen(false);
                         }}
                       >
-                        <div className="flex justify-between w-full">
-                          <div className="flex gap-2 items-center">
+                        <div className="flex w-full justify-between">
+                          <div className="flex items-center gap-2">
                             <Icons.check
                               className={cn(
                                 "h-4 w-4",

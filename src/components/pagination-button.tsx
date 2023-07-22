@@ -91,7 +91,7 @@ export function PaginationButton({
         className="h-8 w-8 px-0"
         onClick={() =>
           setCurrentPage(() => {
-            let n = currentPage - 1;
+            const n = currentPage - 1;
             return n;
           })
         }
@@ -132,7 +132,7 @@ export function PaginationButton({
         className="h-8 w-8 px-0"
         onClick={() =>
           setCurrentPage(() => {
-            let n = currentPage + 1;
+            const n = currentPage + 1;
             return n;
           })
         }

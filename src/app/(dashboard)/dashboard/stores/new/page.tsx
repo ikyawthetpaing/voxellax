@@ -28,9 +28,10 @@ export default async function NewStorePage() {
           Get ready to take your online presence to the next level! With our
           easy-to-use platform, you can effortlessly create a brand new store
           for your account. Showcase your products, reach a wider audience, and
-          start growing your business today. It's time to unleash your
+          start growing your business today. It&apos;s time to unleash your
           entrepreneurial spirit and create a store that reflects your unique
-          style and offerings. Let's get started on your journey to success!
+          style and offerings. Let&apos;s get started on your journey to
+          success!
         </p>
       </div>
       <AddStoreForm userId={user.id} />

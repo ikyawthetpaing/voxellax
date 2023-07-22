@@ -68,18 +68,18 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
 
   return (
     <form
-      className={cn(searchFormVariants({ size }), "flex items-center hover:border-primary/50 transition-colors", {"border-primary/50": focus})}
+      className={cn(searchFormVariants({ size }), "flex items-center transition-colors hover:border-primary/50", {"border-primary/50": focus})}
       {...props}
     >
       <button type="submit">
-        <Icons.search className="w-4 h-4" />
+        <Icons.search className="h-4 w-4" />
       </button>
       <Input
       onFocus={() => setFocus(true)}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search"
-        className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-full"
+        className="h-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
       />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -87,7 +87,7 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
             variant="ghost"
             role="combobox"
             aria-expanded={open}
-            className="w-[100px] flex justify-end p-0 hover:bg-transparent"
+            className="flex w-[100px] justify-end p-0 hover:bg-transparent"
           >
             {value
               ? categories.find((category) => category.value === value)?.label

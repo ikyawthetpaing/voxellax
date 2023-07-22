@@ -10,11 +10,16 @@ export const metadata: Metadata = {
 
 export default function UserLikesPage() {
   const likedProducts = data.likes.map((like) => {
-    let product = data.products.find(({ id }) => id === like.productId);
+    const product = data.products.find(({ id }) => id === like.productId);
     if (product) {
       return product;
     }
   });
 
-  return <div>{likedProducts && <Products products={likedProducts} />}</div>;
+  return (
+    <div>
+      comming soon
+      {/* {likedProducts && <Products products={likedProducts} />} */}
+    </div>
+  );
 }

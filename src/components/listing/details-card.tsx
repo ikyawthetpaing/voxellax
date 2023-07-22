@@ -58,7 +58,7 @@ export function DetailsCard({
             <div className="grid gap-2">
               {/* License type */}
               <div className="flex justify-between">
-                <h1 className="font-semibold text-sm">License</h1>
+                <h1 className="text-sm font-semibold">License</h1>
                 <span className="text-xs capitalize">
                   {licenses[licenseIndex].type}
                 </span>
@@ -74,7 +74,7 @@ export function DetailsCard({
                     />
                     <Label
                       htmlFor={`radio-${index}`}
-                      className="flex-1 text-xs cursor-pointer flex justify-between"
+                      className="flex flex-1 cursor-pointer justify-between text-xs"
                     >
                       <span className="capitalize">{license.type}</span>
                       <div className="flex items-center">
@@ -88,7 +88,7 @@ export function DetailsCard({
           )}
           {totalReviews !== 0 && (
             <div className="flex justify-between">
-              <h1 className="font-semibold text-sm">Reviews</h1>
+              <h1 className="text-sm font-semibold">Reviews</h1>
               <div className="flex items-center gap-2">
                 <RenderStars size={3} averageRates={averageRates} />
                 <div className="text-xs">
@@ -97,9 +97,9 @@ export function DetailsCard({
               </div>
             </div>
           )}
-          <div className="flex min-w-0 justify-between items-center gap-3">
-            <h1 className="font-semibold text-sm">Category</h1>
-            <div className="text-xs overflow-hidden whitespace-nowrap overflow-ellipsis capitalize">
+          <div className="flex min-w-0 items-center justify-between gap-3">
+            <h1 className="text-sm font-semibold">Category</h1>
+            <div className="truncate text-xs capitalize">
               <Link href={`/category/${category}`}>{category}</Link>
               <span> / </span>
               <Link href={`/category/${category}/${subCategory}`}>

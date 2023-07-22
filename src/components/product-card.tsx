@@ -32,7 +32,7 @@ export async function ProductCard({ product }: ProductCardProps) {
   const images = await db.file.findMany({ where: { productImagesId: product.id } });
 
   return (
-    <Card className="overflow-hidden rounded-lg group relative">
+    <Card className="group relative overflow-hidden rounded-lg">
       <CardHeader className="border-b p-0">
         <AspectRatio ratio={4 / 3}>
           <Link
@@ -50,9 +50,9 @@ export async function ProductCard({ product }: ProductCardProps) {
         </AspectRatio>
       </CardHeader>
       <CardContent className="p-2 pb-0">
-        <div className="flex gap-2 justify-between">
-          <h1 className="text-base font-medium line-clamp-1">{product.name}</h1>
-          <div className="font-semibold flex items-center text-sm bg-accent text-accent-foreground px-1 rounded-md">
+        <div className="flex justify-between gap-2">
+          <h1 className="line-clamp-1 text-base font-medium">{product.name}</h1>
+          <div className="flex items-center rounded-md bg-accent px-1 text-sm font-semibold text-accent-foreground">
             {formatPrice(license?.price ?? 0, 0)}
           </div>
         </div>
@@ -69,29 +69,29 @@ export async function ProductCard({ product }: ProductCardProps) {
           Add to cart
         </Button> */}
       </CardFooter>
-      <div className="hidden sm:flex absolute top-0 group-hover:top-2 right-2 flex-col gap-2 opacity-0 group-hover:opacity-100 duration-100 animate-in">
+      <div className="absolute right-2 top-0 hidden flex-col gap-2 opacity-0 animate-in duration-100 group-hover:top-2 group-hover:opacity-100 sm:flex">
         <Button
           variant="secondary"
           size="sm"
-          className="gap-2 p-2 rounded-full justify-center"
+          className="justify-center gap-2 rounded-full p-2"
         >
-          <Icons.heart className="w-4 h-4" />
+          <Icons.heart className="h-4 w-4" />
           <span>Like</span>
         </Button>
         <Button
           variant="secondary"
           size="sm"
-          className="gap-2 p-2 rounded-full justify-center"
+          className="justify-center gap-2 rounded-full p-2"
         >
-          <Icons.shoppingCart className="w-4 h-4" />
+          <Icons.shoppingCart className="h-4 w-4" />
           <span>Cart</span>
         </Button>
         <Button
           variant="secondary"
           size="sm"
-          className="gap-2 p-2 rounded-full justify-center"
+          className="justify-center gap-2 rounded-full p-2"
         >
-          <Icons.bookmark className="w-4 h-4" />
+          <Icons.bookmark className="h-4 w-4" />
           <span>Save</span>
         </Button>
       </div>
@@ -101,18 +101,18 @@ export async function ProductCard({ product }: ProductCardProps) {
 
 export function ProductCardSkeleton() {
   return (
-    <Card className="overflow-hidden rounded-lg group relative">
+    <Card className="group relative overflow-hidden rounded-lg">
       <CardHeader className="border-b p-0">
         <AspectRatio ratio={4 / 3}>
-          <Skeleton className="w-full h-full rounded-b-none" />
+          <Skeleton className="h-full w-full rounded-b-none" />
         </AspectRatio>
       </CardHeader>
-      <CardContent className="flex gap-2 p-2 justify-between">
-        <Skeleton className="flex-1 h-5" />
-        <Skeleton className="w-10 h-5" />
+      <CardContent className="flex justify-between gap-2 p-2">
+        <Skeleton className="h-5 flex-1" />
+        <Skeleton className="h-5 w-10" />
       </CardContent>
-      <CardFooter className="sm:hidden p-2 pt-0">
-        <Skeleton className="w-full h-9" />
+      <CardFooter className="p-2 pt-0 sm:hidden">
+        <Skeleton className="h-9 w-full" />
       </CardFooter>
     </Card>
   );

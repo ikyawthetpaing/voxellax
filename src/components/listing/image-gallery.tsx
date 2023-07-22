@@ -26,7 +26,7 @@ export function ImageGallery({
     <div className={cn("grid gap-3", className)} {...props}>
       <AspectRatio
         ratio={4 / 3}
-        className="rounded-lg overflow-hidden relative group border"
+        className="group relative overflow-hidden rounded-lg border"
       >
         <Image
           src={images[currentImageIndex]?.url ?? siteConfig.placeholderImageUrl}
@@ -35,7 +35,7 @@ export function ImageGallery({
           className="object-cover"
           loading="lazy"
         />
-        <div className="w-full absolute top-1/2 left-0 flex justify-between px-6 -translate-y-1/2 opacity-0 group-hover:opacity-100 duration-100 animate-in">
+        <div className="absolute left-0 top-1/2 flex w-full -translate-y-1/2 justify-between px-6 opacity-0 animate-in duration-100 group-hover:opacity-100">
           <Button
             variant="secondary"
             size="icon"
@@ -50,7 +50,7 @@ export function ImageGallery({
               })
             }
           >
-            <Icons.chevronLeft className="w-5 h-5" />
+            <Icons.chevronLeft className="h-5 w-5" />
           </Button>
           <Button
             variant="secondary"
@@ -66,16 +66,16 @@ export function ImageGallery({
               })
             }
           >
-            <Icons.chevronRight className="w-5 h-5" />
+            <Icons.chevronRight className="h-5 w-5" />
           </Button>
         </div>
       </AspectRatio>
-      <div className="flex gap-3 w-full overflow-x-scroll hide-scrollbar">
+      <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
         {images.map((image, index) => (
           <div
             key={index}
             className={cn(
-              "flex w-20 md:w-24 overflow-hidden rounded-lg border border-background flex-shrink-0",
+              "flex w-20 shrink-0 overflow-hidden rounded-lg border border-background md:w-24",
               { "border-primary": index === currentImageIndex }
             )}
             onMouseOver={() => setCurrentImageIndex(index)}

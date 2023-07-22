@@ -37,8 +37,8 @@ export async function Listing({ product }: { product: Product }) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid lg:flex gap-8">
-        <div className="flex-1 flex flex-col gap-8">
+      <div className="grid gap-8 lg:flex">
+        <div className="flex flex-1 flex-col gap-8">
           {/* Image and gallery code */}
           <ImageGallery images={images} />
           {reviews.length > 0 && (

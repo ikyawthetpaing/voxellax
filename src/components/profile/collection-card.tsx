@@ -11,9 +11,9 @@ interface CollectionCardProps {
 }
 
 export function CollectionCard({ collection }: CollectionCardProps) {
-  let totalProducts = collection.products.length;
-  let images = collection.products.map((product) => {
-    let _product = data.products.find(({ id }) => id === product.id);
+  const totalProducts = collection.products.length;
+  const images = collection.products.map((product) => {
+    const _product = data.products.find(({ id }) => id === product.id);
     if (_product) {
       return _product.images[0];
     }
@@ -22,7 +22,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
   return (
     <Link href={`/profile/collections/${collection.id}`}>
       <div className="grid gap-3">
-        <div className="rounded-lg overflow-hidden">
+        <div className="overflow-hidden rounded-lg">
           <AspectRatio ratio={4.5 / 3}>
             {images[0] ? (
               <Image
@@ -33,12 +33,12 @@ export function CollectionCard({ collection }: CollectionCardProps) {
                 loading="lazy"
               />
             ) : (
-              <Skeleton className="w-full h-full" />
+              <Skeleton className="h-full w-full" />
             )}
           </AspectRatio>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-lg overflow-hidden">
+          <div className="overflow-hidden rounded-lg">
             <AspectRatio ratio={4.5 / 3}>
               {images[1] ? (
                 <Image
@@ -49,11 +49,11 @@ export function CollectionCard({ collection }: CollectionCardProps) {
                   loading="lazy"
                 />
               ) : (
-                <Skeleton className="w-full h-full" />
+                <Skeleton className="h-full w-full" />
               )}
             </AspectRatio>
           </div>
-          <div className="rounded-lg overflow-hidden">
+          <div className="overflow-hidden rounded-lg">
             <AspectRatio ratio={4.5 / 3}>
               {images[2] ? (
                 <Image
@@ -64,7 +64,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
                   loading="lazy"
                 />
               ) : (
-                <Skeleton className="w-full h-full" />
+                <Skeleton className="h-full w-full" />
               )}
             </AspectRatio>
           </div>
@@ -83,26 +83,26 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 export function CollectionCardSkeleton() {
   return (
     <div className="grid gap-3">
-      <div className="rounded-lg overflow-hidden">
+      <div className="overflow-hidden rounded-lg">
         <AspectRatio ratio={4.5 / 3}>
-          <Skeleton className="w-full h-full" />
+          <Skeleton className="h-full w-full" />
         </AspectRatio>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-lg overflow-hidden">
+        <div className="overflow-hidden rounded-lg">
           <AspectRatio ratio={4.5 / 3}>
-            <Skeleton className="w-full h-full" />
+            <Skeleton className="h-full w-full" />
           </AspectRatio>
         </div>
-        <div className="rounded-lg overflow-hidden">
+        <div className="overflow-hidden rounded-lg">
           <AspectRatio ratio={4.5 / 3}>
-            <Skeleton className="w-full h-full" />
+            <Skeleton className="h-full w-full" />
           </AspectRatio>
         </div>
       </div>
       <div className="flex justify-between">
-        <Skeleton className="w-1/4 h-5" />
-        <Skeleton className="w-1/4 h-5" />
+        <Skeleton className="h-5 w-1/4" />
+        <Skeleton className="h-5 w-1/4" />
       </div>
     </div>
   );

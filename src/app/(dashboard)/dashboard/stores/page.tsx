@@ -50,8 +50,8 @@ export default async function StoresPage() {
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {stores.length ? stores.map((store) => (
           <Card key={store.id} className="flex h-full flex-col">
-            <CardHeader className="flex-1 flex flex-col items-center">
-              <Avatar className="w-24 h-24 mb-4">
+            <CardHeader className="flex flex-1 flex-col items-center">
+              <Avatar className="mb-4 h-24 w-24">
                 <AvatarImage src="/avatars/01.png" alt="Avatar" />
                 <AvatarFallback>{store.name.charAt(0)}</AvatarFallback>
               </Avatar>
@@ -78,7 +78,7 @@ export default async function StoresPage() {
           </Card>
         )) : null}
         {stores.length < 3 && (
-          <Card className="flex items-center justify-center border-dashed h-[266px]">
+          <Card className="flex h-[266px] items-center justify-center border-dashed">
             <CardContent className="p-0">
               <Link href="/dashboard/stores/new">
                 <div

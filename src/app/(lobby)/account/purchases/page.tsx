@@ -32,7 +32,7 @@ export default function UserPurchasesPage() {
         <Button>Filter products</Button>
         <SearchForm className="p-3" />
       </div>
-      <div className="rounded-md border overflow-x-scroll hide-scrollbar">
+      <div className="hide-scrollbar overflow-x-scroll rounded-md border">
         <Table>
           <TableHeader>
             <TableRow className="uppercase">
@@ -63,7 +63,7 @@ export default function UserPurchasesPage() {
                 <TableRow key={invoice.productId}>
                   <TableCell>
                     <div className="flex gap-2">
-                      <div className="flex-shrink-0 w-20 overflow-hidden rounded-lg">
+                      <div className="w-20 shrink-0 overflow-hidden rounded-lg">
                         <AspectRatio ratio={4 / 3}>
                           <Image
                             src={product.images[0]}
@@ -75,7 +75,7 @@ export default function UserPurchasesPage() {
                         </AspectRatio>
                       </div>
                       <div>
-                        <h1 className="font-medium line-clamp-1">
+                        <h1 className="line-clamp-1 font-medium">
                           {product.name}
                         </h1>
                         <p className="line-clamp-1">
@@ -86,7 +86,7 @@ export default function UserPurchasesPage() {
                   </TableCell>
                   <TableCell>{formatPrice(price || 0)}</TableCell>
                   <TableCell>{invoice.date}</TableCell>
-                  <TableCell className="capitalize w-fit">
+                  <TableCell className="w-fit capitalize">
                     {invoice.licenseType}
                   </TableCell>
                   <TableCell>Add Review</TableCell>

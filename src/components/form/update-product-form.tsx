@@ -145,7 +145,7 @@ export function UpdateProductForm({
   async function onSubmit(data: Inputs) {
     setIsLoading(true);
     try {
-      let patchImages: ProductImagesPatchSchema = {
+      const patchImages: ProductImagesPatchSchema = {
         deleted: [],
         added: [],
         updated: [],
@@ -393,7 +393,7 @@ export function UpdateProductForm({
                             setTotalLicenses(totalLicenses - 1);
                           }}
                         >
-                          <Icons.trash className="w-4 h-4" />
+                          <Icons.trash className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
@@ -405,7 +405,7 @@ export function UpdateProductForm({
                       onClick={() => setTotalLicenses(totalLicenses + 1)}
                       variant="outline"
                     >
-                      <Icons.plus className="w-4 h-4" />
+                      <Icons.plus className="h-4 w-4" />
                     </Button>
                   )}
                 </div>

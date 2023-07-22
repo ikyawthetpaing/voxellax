@@ -258,16 +258,16 @@ function FileCard({
             src={file.preview}
             alt={file.name}
             fill
-            className="object-cover rounded-lg"
+            className="rounded-lg object-cover"
           />
           {i === 0 && (
-            <div className="bg-blue-500 flex justify-center items-center rounded-full h-6 w-6 absolute top-0 right-0 -translate-y-1/4 translate-x-1/4">
-              <Icons.star className="w-4 h-4" />
+            <div className="absolute right-0 top-0 flex h-6 w-6 -translate-y-1/4 translate-x-1/4 items-center justify-center rounded-full bg-blue-500">
+              <Icons.star className="h-4 w-4" />
             </div>
           )}
         </AspectRatio>
       </div>
-      <div className="flex-1 flex justify-between gap-4">
+      <div className="flex flex-1 justify-between gap-4">
         <div>
           <p className="line-clamp-1 text-sm font-medium text-muted-foreground">
             {file.name}

@@ -75,7 +75,7 @@ export default function DashboardOverviewPage() {
           </Card>
         </div>
         <div className="grid gap-4 lg:grid-cols-8">
-          <Card className="lg:col-span-5 overflow-x-scroll hide-scrollbar">
+          <Card className="hide-scrollbar overflow-x-scroll lg:col-span-5">
             <CardHeader>
               <CardTitle>Overview</CardTitle>
             </CardHeader>

@@ -23,7 +23,7 @@ export function Reviews({ reviews, className, ...props }: ProductReviewsProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <div className="grid gap-2 items-center">
+      <div className="grid items-center gap-2">
         <h1>Reviews ({reviews.length})</h1>
         <hr />
       </div>
@@ -31,7 +31,7 @@ export function Reviews({ reviews, className, ...props }: ProductReviewsProps) {
         {reviewGroups[currentReviewsGroup - 1].map((index) => (
           <div key={index}>
             <div className="flex gap-3">
-              <Avatar className="w-9 h-9 flex-shrink-0">
+              <Avatar className="h-9 w-9 shrink-0">
                 {/* <AvatarImage
               src={user.image?.toString()}
               alt={user.name?.toString()}
@@ -42,7 +42,7 @@ export function Reviews({ reviews, className, ...props }: ProductReviewsProps) {
                 <div className="grid gap-1">
                   <h1 className="font-semibold">Jon Doe</h1>
                   <div className="flex items-center gap-2 opacity-75">
-                    <Icons.calendar className="w-3 h-3" />
+                    <Icons.calendar className="h-3 w-3" />
                     <span className="text-xs">Apr 24, 2022</span>
                   </div>
                 </div>

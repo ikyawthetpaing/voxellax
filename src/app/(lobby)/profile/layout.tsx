@@ -18,8 +18,8 @@ export default async function UserProfileLayout({ children }: UserProfileLayoutP
   return (
     <Shell>
       <div className="flex justify-center">
-        <div className="flex flex-col gap-2 items-center">
-          <Avatar className="cursor-pointer w-24 h-24">
+        <div className="flex flex-col items-center gap-2">
+          <Avatar className="h-24 w-24 cursor-pointer">
             <AvatarImage
               src={user.image?.toString()}
               alt={user.name?.toString()}

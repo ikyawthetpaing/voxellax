@@ -40,7 +40,7 @@ export function RecentSales() {
                 <AvatarImage src="/avatars/01.png" alt="Avatar" />
                 <AvatarFallback>{sale.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              <div className="flex-1 flex flex-col sm:flex-row justify-between gap-2">
+              <div className="flex flex-1 flex-col justify-between gap-2 sm:flex-row">
                 <div className="space-y-1">
                   <p className="text-sm font-medium leading-none">
                     {sale.name}

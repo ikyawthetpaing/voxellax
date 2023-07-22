@@ -201,7 +201,7 @@ export function UpdateStoreForm({
                   <DialogHeader>
                     <DialogTitle>Delete Store</DialogTitle>
                     <DialogDescription>
-                      Make sure you want to delete. This can't be undone.
+                      Make sure you want to delete. This can&apos;t be undone.
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>

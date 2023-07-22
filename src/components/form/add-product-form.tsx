@@ -101,7 +101,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
   async function onSubmit(data: ProductFormSchema) {
     setIsLoading(true);
     try {
-      let images: ProdcutImagePostSchema[] = [];
+      const images: ProdcutImagePostSchema[] = [];
 
       if (isArrayOfFile(imagesWithPreview)) {
         await Promise.all(
@@ -332,7 +332,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                             setTotalLicenses(totalLicenses - 1);
                           }}
                         >
-                          <Icons.trash className="w-4 h-4" />
+                          <Icons.trash className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
@@ -344,7 +344,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                       onClick={() => setTotalLicenses(totalLicenses + 1)}
                       variant="outline"
                     >
-                      <Icons.plus className="w-4 h-4" />
+                      <Icons.plus className="h-4 w-4" />
                     </Button>
                   )}
                 </div>

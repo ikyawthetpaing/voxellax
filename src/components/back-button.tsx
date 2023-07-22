@@ -23,7 +23,7 @@ export function BackButton({
       className={cn("gap-2", className)}
       {...props}
     >
-      <Icons.chevronLeft className="w-4 h-4" />
+      <Icons.chevronLeft className="h-4 w-4" />
       Back
     </Button>
   );

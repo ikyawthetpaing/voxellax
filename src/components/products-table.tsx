@@ -124,7 +124,7 @@ export function ProductsTable({
     setIsLoading(false);
   };
 
-  // Memoize the columns so they don't re-render on every render
+  // Memoize the columns so they don&apos;t re-render on every render
   const columns = React.useMemo<ColumnDef<Product, unknown>[]>(
     () => [
       {
@@ -460,7 +460,7 @@ export function ProductsTable({
                             </DialogTitle>
                             <DialogDescription>
                               Delete selected products from your store. Click
-                              confirm delete when you're sure.
+                              confirm delete when you&apos;re sure.
                             </DialogDescription>
                           </DialogHeader>
                           <DialogFooter>

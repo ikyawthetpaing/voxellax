@@ -35,8 +35,8 @@ export async function Infos({
         <AccordionItem value="item-2">
           <AccordionTrigger>Highlights</AccordionTrigger>
           <AccordionContent>
-            Yes. It comes with default styles that matches the other components'
-            aesthetic.
+            Yes. It comes with default styles that matches the other
+            components&apos; aesthetic.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
@@ -46,7 +46,7 @@ export async function Infos({
               <h1 className="text-xl">Instant Download</h1>
               <p className="opacity-75">
                 Your files will be available to download once payment is
-                confirmed. Here's how.
+                confirmed. Here&apos;s how.
               </p>
               <p>
                 Instant download items don’t accept returns, exchanges or
@@ -54,12 +54,12 @@ export async function Infos({
                 your order.
               </p>
               <div className="flex items-center gap-3">
-                <Icons.heartHandshake className="w-12 h-12 flex-shrink-0" />
+                <Icons.heartHandshake className="h-12 w-12 shrink-0" />
                 <p className="text-xs">
                   <span className="font-semibold">Purchase Protection: </span>
                   <span>
                     Shop confidently on {siteConfig.name} knowing if something
-                    goes wrong with an order, we've got your back for all
+                    goes wrong with an order, we&apos;ve got your back for all
                     eligible purchases — see program terms
                   </span>
                 </p>
@@ -115,7 +115,7 @@ export async function Infos({
             <AccordionTrigger>Meet the seller</AccordionTrigger>
             <AccordionContent>
               <div className="flex gap-4">
-                <Avatar className="cursor-pointer w-16 h-16">
+                <Avatar className="h-16 w-16 cursor-pointer">
                   <AvatarImage
                     src={seller.image?.toString()}
                     alt={seller.name?.toString()}
@@ -126,8 +126,13 @@ export async function Infos({
                   <h1 className="text-lg font-medium capitalize">
                     {seller.name}
                   </h1>
-                  <p className="text-sm"><span className="text-foreground/75">Owner of </span><Link href={`/store/${store?.id}`}>{store?.name}</Link></p>
-                  <Button variant="secondary" size="sm" className="p-2 w-fit"><Icons.heart className="w-4 h-4 mr-2"/> Follow shop</Button>
+                  <p className="text-sm">
+                    <span className="text-foreground/75">Owner of </span>
+                    <Link href={`/store/${store?.id}`}>{store?.name}</Link>
+                  </p>
+                  <Button variant="secondary" size="sm" className="w-fit p-2">
+                    <Icons.heart className="mr-2 h-4 w-4" /> Follow shop
+                  </Button>
                 </div>
               </div>
             </AccordionContent>

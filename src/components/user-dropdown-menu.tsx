@@ -27,7 +27,7 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="cursor-pointer w-9 h-9">
+        <Avatar className="h-9 w-9 cursor-pointer">
           <AvatarImage
             src={user.image?.toString()}
             alt={user.name?.toString()}
@@ -38,7 +38,7 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem onClick={() => router.push("/profile/activity")}>
           <div className="flex gap-3">
-            <Avatar className="cursor-pointer w-9 h-9">
+            <Avatar className="h-9 w-9 cursor-pointer">
               <AvatarImage
                 src={user.image?.toString()}
                 alt={user.name?.toString()}

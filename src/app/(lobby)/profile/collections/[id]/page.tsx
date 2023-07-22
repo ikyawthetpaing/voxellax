@@ -82,7 +82,7 @@ export default async function UserCollectionPage({
   }
 
   const products = collection.products.map((product) => {
-    let _product = data.products.find(({ id }) => id === product.id);
+    const _product = data.products.find(({ id }) => id === product.id);
     if (_product) {
       return _product as Product;
     }
@@ -94,18 +94,18 @@ export default async function UserCollectionPage({
     <section className="space-y-8">
       <div>
         <BackButton variant="ghost" size="sm" className="flex gap-2">
-          <Icons.chevronLeft className="w-4 h-4" />
+          <Icons.chevronLeft className="h-4 w-4" />
           Back to Collections
         </BackButton>
       </div>
       <div className="space-y-4">
-        <h1 className="text-2xl font-medium text-center">{collection.name}</h1>
-        <h1 className="text-xs text-center">
+        <h1 className="text-center text-2xl font-medium">{collection.name}</h1>
+        <h1 className="text-center text-xs">
           Public • {totalProducts} {totalProducts > 1 ? "Products" : "Product"}
         </h1>
       </div>
       <hr />
-      {products && <Products products={products} />}
+      {/* {products && <Products products={products} />} */}
     </section>
   );
 }

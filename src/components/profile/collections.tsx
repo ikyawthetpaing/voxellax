@@ -23,7 +23,7 @@ export function CollectionsSkeleton() {
   return (
     <Grid>
       {Array.from({ length: 8 }, (_, i) => i).map((index) => (
-        <CollectionCardSkeleton />
+        <CollectionCardSkeleton key={index} />
       ))}
     </Grid>
   );

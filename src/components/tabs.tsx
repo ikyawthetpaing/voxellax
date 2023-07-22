@@ -15,7 +15,7 @@ export function Tabs({ items, className, ...props }: ProfileNavbar) {
   return items.length ? (
     <div
       className={cn(
-        "w-fit grid bg-secondary p-1 rounded-lg text-muted-foreground h-9",
+        "grid h-9 w-fit rounded-lg bg-secondary p-1 text-muted-foreground",
         className,
       )}
       {...props}
@@ -25,7 +25,7 @@ export function Tabs({ items, className, ...props }: ProfileNavbar) {
           key={index}
           href={item.href}
           className={cn(
-            "rounded-md flex justify-center px-3 py-1 text-sm font-medium",
+            "flex justify-center rounded-md px-3 py-1 text-sm font-medium",
             {
               "bg-background text-foreground":
                 pathname.split("/").slice(0, 3).join("/") === item.href ||

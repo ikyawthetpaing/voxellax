@@ -19,7 +19,7 @@ export default function UserActivityPage() {
         <Button variant="secondary">All activity</Button>
       </div>
       <div className="grid gap-8">
-        {data.activities.map((activity) => {
+        {data.activities.map((activity, index) => {
           const product = data.products.find(
             ({ id }) => id === activity.productId
           );
@@ -27,8 +27,8 @@ export default function UserActivityPage() {
             return null;
           }
           return (
-            <div className="flex gap-4">
-              <div className="w-40 sm:w-48 flex-shrink-0 rounded-lg overflow-hidden">
+            <div key={index} className="flex gap-4">
+              <div className="w-40 shrink-0 overflow-hidden rounded-lg sm:w-48">
                 <AspectRatio ratio={4 / 3}>
                   <Image
                     src={product.images[0]}
@@ -39,12 +39,12 @@ export default function UserActivityPage() {
                   />
                 </AspectRatio>
               </div>
-              <div className="flex-1 flex flex-col gap-4">
+              <div className="flex flex-1 flex-col gap-4">
                 <h1 className="line-clamp-3">
                   You {activity.action} {product.name}
                 </h1>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Icons.calendar className="w-4 h-4" />
+                  <Icons.calendar className="h-4 w-4" />
                   <h1>{activity.date}</h1>
                 </div>
               </div>

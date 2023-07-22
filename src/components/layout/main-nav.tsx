@@ -19,7 +19,7 @@ export function MainNav({ items }: MainNavProps) {
             <Link
               key={index}
               href={item.href}
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground"
+              className="flex items-center text-lg font-medium text-foreground transition-colors hover:text-foreground/80 sm:text-sm"
             >
               {item.title}
             </Link>

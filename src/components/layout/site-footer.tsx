@@ -7,7 +7,7 @@ export function SiteFooter() {
   return (
     <footer>
       <div className="container py-10 text-sm">
-        <div className="py-20 flex flex-col gap-6 max-w-[300px]">
+        <div className="flex max-w-[300px] flex-col gap-6 py-20">
           <Link href="/">
             <Icons.voxellax className="w-28" />
           </Link>
@@ -16,37 +16,37 @@ export function SiteFooter() {
           </p>
           <div className="flex gap-6">
             <a href="/">
-              <Icons.facebook className="w-5 h-5" />
+              <Icons.facebook className="h-5 w-5" />
             </a>
             <a href="/">
-              <Icons.instagram className="w-5 h-5" />
+              <Icons.instagram className="h-5 w-5" />
             </a>
             <a href="/">
-              <Icons.twitter className="w-5 h-5" />
+              <Icons.twitter className="h-5 w-5" />
             </a>
             <a href="/">
-              <Icons.youtube className="w-5 h-5" />
+              <Icons.youtube className="h-5 w-5" />
             </a>
           </div>
         </div>
-        <div className="flex flex-col-reverse gap-6 md:flex-row justify-between">
+        <div className="flex flex-col-reverse justify-between gap-6 md:flex-row">
           <div className="text-center">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All rights
             reserved.
           </div>
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col gap-6 md:flex-row">
             <Link
               href="/privacy"
-              className="hover:underline underline-offset-4"
+              className="underline-offset-4 hover:underline"
             >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:underline underline-offset-4">
+            <Link href="/terms" className="underline-offset-4 hover:underline">
               Terms of Service
             </Link>
             <Link
               href="/cookiepolicy"
-              className="hover:underline underline-offset-4"
+              className="underline-offset-4 hover:underline"
             >
               Cookie Policy
             </Link>

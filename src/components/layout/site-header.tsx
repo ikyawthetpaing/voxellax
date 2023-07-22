@@ -19,8 +19,8 @@ export function SiteHeader({ user, navItems }: SiteHeaderProps) {
   const isAdmin = user?.email === env.ADMIN_EMAIL;
 
   return (
-    <header className="border-b z-40 bg-background sticky top-0">
-        <div className="container flex justify-between items-center gap-6 py-4">
+    <header className="sticky top-0 z-40 border-b bg-background">
+        <div className="container flex items-center justify-between gap-6 py-4">
           <div className="sm:hidden">
             <MobileNav navItems={navItems} />
           </div>

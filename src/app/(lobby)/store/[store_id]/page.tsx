@@ -109,11 +109,11 @@ export default async function StorePage({ params }: StorePageProps) {
   return (
     <Shell>
       <div className="flex justify-center">
-        <div className="grid gap-6 w-full">
-          <div className="flex flex-col items-center gap-2 w-full">
+        <div className="grid w-full gap-6">
+          <div className="flex w-full flex-col items-center gap-2">
             <AspectRatio ratio={4 / 1} className="w-full">
-              <div className="w-full h-full bg-accent relative">
-                <Avatar className="cursor-pointer w-24 h-24 absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 border-4 border-background">
+              <div className="relative h-full w-full bg-accent">
+                <Avatar className="absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 translate-y-1/2 cursor-pointer border-4 border-background">
                   <AvatarImage
                     // src={store.image?.toString()}
                     alt={store.name?.toString()}
@@ -131,14 +131,14 @@ export default async function StorePage({ params }: StorePageProps) {
               {store.name}
             </Heading>
           </div>
-          <div className="max-w-sm mx-auto text-center">
+          <div className="mx-auto max-w-sm text-center">
             <p className="text-sm text-foreground/75">{store.description}</p>
           </div>
           <div className="flex items-center justify-center gap-2">
-            <Icons.mapPin className="w-4 h-4" />
+            <Icons.mapPin className="h-4 w-4" />
             <p className="text-sm">Florida, United States</p>
           </div>
-          <div className="grid grid-cols-2 gap-6 w-fit mx-auto">
+          <div className="mx-auto grid w-fit grid-cols-2 gap-6">
             <Button>Follow</Button>
             <Button variant="outline">Messsage</Button>
           </div>
@@ -146,7 +146,7 @@ export default async function StorePage({ params }: StorePageProps) {
       </div>
       <div className="flex-1">
         <Tabs defaultValue="shop" className="grid gap-6">
-          <TabsList className="grid w-fit grid-cols-4 mx-auto">
+          <TabsList className="mx-auto grid w-fit grid-cols-4">
             <TabsTrigger value="shop">Shop</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="announcements">Announcements</TabsTrigger>
@@ -218,8 +218,8 @@ export default async function StorePage({ params }: StorePageProps) {
               <div className="flex flex-col gap-8">
                 <Heading> About the seller</Heading>
 
-                <div className="flex gap-6 items-center">
-                  <Avatar className="cursor-pointer w-16 h-16">
+                <div className="flex items-center gap-6">
+                  <Avatar className="h-16 w-16 cursor-pointer">
                     <AvatarImage
                       src={seller.image?.toString()}
                       alt={seller.name?.toString()}

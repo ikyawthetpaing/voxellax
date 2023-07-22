@@ -12,7 +12,10 @@ const routeContextSchema = z.object({
   }),
 });
 
-export async function GET(context: z.infer<typeof routeContextSchema>) {
+export async function GET(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
   try {
     // Validate the route params.
     const { params } = routeContextSchema.parse(context);
@@ -95,7 +98,7 @@ export async function PATCH(
     console.log(body);
 
     // Link added images
-    body.images.added.forEach(async ({key, index}) => {
+    body.images.added.forEach(async ({ key, index }) => {
       const file = await db.file.findUnique({
         where: { key: key },
         select: { id: true },
@@ -138,16 +141,17 @@ export async function PATCH(
     // Convert license price to number
     let licenses = undefined;
     if (body.licenses) {
-      licenses = body.licenses.map((license) => {
-        if (!license.price) {
-          return { type: license.type, price: PRODUCT_DEFAULT_PRICE };
-        }
-        return { type: license.type, price: Number(license.price) };
-      }) || undefined;
+      licenses =
+        body.licenses.map((license) => {
+          if (!license.price) {
+            return { type: license.type, price: PRODUCT_DEFAULT_PRICE };
+          }
+          return { type: license.type, price: Number(license.price) };
+        }) || undefined;
     }
 
     // Delete previous licenses
-    await db.license.deleteMany({where: {productId: params.product_id}});
+    await db.license.deleteMany({ where: { productId: params.product_id } });
 
     // Update the product
     await db.product.update({

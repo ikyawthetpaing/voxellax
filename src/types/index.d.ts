@@ -34,9 +34,9 @@ export type NavItemsConfig = {
 
 export type FileWithPreview = FileWithPath & {
   uploaded?: {
-    uploadthingKey: string,
-    size: number
-  }
+    uploadthingKey: string;
+    size: number;
+  };
   preview: string;
   index: number | null;
 };
