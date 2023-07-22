@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-await import("./src/env.mjs");
+import("./src/env.mjs");
 
 const nextConfig = {
   images: {
