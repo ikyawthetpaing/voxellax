@@ -10,7 +10,10 @@ export async function Listing({ product }: { product: Product }) {
   const reviews = await db.review.findMany({
     where: { productId: product.id },
   });
-  const images = await db.file.findMany({ where: { productImagesId: product.id }, orderBy: {index: "asc"} });
+  const images = await db.file.findMany({
+    where: { productImagesId: product.id },
+    orderBy: { index: "asc" },
+  });
   const licenses = await db.license.findMany({
     where: { productId: product.id },
   });

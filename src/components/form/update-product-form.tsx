@@ -106,7 +106,7 @@ export function UpdateProductForm({
         })
       );
     }
-  }, [product]);
+  }, [images]);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -136,7 +136,8 @@ export function UpdateProductForm({
 
   useEffect(() => {
     form.setValue("licenses", licensesState);
-  }, [licenses]);
+    console.log("licenses run");
+  }, [form, licenses, licensesState]);
 
   // Get subcategories based on category
   const subcategories = getSubcategories(form.watch("category"));
@@ -152,18 +153,18 @@ export function UpdateProductForm({
       };
 
       // Assign delete images
-      Array.from(deletedImages).map((key) => {
+      Array.from(deletedImages).forEach((key) => {
         patchImages.deleted.push({
           key: key,
         });
       });
 
       // Assing updated images index
-      Array.from(imagesWithPreview).map((image) => {
-        if (image.uploaded && image.index) {
+      Array.from(imagesWithPreview).forEach((image) => {
+        if (image.uploaded) {
           patchImages.updated.push({
             key: image.uploaded.uploadthingKey,
-            index: image.index,
+            index: image.index ?? 0,
           });
         }
       });
@@ -196,9 +197,7 @@ export function UpdateProductForm({
         images: patchImages,
       };
 
-      console.log(postData);
-
-      const _response = await fetch(`/api/products/${product.id}`, {
+      await fetch(`/api/products/${product.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

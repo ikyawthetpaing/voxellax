@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from "@/components/ui/button";
-import { Icons } from "./icons";
+import { Icons } from "@/components/icons";
 
 interface LoadingButtonProps extends ButtonProps {
   isLoading: boolean;

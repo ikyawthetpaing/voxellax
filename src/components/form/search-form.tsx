@@ -19,42 +19,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { getCategories } from "@/config/category";
 
-const categories = [
-  {
-    value: "all",
-    label: "All",
-  },
-  {
-    value: "ebooks",
-    label: "Ebooks",
-  },
-  {
-    value: "templates",
-    label: "Templates",
-  },
-  {
-    value: "themes",
-    label: "Themes",
-  },
-  {
-    value: "graphics",
-    label: "Graphics",
-  },
-];
+const categories = getCategories();
 
-const searchFormVariants = cva(
-  "rounded-full border",
-  {
-    variants: {
-      size: {
-        default: "h-10 h-10",
-        sm: "h-9 px-3",
-        lg: "h-11 h-11 py-8 px-5 rounded-xl",
-      },
+const searchFormVariants = cva("rounded-full border", {
+  variants: {
+    size: {
+      default: "h-10 h-10",
+      sm: "h-9 px-3",
+      lg: "h-11 h-11 py-8 px-5 rounded-xl",
     },
-  }
-);
+  },
+});
 
 interface SearchFormProps
   extends React.FormHTMLAttributes<HTMLFormElement>,
@@ -68,14 +45,19 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
 
   return (
     <form
-      className={cn(searchFormVariants({ size }), "flex items-center transition-colors hover:border-primary/50", {"border-primary/50": focus})}
+      className={cn(
+        searchFormVariants({ size }),
+        "flex items-center transition-colors hover:border-primary/50",
+        { "border-primary/50": focus },
+        className
+      )}
       {...props}
     >
       <button type="submit">
         <Icons.search className="h-4 w-4" />
       </button>
       <Input
-      onFocus={() => setFocus(true)}
+        onFocus={() => setFocus(true)}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search"

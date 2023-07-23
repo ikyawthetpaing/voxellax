@@ -21,17 +21,43 @@ export function absoluteUrl(path: string) {
  * @param fractionDigits - The number of fractional digits to display (default is 1).
  * @returns The formatted price as a string.
  */
+// export function formatPrice(price: number, fractionDigits: number = 1): string {
+//   if (typeof price !== "number" || isNaN(price)) {
+//     throw new Error("Invalid price value. Expected a number.");
+//   }
+
+//   if (typeof fractionDigits !== "number" || fractionDigits < 0) {
+//     throw new Error(
+//       "Invalid fractionDigits value. Expected a non-negative integer."
+//     );
+//   }
+
+//   if (price === 0) {
+//     return "Free";
+//   } else if (price >= 1000000) {
+//     const formattedPrice = (price / 1000000).toFixed(fractionDigits);
+//     return `$${formattedPrice}M`;
+//   } else if (price >= 1000) {
+//     const formattedPrice = (price / 1000).toFixed(fractionDigits);
+//     return `$${formattedPrice}K`;
+//   } else {
+//     const formattedPrice = price.toFixed(fractionDigits);
+//     return `$${formattedPrice}`;
+//   }
+// }
 export function formatPrice(price: number, fractionDigits: number = 1): string {
-  if (typeof price !== 'number' || isNaN(price)) {
-    throw new Error('Invalid price value. Expected a number.');
+  if (typeof price !== "number" || isNaN(price)) {
+    throw new Error("Invalid price value. Expected a number.");
   }
 
-  if (typeof fractionDigits !== 'number' || fractionDigits < 0) {
-    throw new Error('Invalid fractionDigits value. Expected a non-negative integer.');
+  if (typeof fractionDigits !== "number" || fractionDigits < 0) {
+    throw new Error(
+      "Invalid fractionDigits value. Expected a non-negative integer."
+    );
   }
 
   if (price === 0) {
-    return 'Free';
+    return "Free";
   } else if (price >= 1000000) {
     const formattedPrice = (price / 1000000).toFixed(fractionDigits);
     return `$${formattedPrice}M`;
@@ -43,7 +69,6 @@ export function formatPrice(price: number, fractionDigits: number = 1): string {
     return `$${formattedPrice}`;
   }
 }
-
 
 export function formatDate(date: Date) {
   return dayjs(date).format("MMMM D, YYYY");
@@ -72,12 +97,12 @@ export function formatBytes(
   decimals: number = 0,
   sizeType: "accurate" | "normal" = "normal"
 ): string {
-  if (typeof bytes !== 'number' || isNaN(bytes)) {
-    throw new Error('Invalid bytes value. Expected a number.');
+  if (typeof bytes !== "number" || isNaN(bytes)) {
+    throw new Error("Invalid bytes value. Expected a number.");
   }
 
-  if (typeof decimals !== 'number' || decimals < 0) {
-    throw new Error('Invalid decimals value. Expected a non-negative integer.');
+  if (typeof decimals !== "number" || decimals < 0) {
+    throw new Error("Invalid decimals value. Expected a non-negative integer.");
   }
 
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
@@ -89,11 +114,11 @@ export function formatBytes(
 
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const formattedValue = (bytes / Math.pow(1024, i)).toFixed(decimals);
-  const sizeUnit = sizeType === "accurate" ? accurateSizes[i] ?? "Bytes" : sizes[i] ?? "Bytes";
+  const sizeUnit =
+    sizeType === "accurate" ? accurateSizes[i] ?? "Bytes" : sizes[i] ?? "Bytes";
 
   return `${formattedValue} ${sizeUnit}`;
 }
-
 
 export function slugify(str: string) {
   return str
@@ -111,7 +136,7 @@ export function isArrayOfFile(files: unknown): files is File[] {
 
 export function getMimeType(filename: string): string {
   const mimeTypes: MimeType[] = [
-    {extension: "default", template: "application/octet-stream"},
+    { extension: "default", template: "application/octet-stream" },
     { extension: "jpg", template: "image/jpeg" },
     { extension: "jpeg", template: "image/jpeg" },
     { extension: "png", template: "image/png" },
@@ -128,14 +153,26 @@ export function getMimeType(filename: string): string {
     { extension: "xml", template: "application/xml" },
     { extension: "zip", template: "application/zip" },
     { extension: "doc", template: "application/msword" },
-    { extension: "docx", template: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+    {
+      extension: "docx",
+      template:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    },
     { extension: "xls", template: "application/vnd.ms-excel" },
-    { extension: "xlsx", template: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+    {
+      extension: "xlsx",
+      template:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    },
     { extension: "ppt", template: "application/vnd.ms-powerpoint" },
-    { extension: "pptx", template: "application/vnd.openxmlformats-officedocument.presentationml.presentation" }
+    {
+      extension: "pptx",
+      template:
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    },
     // Add more MIME types as neededtemplate
-  ]
-  
+  ];
+
   const extension = filename.split(".").pop()!.toLowerCase();
   const mimeTypeObj = mimeTypes.find((type) => type.extension === extension);
   return mimeTypeObj

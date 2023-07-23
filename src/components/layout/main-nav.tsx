@@ -13,9 +13,9 @@ export function MainNav({ items }: MainNavProps) {
       <Link href="/" className="flexitems-center">
         <Icons.voxellax className="w-28" />
       </Link>
-      {items?.length ? (
+      {items ? (
         <nav className="hidden gap-6 sm:flex">
-          {items?.map((item, index) => (
+          {items.map((item, index) => (
             <Link
               key={index}
               href={item.href}

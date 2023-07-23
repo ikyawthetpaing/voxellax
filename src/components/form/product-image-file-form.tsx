@@ -9,7 +9,7 @@ import {
 import { cn, formatBytes } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { FileWithPreview, ProdcutImagePostSchema } from "@/types";
+import { FileWithPreview } from "@/types";
 import { toast } from "../ui/use-toast";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
@@ -54,17 +54,26 @@ export function ProductImageFileForm({
       // Calculate how many more files can be added
       const totalFilesCount = files.length;
       const remainingSlots = maxFiles - totalFilesCount;
-      const filesToAdd = acceptedFiles.slice(0, remainingSlots);
-
-      filesToAdd.forEach((file, index) => {
-        setFiles((prevFiles) => [
-          ...prevFiles,
+      const filesToAdd = acceptedFiles
+        .slice(0, remainingSlots)
+        .map((file, index) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
             index: totalFilesCount + index,
-          }),
-        ]);
-      });
+          })
+        );
+
+      setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
+
+      // filesToAdd.forEach((file, index) => {
+      //   setFiles((prevFiles) => [
+      //     ...prevFiles,
+      //     Object.assign(file, {
+      //       preview: URL.createObjectURL(file),
+      //       index: totalFilesCount + index,
+      //     }),
+      //   ]);
+      // });
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
@@ -82,7 +91,7 @@ export function ProductImageFileForm({
         });
       }
     },
-    [files, maxSize, setFiles]
+    [files.length, maxFiles, maxSize, setFiles]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -94,14 +103,22 @@ export function ProductImageFileForm({
     disabled,
   });
 
+  // // Revoke preview url when component unmounts
+  // React.useEffect(() => {
+  //   return () => {
+  //     if (!files) return;
+  //     files.forEach((file) => URL.revokeObjectURL(file.preview));
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   // Revoke preview url when component unmounts
   React.useEffect(() => {
+    console.log("run URL.revokeObjectURL(file.preview):");
     return () => {
-      if (!files) return;
       files.forEach((file) => URL.revokeObjectURL(file.preview));
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [files]);
 
   return (
     <div className="grid gap-2">
@@ -162,7 +179,7 @@ export function ProductImageFileForm({
             newFiles.splice(result.destination.index, 0, removed);
 
             // Update the index property for each image in the newFiles array
-            newFiles.forEach((image, index) => {
+            newFiles.map((image, index) => {
               image.index = index;
             });
 
@@ -214,7 +231,7 @@ export function ProductImageFileForm({
           className="mt-2.5 w-full"
           onClick={() => {
             const uploadedFiles = files.filter((file) => file.uploaded);
-            uploadedFiles.forEach((file) => {
+            uploadedFiles.map((file) => {
               if (file.uploaded && setDeletedFiles) {
                 setDeletedFiles((prev) => [
                   ...prev,
@@ -293,7 +310,7 @@ function FileCard({
               const newFiles = files.filter((_, j) => j !== i);
 
               // Update the index property for each image in the newFiles array
-              newFiles.forEach((image, index) => {
+              newFiles.map((image, index) => {
                 image.index = index;
               });
               setFiles(newFiles);

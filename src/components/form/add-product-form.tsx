@@ -81,8 +81,8 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
     useUploadThing("productImage", {
       onUploadError: (error: Error) => {
         toast({
-          title: "Uploadthing Error",
-          description: `Error: ${error.message}`,
+          title: error.name,
+          description: error.message,
           variant: "destructive",
         });
       },
@@ -93,7 +93,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
 
   useEffect(() => {
     form.setValue("licenses", licenses);
-  }, [licenses]);
+  }, [form, licenses]);
 
   // Get subcategories based on category
   const subcategories = getSubcategories(form.watch("category"));
@@ -110,7 +110,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
             res?.forEach(({ fileKey }) =>
               images.push({
                 key: fileKey,
-                index: newAddedFile.index ?? Number.MAX_SAFE_INTEGER,
+                index: newAddedFile.index ?? 0,
               })
             );
           })

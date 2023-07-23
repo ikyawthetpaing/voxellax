@@ -5,12 +5,11 @@ import { env } from "./env.mjs";
 
 export default withAuth(
   async function middleware(req) {
+    const pathname = req.nextUrl.pathname;
     const token = await getToken({ req });
     const isAuth = !!token;
-    const isAuthPage =
-      req.nextUrl.pathname.startsWith("/login") ||
-      req.nextUrl.pathname.startsWith("/register");
-    const isAdminPage = req.nextUrl.pathname.startsWith("/dashboard");
+    const isAuthPage = pathname.startsWith("/login");
+    const sensitiveRoutes = ["/dashboard"];
 
     if (isAuthPage) {
       if (isAuth) {
@@ -21,9 +20,10 @@ export default withAuth(
     }
 
     if (!isAuth) {
-      let from = req.nextUrl.pathname;
-      if (req.nextUrl.search) {
-        from += req.nextUrl.search;
+      let from = pathname;
+      const search = req.nextUrl.search;
+      if (search) {
+        from += search;
       }
 
       return NextResponse.redirect(
@@ -31,7 +31,10 @@ export default withAuth(
       );
     }
 
-    if (isAdminPage && req.nextauth.token?.email !== env.ADMIN_EMAIL) {
+    if (
+      sensitiveRoutes.some((route) => pathname.startsWith(route)) &&
+      req.nextauth.token?.email !== env.ADMIN_EMAIL
+    ) {
       return new NextResponse("You're not authorized!");
     }
   },
@@ -48,5 +51,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/login", "/register", "/dashboard/:path*"],
+  matcher: ["/login", "/dashboard/:path*"],
 };

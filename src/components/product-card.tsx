@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "./ui/skeleton";
@@ -29,7 +27,10 @@ export async function ProductCard({ product }: ProductCardProps) {
     where: { productId: product.id },
     select: { price: true },
   });
-  const images = await db.file.findMany({ where: { productImagesId: product.id } });
+  const images = await db.file.findMany({
+    where: { productImagesId: product.id },
+    orderBy: { index: "asc" },
+  });
 
   return (
     <Card className="group relative overflow-hidden rounded-lg">
@@ -58,16 +59,14 @@ export async function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="p-2 pt-0">
-      <div className="text-xs">
+        <div className="text-xs">
           <span className="text-foreground/75">by </span>
           <Link href={`/store/${product.storeId}`}>{store?.name}</Link>
           <span className="text-foreground/75"> in </span>
-          <Link href={`/category/${product.category}`} className="capitalize">{product.category}</Link>
+          <Link href={`/category/${product.category}`} className="capitalize">
+            {product.category}
+          </Link>
         </div>
-        {/* <Button variant="outline" size="sm" className="w-full flex gap-2">
-          <Icons.shoppingCart className="w-4 h-4" />
-          Add to cart
-        </Button> */}
       </CardFooter>
       <div className="absolute right-2 top-0 hidden flex-col gap-2 opacity-0 animate-in duration-100 group-hover:top-2 group-hover:opacity-100 sm:flex">
         <Button

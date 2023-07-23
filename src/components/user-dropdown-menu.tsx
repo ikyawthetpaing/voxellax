@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import { User } from "next-auth";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
-  // DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
@@ -23,7 +22,6 @@ interface UserDropdownMenuProps {
 }
 
 export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
-  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,33 +34,34 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuItem onClick={() => router.push("/profile/activity")}>
-          <div className="flex gap-3">
-            <Avatar className="h-9 w-9 cursor-pointer">
-              <AvatarImage
-                src={user.image?.toString()}
-                alt={user.name?.toString()}
-              />
-              <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <h1 className="font-medium">{user.name}</h1>
-              <p className="text-xs">View your profile</p>
+        <Link href="/profile/activity">
+          <DropdownMenuItem>
+            <div className="flex gap-3">
+              <Avatar className="h-9 w-9">
+                <AvatarImage
+                  src={user.image?.toString()}
+                  alt={user.name?.toString()}
+                />
+                <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="font-medium">{user.name}</h1>
+                <p className="text-xs">View your profile</p>
+              </div>
             </div>
-          </div>
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {lobbyUserDropdownConfig.navItems.map((navItem) => {
+          {lobbyUserDropdownConfig.navItems.map((navItem, index) => {
             const Icon = Icons[navItem.icon ?? "check"];
             return (
-              <DropdownMenuItem
-                key={navItem.title}
-                onClick={() => router.push(navItem.href)}
-              >
-                <Icon className="mr-2 h-4 w-4" />
-                <span>{navItem.title}</span>
-              </DropdownMenuItem>
+              <Link key={index} href={navItem.href}>
+                <DropdownMenuItem key={navItem.title}>
+                  <Icon className="mr-2 h-4 w-4" />
+                  <span>{navItem.title}</span>
+                </DropdownMenuItem>
+              </Link>
             );
           })}
         </DropdownMenuGroup>
@@ -70,24 +69,22 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              {dashboardConfig.navItems.map((navItem) => {
+              {dashboardConfig.navItems.map((navItem, index) => {
                 const Icon = Icons[navItem.icon ?? "check"];
-
                 return (
-                  <DropdownMenuItem
-                    key={navItem.title}
-                    onClick={() => router.push(navItem.href)}
-                  >
-                    <Icon className="mr-2 h-4 w-4" />
-                    <span>{navItem.title}</span>
-                  </DropdownMenuItem>
+                  <Link key={index} href={navItem.href}>
+                    <DropdownMenuItem key={navItem.title}>
+                      <Icon className="mr-2 h-4 w-4" />
+                      <span>{navItem.title}</span>
+                    </DropdownMenuItem>
+                  </Link>
                 );
               })}
             </DropdownMenuGroup>
           </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>
+        <DropdownMenuItem onClick={async () => await signOut()}>
           <Icons.logout className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

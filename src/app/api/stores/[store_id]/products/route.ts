@@ -3,7 +3,6 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { productPostSchema } from "@/lib/validations/product";
 import { getServerSession } from "next-auth";
-import { utapi } from "uploadthing/server";
 import * as z from "zod";
 
 const routeContextSchema = z.object({
@@ -53,7 +52,7 @@ export async function POST(
     });
 
     // Link images to product images
-    body.images.forEach(async ({key, index}) => {
+    body.images.forEach(async ({ key, index }) => {
       const file = await db.file.findUnique({
         where: { key: key },
         select: { id: true },
@@ -65,16 +64,16 @@ export async function POST(
         },
         data: {
           index: index,
-          productImagesId: product.id
+          productImagesId: product.id,
         },
       });
     });
 
     // Link files to product files
-    body.files?.forEach(async ({key}) => {
+    body.files?.forEach(async ({ key }) => {
       const file = await db.file.findUnique({
         where: { key: key },
-        select: { id: true }
+        select: { id: true },
       });
 
       await db.file.update({

@@ -6,10 +6,8 @@ import { Icons } from "../icons";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Button } from "../ui/button";
-// import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { File } from "@prisma/client";
 import { siteConfig } from "@/config/site";
-import { Skeleton } from "../ui/skeleton";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
   images: File[];
@@ -34,6 +32,9 @@ export function ImageGallery({
           fill
           className="object-cover"
           loading="lazy"
+          quality={100}
+          sizes="100vw"
+          // placeholder="blur"
         />
         <div className="absolute left-0 top-1/2 flex w-full -translate-y-1/2 justify-between px-6 opacity-0 animate-in duration-100 group-hover:opacity-100">
           <Button
