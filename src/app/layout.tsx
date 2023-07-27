@@ -44,15 +44,15 @@ export const metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`${siteConfig.url}/og.jpg`], // need to add this file
+    images: [`${siteConfig.url}/og.jpg`],
     creator: "@ikyawthetpaing",
   },
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png", // need to add this file
-    apple: "/apple-touch-icon.png", // need to add this file
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
   },
-  manifest: `${siteConfig.url}/site.webmanifest`, // need to add this file
+  manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export default function RootLayout({

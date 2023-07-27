@@ -34,7 +34,7 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <Link href="/profile/activity">
+        <Link href={`/user/${user.id}`}>
           <DropdownMenuItem>
             <div className="flex gap-3">
               <Avatar className="h-9 w-9">
@@ -53,7 +53,7 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {lobbyUserDropdownConfig.navItems.map((navItem, index) => {
+          {lobbyUserDropdownConfig(user.id).navItems.map((navItem, index) => {
             // const Icon = Icons[navItem.icon ?? "check"];
             return (
               <Link key={index} href={navItem.href}>

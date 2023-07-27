@@ -1,7 +1,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function UserActivityLoadingPage() {
+export default function UserLoadingPage() {
   return (
     <div className="grid gap-8">
       <div className="space-y-4">

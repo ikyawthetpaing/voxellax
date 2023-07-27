@@ -1,9 +1,9 @@
-import { Collection } from "@/types";
 import { Grid } from "@/components/layout/grid";
 import {
   CollectionCard,
   CollectionCardSkeleton,
 } from "@/components/profile/collection-card";
+import { Collection } from "@prisma/client";
 
 interface CollectionsProps {
   collections: Collection[];

@@ -11,10 +11,10 @@ interface ProductPageProps {
   };
 }
 
-async function getProduct(id: string) {
+async function getProduct(productId: string) {
   const product = db.product.findFirst({
     where: {
-      id: id,
+      id: productId,
     },
   });
   if (!product) {
@@ -28,23 +28,31 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const product = await getProduct(params.product_id);
-  const authors = await db.store.findMany({
-    where: { id: product?.storeId ?? undefined },
-    select: { name: true },
-  });
-  const sanitizedAuthors = authors.map((author) => ({
-    name: author.name || undefined,
-  }));
 
   if (!product) {
     return {};
   }
 
+  const thumbnail = await db.file.findFirst({
+    where: { productImagesId: product.id, isThumbnail: true },
+    select: { url: true },
+  });
+
   const url = process.env.NEXT_PUBLIC_APP_URL;
 
-  const ogUrl = new URL(`${url}/api/og`);
+  const authors = await db.store.findMany({
+    where: { id: product.storeId ?? "" },
+    select: { name: true, id: true },
+  });
+
+  const sanitizedAuthors = authors.map((author) => ({
+    name: author.name || undefined,
+    url: `${url}/store/${author.id}`,
+  }));
+
+  const ogUrl = new URL(thumbnail?.url ?? `${url}/og.png`);
   ogUrl.searchParams.set("heading", product.name);
-  ogUrl.searchParams.set("type", "Listing Post");
+  ogUrl.searchParams.set("type", "Listing product");
   ogUrl.searchParams.set("mode", "dark");
 
   return {
@@ -60,7 +68,7 @@ export async function generateMetadata({
         {
           url: ogUrl.toString(),
           width: 1200,
-          height: 630,
+          height: 900,
           alt: product.name,
         },
       ],

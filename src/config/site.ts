@@ -3,12 +3,12 @@ import { SiteConfig } from "@/types";
 export const siteConfig: SiteConfig = {
   name: "Voxellax",
   description:
-    "An open source application built using the new router, server components and everything new in Next.js 13.",
-  url: "https://tx.shadcn.com",
-  // ogImage: "https://voxellax.com/og.jpg",
-  // links: {
-  //   twitter: "https://twitter.com/voxellax",
-  //   github: "https://github.com/ikyawthetpaing/voxellax",
-  // },
-  placeholderImageUrl: "/img/placeholder.png"
+    "Voxellax is a comprehensive e-commerce platform built specifically for digital products. With a sleek and user-friendly interface, Voxellax allows users to discover, purchase, and manage a wide range of digital products conveniently.",
+  url: "https://voxellax.vercel.app/",
+  ogImage: "https://voxellax.com/og.png",
+  links: {
+    twitter: "https://twitter.com/voxellax",
+    github: "https://github.com/ikyawthetpaing/voxellax",
+  },
+  placeholderImageUrl: "/img/placeholder.png",
 };

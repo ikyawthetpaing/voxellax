@@ -1,33 +1,39 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Collection } from "@/types";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
-
-import data from "@/helpers/data.json"; // <- dev
+import { Collection } from "@prisma/client";
+import { db } from "@/lib/db";
 
 interface CollectionCardProps {
   collection: Collection;
 }
 
-export function CollectionCard({ collection }: CollectionCardProps) {
-  const totalProducts = collection.products.length;
-  const images = collection.products.map((product) => {
-    const _product = data.products.find(({ id }) => id === product.id);
-    if (_product) {
-      return _product.images[0];
-    }
+export async function CollectionCard({ collection }: CollectionCardProps) {
+  const collectionProducts = await db.collectionProduct.findMany({
+    where: { collectionId: collection.id },
   });
 
+  const totalProducts = collectionProducts.length;
+  const images = await Promise.all(
+    collectionProducts.map(async (item) => {
+      const image = await db.file.findFirst({
+        where: { productImagesId: item.productId },
+        select: { url: true, name: true },
+      });
+      return image;
+    })
+  );
+
   return (
-    <Link href={`/profile/collections/${collection.id}`}>
+    <Link href={`/user/${collection.userId}/collections/${collection.id}`}>
       <div className="grid gap-3">
         <div className="overflow-hidden rounded-lg">
           <AspectRatio ratio={4.5 / 3}>
             {images[0] ? (
               <Image
-                src={images[0]}
-                alt={collection.name}
+                src={images[0].url}
+                alt={images[0].name}
                 fill
                 className="object-cover"
                 loading="lazy"
@@ -42,8 +48,8 @@ export function CollectionCard({ collection }: CollectionCardProps) {
             <AspectRatio ratio={4.5 / 3}>
               {images[1] ? (
                 <Image
-                  src={images[1]}
-                  alt={collection.name}
+                  src={images[1].url}
+                  alt={images[1].name}
                   fill
                   className="object-cover"
                   loading="lazy"
@@ -57,8 +63,8 @@ export function CollectionCard({ collection }: CollectionCardProps) {
             <AspectRatio ratio={4.5 / 3}>
               {images[2] ? (
                 <Image
-                  src={images[2]}
-                  alt={collection.name}
+                  src={images[2].url}
+                  alt={images[2].name}
                   fill
                   className="object-cover"
                   loading="lazy"

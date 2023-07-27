@@ -12,9 +12,16 @@ export const metadata: Metadata = {
   description: "Track and view your activities",
 };
 
-export default function UserActivityPage() {
+interface UserPageProps {
+  params: {
+    user_id: string;
+  };
+}
+
+export default function UserPage({ params }: UserPageProps) {
   return (
     <div className="grid gap-8">
+      Tabs
       <div className="space-y-4">
         <Button variant="secondary">All activity</Button>
       </div>

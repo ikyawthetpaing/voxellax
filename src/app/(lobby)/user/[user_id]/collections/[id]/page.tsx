@@ -1,15 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-import { Product } from "@/types";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { Products } from "@/components/products";
-
-// for dev
-import data from "@/helpers/data.json";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { Product } from "@prisma/client";
 
 interface UserCollectionPageProps {
   params: {
@@ -17,14 +14,13 @@ interface UserCollectionPageProps {
   };
 }
 
-async function getCollection(id: string) {
-  const collection = data.collections.find(
-    (collection) => collection.id === id
-  );
+async function getCollection(collectionId: string) {
+  const collection = await db.collection.findFirst({
+    where: { id: collectionId },
+  });
   if (!collection) {
     null;
   }
-
   return collection;
 }
 
@@ -32,6 +28,9 @@ export async function generateMetadata({
   params,
 }: UserCollectionPageProps): Promise<Metadata> {
   const collection = await getCollection(params.id);
+  const user = await db.user.findFirst({
+    where: { id: collection?.userId ?? "" },
+  });
 
   if (!collection) {
     return {};
@@ -46,20 +45,18 @@ export async function generateMetadata({
 
   return {
     title: collection.name,
-    // description: collection.description,
-    // authors: product.authors.map((author) => ({
-    //   name: author,
-    // })),
+    description: `${collection.name} by ${user?.name}`,
+    authors: [{ name: user?.name ?? "", url: `${url}/user/${user?.id}` }],
     openGraph: {
       title: collection.name,
-      // description: collection.description,
-      type: "article",
-      url: absoluteUrl(`/listing/${collection.id}`),
+      description: `${collection.name} by ${user?.name}`,
+      type: "website",
+      url: absoluteUrl(`user/${user?.id}/collections/${collection.id}`),
       images: [
         {
           url: ogUrl.toString(),
           width: 1200,
-          height: 630,
+          height: 900,
           alt: collection.name,
         },
       ],
@@ -67,7 +64,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: collection.name,
-      // description: collection.description,
+      description: `${collection.name} by ${user?.name}`,
       images: [ogUrl.toString()],
     },
   };
@@ -82,12 +79,21 @@ export default async function UserCollectionPage({
     notFound();
   }
 
-  const products = collection.products.map((product) => {
-    const _product = data.products.find(({ id }) => id === product.id);
-    if (_product) {
-      return _product as Product;
-    }
+  const collectionProducts = await db.collectionProduct.findMany({
+    where: { collectionId: collection.id },
+    select: { productId: true },
   });
+
+  const products: Product[] = await Promise.all(
+    collectionProducts.map(async ({ productId }) => {
+      const product = await db.product.findFirst({
+        where: { id: productId },
+      });
+      return product;
+    })
+  ).then((products) =>
+    products.filter((product): product is Product => product !== null)
+  );
 
   const totalProducts = products.length;
 
@@ -95,7 +101,7 @@ export default async function UserCollectionPage({
     <section className="space-y-8">
       <div>
         <Link
-          href="/"
+          href={`/user/${collection.userId}/collections`}
           className={cn(
             buttonVariants({ variant: "ghost", size: "sm" }),
             "gap-2"
@@ -108,11 +114,12 @@ export default async function UserCollectionPage({
       <div className="space-y-4">
         <h1 className="text-center text-2xl font-medium">{collection.name}</h1>
         <h1 className="text-center text-xs">
-          Public • {totalProducts} {totalProducts > 1 ? "Products" : "Product"}
+          {collection.privacy} • {totalProducts}{" "}
+          {totalProducts > 1 ? "Products" : "Product"}
         </h1>
       </div>
       <hr />
-      {/* {products && <Products products={products} />} */}
+      {products && <Products products={products} />}
     </section>
   );
 }
