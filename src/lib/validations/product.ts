@@ -1,10 +1,10 @@
+import * as z from "zod";
 import {
   PRODUCT_DIGITAL_FILE_MAX_COUNT,
   PRODUCT_IMAGE_FILE_MAX_COUNT,
   PRODUCT_IMAGE_FILE_MIN_COUNT,
   PRODUCT_DIGITAL_FILE_MIN_COUNT,
 } from "@/constants/product";
-import * as z from "zod";
 
 export const productFileSchema = z.object({
   key: z.string(),
@@ -13,6 +13,7 @@ export const productFileSchema = z.object({
 export const productImagePostSchema = z.object({
   key: z.string(),
   index: z.number(),
+  isThumbnail: z.boolean(),
 });
 
 export const productLicenseSchema = z.object({
@@ -66,9 +67,12 @@ export const productImagesPatchSchema = z.object({
     z.object({
       key: z.string(),
       index: z.number(),
+      isThumbnail: z.boolean(),
     })
   ),
-  updated: z.array(z.object({ index: z.number(), key: z.string() })),
+  updated: z.array(
+    z.object({ index: z.number(), key: z.string(), isThumbnail: z.boolean() })
+  ),
 });
 
 export const productPatchSchema = z.object({

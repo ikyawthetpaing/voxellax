@@ -46,7 +46,6 @@ import {
 
 export const Icons = {
   shoppingCart: ShoppingCart,
-  heart: Heart,
   search: Search,
   facebook: Facebook,
   instagram: Instagram,
@@ -87,6 +86,7 @@ export const Icons = {
   mapPin: MapPin,
   imagePlus: ImagePlus,
   imageOff: ImageOff,
+  heartOutline: Heart,
   voxellax: ({ ...props }: LucideProps) => (
     <svg
       data-v-423bf9ae=""

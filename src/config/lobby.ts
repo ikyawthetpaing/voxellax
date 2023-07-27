@@ -64,7 +64,7 @@ export const lobbyUserDropdownConfig: NavItemsConfig = {
     {
       title: "Likes",
       href: "/profile/likes",
-      icon: "heart",
+      icon: "heartOutline",
     },
     {
       title: "Settings",

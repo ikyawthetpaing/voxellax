@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-// import { products, type Product } from "@/db/schema"
 import dayjs from "dayjs";
 // import jsPDF from "jspdf"
 // import autoTable from "jspdf-autotable"
@@ -15,7 +14,7 @@ import {
   type PaginationState,
 } from "unstyled-table";
 
-import { cn, formatDate, formatPrice } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -63,10 +62,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { LoadingButton } from "./loading-button";
-import { revalidatePath } from "next/cache";
 
 interface ProductsTableProps {
   products: Product[];
@@ -87,7 +82,8 @@ export function ProductsTable({
   // Read more: https://react.dev/reference/react/useTransition#usage
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const deleteProducts = async (products: Product[]) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  async function deleteProducts(products: Product[]) {
     setIsLoading(true);
     try {
       await Promise.all(
@@ -122,7 +118,7 @@ export function ProductsTable({
     });
 
     setIsLoading(false);
-  };
+  }
 
   // Memoize the columns so they don&apos;t re-render on every render
   const columns = React.useMemo<ColumnDef<Product, unknown>[]>(
@@ -157,10 +153,7 @@ export function ProductsTable({
         accessorKey: "category",
         header: "Category",
         cell: ({ cell }) => {
-          // const categories = Object.values(product.category)
           const category = cell.getValue() as Product["category"];
-
-          // if (!categories.includes(category)) return null
 
           return (
             <Badge variant="outline" className="capitalize">
@@ -181,7 +174,7 @@ export function ProductsTable({
       {
         accessorKey: "rating",
         header: "Rating",
-        cell: ({ cell }) => 0,
+        cell: () => 0,
       },
       {
         accessorKey: "createdAt",
@@ -249,6 +242,7 @@ export function ProductsTable({
         },
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [storeId]
   );
 

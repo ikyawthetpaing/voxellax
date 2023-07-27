@@ -8,7 +8,12 @@ import {
 } from "react-dropzone";
 import { cn, formatBytes } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable,
+} from "react-beautiful-dnd";
 import { FileWithPreview } from "@/types";
 import { toast } from "../ui/use-toast";
 import { Icons } from "../icons";
@@ -65,16 +70,6 @@ export function ProductImageFileForm({
 
       setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
 
-      // filesToAdd.forEach((file, index) => {
-      //   setFiles((prevFiles) => [
-      //     ...prevFiles,
-      //     Object.assign(file, {
-      //       preview: URL.createObjectURL(file),
-      //       index: totalFilesCount + index,
-      //     }),
-      //   ]);
-      // });
-
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
           if (errors[0]?.code === "file-too-large") {
@@ -103,22 +98,28 @@ export function ProductImageFileForm({
     disabled,
   });
 
-  // // Revoke preview url when component unmounts
-  // React.useEffect(() => {
-  //   return () => {
-  //     if (!files) return;
-  //     files.forEach((file) => URL.revokeObjectURL(file.preview));
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   // Revoke preview url when component unmounts
   React.useEffect(() => {
-    console.log("run URL.revokeObjectURL(file.preview):");
     return () => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));
     };
   }, [files]);
+
+  function onDragEnd(result: DropResult) {
+    if (!result.destination) {
+      return;
+    }
+    const newFiles = Array.from(files);
+    const [removed] = newFiles.splice(result.source.index, 1);
+    newFiles.splice(result.destination.index, 0, removed);
+
+    // Update the index property for each image in the newFiles array
+    newFiles.map((image, index) => {
+      image.index = index;
+    });
+
+    setFiles(newFiles);
+  }
 
   return (
     <div className="grid gap-2">
@@ -169,23 +170,7 @@ export function ProductImageFileForm({
         You can upload up to {maxFiles} {maxFiles === 1 ? "file" : "files"}
       </p>
       {files.length ? (
-        <DragDropContext
-          onDragEnd={(result) => {
-            if (!result.destination) {
-              return;
-            }
-            const newFiles = Array.from(files);
-            const [removed] = newFiles.splice(result.source.index, 1);
-            newFiles.splice(result.destination.index, 0, removed);
-
-            // Update the index property for each image in the newFiles array
-            newFiles.map((image, index) => {
-              image.index = index;
-            });
-
-            setFiles(newFiles);
-          }}
-        >
+        <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable-product-images">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -194,6 +179,7 @@ export function ProductImageFileForm({
                     draggableId={file.preview}
                     index={index}
                     key={file.preview}
+                    isDragDisabled={disabled}
                   >
                     {(provided, snapshot) => (
                       <div

@@ -98,7 +98,7 @@ export async function PATCH(
     console.log(body);
 
     // Link added images
-    body.images.added.forEach(async ({ key, index }) => {
+    body.images.added.forEach(async ({ key, index, isThumbnail }) => {
       const file = await db.file.findUnique({
         where: { key: key },
         select: { id: true },
@@ -110,6 +110,7 @@ export async function PATCH(
         },
         data: {
           index: index,
+          isThumbnail: isThumbnail,
           productImagesId: params.product_id,
         },
       });
@@ -129,13 +130,16 @@ export async function PATCH(
     });
 
     // Update product images
-    body.images.updated.forEach(async ({ key, index }) => {
+    body.images.updated.forEach(async ({ key, index, isThumbnail }) => {
       const file = await db.file.findUnique({
         where: { key: key },
         select: { id: true, key: true },
       });
 
-      await db.file.update({ where: { id: file?.id }, data: { index: index } });
+      await db.file.update({
+        where: { id: file?.id },
+        data: { index: index, isThumbnail },
+      });
     });
 
     // Convert license price to number

@@ -26,7 +26,7 @@ export default async function IndexPage() {
       <section>
         <div className="container space-y-4">
           <Heading>Popular products</Heading>
-          <Products products={products}/>
+          <Products products={products} />
         </div>
       </section>
     </>

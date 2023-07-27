@@ -41,14 +41,12 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
   const [query, setQuery] = useState<string>();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(categories[0].value);
-  const [focus, setFocus] = useState(false);
 
   return (
     <form
       className={cn(
         searchFormVariants({ size }),
-        "flex items-center transition-colors hover:border-primary/50",
-        { "border-primary/50": focus },
+        "flex items-center transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         className
       )}
       {...props}
@@ -57,7 +55,6 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
         <Icons.search className="h-4 w-4" />
       </button>
       <Input
-        onFocus={() => setFocus(true)}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search"
@@ -85,6 +82,7 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
               {categories.map((category) => (
                 <CommandItem
                   key={category.value}
+                  value={category.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
@@ -96,7 +94,7 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
                       value === category.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {category.label}
+                  <span className="line-clamp-1">{category.label}</span>
                 </CommandItem>
               ))}
             </CommandGroup>

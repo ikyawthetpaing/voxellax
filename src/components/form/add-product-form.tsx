@@ -111,6 +111,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
               images.push({
                 key: fileKey,
                 index: newAddedFile.index ?? 0,
+                isThumbnail: newAddedFile.index === 0,
               })
             );
           })
@@ -360,7 +361,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
               maxSize={PRODUCT_IMAGE_FILE_MAX_SIZE_BYTES}
               files={imagesWithPreview}
               setFiles={setImagesWithPreview}
-              // isUploading={isUploading}
+              isUploading={isImagesUploading}
               disabled={isLoading}
             />
           </FormControl>

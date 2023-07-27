@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import { formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,29 +12,62 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-// import { UpdateCart } from "@/components/cart/update-cart";
-
-// for dev
-import data from "@/helpers/data.json"
-
 import { Icons } from "@/components/icons";
 import { UpdateCart } from "./update-cart";
-// import { getCartAction } from "@/app/_actions/cart";
+import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/session";
+import { siteConfig } from "@/config/site";
+import Link from "next/link";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 export async function CartSheet() {
-  // const cartLineItems = await getCartAction();
+  const user = await getCurrentUser();
+  const cartItems = await db.cart.findMany({ where: { userId: user?.id } });
 
-  // const itemCount = cartLineItems.reduce(
-  //   (total, item) => total + Number(item.quantity),
-  //   0
-  // );
+  const data = await Promise.all(
+    cartItems.map(async (cartItem) => {
+      const product = await db.product.findFirst({
+        where: { id: cartItem.productId ?? "" },
+        select: { name: true, category: true, storeId: true },
+      });
+      if (!product) {
+        return null;
+      }
 
-  // let totalPrice = data.products.find()
+      const store = await db.store.findFirst({
+        where: {
+          id: product.storeId || undefined,
+        },
+        select: { id: true, name: true },
+      });
+      if (!store) {
+        return null;
+      }
 
-  // const cartTotal = cartLineItems.reduce(
-  //   (total, item) => total + Number(item.price),
-  //   0
-  // );
+      const coverImage = await db.file.findFirst({
+        where: { productImagesId: cartItem.productId, isThumbnail: true },
+        select: { url: true },
+      });
+      const purchaseLicense = await db.license.findFirst({
+        where: { id: cartItem.purchaseLicenseId ?? "" },
+      });
+      const licenses = await db.license.findMany({
+        where: { productId: cartItem.productId },
+      });
+
+      const price = purchaseLicense?.price || licenses[0]?.price || 0;
+
+      return {
+        cartItem,
+        product,
+        store,
+        price,
+        coverImage,
+        licenses,
+        purchaseLicense,
+      };
+    })
+  );
 
   return (
     <Sheet>
@@ -46,12 +78,12 @@ export async function CartSheet() {
           size="icon"
           className="relative rounded-full"
         >
-          {data.cartItems.length > 0 && (
+          {cartItems.length > 0 && (
             <Badge
               variant="secondary"
               className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-2 text-[9px]"
             >
-              {data.cartItems.length}
+              {cartItems.length}
             </Badge>
           )}
           <Icons.shoppingCart className="h-4 w-4" aria-hidden="true" />
@@ -59,46 +91,79 @@ export async function CartSheet() {
       </SheetTrigger>
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
         <SheetHeader className="px-1">
-          <SheetTitle>Cart {data.cartItems.length > 0 && `(${data.cartItems.length})`}</SheetTitle>
+          <SheetTitle>
+            Cart {cartItems.length > 0 && `(${cartItems.length})`}
+          </SheetTitle>
         </SheetHeader>
         <Separator />
-        {data.cartItems.length > 0 ? (
+        {cartItems.length > 0 ? (
           <>
             <div className="flex flex-1 flex-col gap-5 overflow-hidden">
               <ScrollArea className="h-full">
                 <div className="flex flex-col gap-5 pr-6">
-                  {data.cartItems.map((item) => {
-                    const product = data.products.find(({id}) => id === item.productId);
-                    if (!product) {
+                  {data.map((data) => {
+                    if (!data) {
                       return null;
                     }
-                    const license = product.licenses.find(({type}) => type === item.licenseType);
+
+                    const {
+                      cartItem,
+                      product,
+                      store,
+                      price,
+                      coverImage,
+                      licenses,
+                      purchaseLicense,
+                    } = data;
+
                     return (
-                      <div key={item.productId} className="space-y-3">
-                      <div className="flex items-center space-x-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded">
-                          <Image
-                            src={product.images[0]}
-                            alt={product.name}
-                            fill
-                            className="absolute object-cover"
-                            loading="lazy"
+                      <div key={cartItem.id} className="space-y-3">
+                        <div className="flex items-center space-x-4">
+                          <div className="relative w-24 overflow-hidden rounded">
+                            <AspectRatio ratio={4 / 3}>
+                              <Image
+                                src={
+                                  coverImage?.url ||
+                                  siteConfig.placeholderImageUrl
+                                }
+                                alt={product.name}
+                                fill
+                                className="absolute object-cover"
+                                loading="lazy"
+                              />
+                            </AspectRatio>
+                          </div>
+                          <div className="flex flex-1 flex-col gap-1 self-start text-sm">
+                            <span className="line-clamp-1">{product.name}</span>
+                            <span className="line-clamp-1 text-muted-foreground">
+                              {formatPrice(price)}
+                            </span>
+                            <div className="line-clamp-1 text-xs">
+                              <span className="text-muted-foreground">by </span>
+                              <Link href={`/store/${store.id}`}>
+                                {store.name}
+                              </Link>
+                              <span className="text-muted-foreground">
+                                {" "}
+                                in{" "}
+                              </span>
+                              <Link
+                                href={`/category/${product.category}`}
+                                className="capitalize"
+                              >
+                                {product.category}
+                              </Link>
+                            </div>
+                          </div>
+                          <UpdateCart
+                            cartItem={cartItem}
+                            licenses={licenses}
+                            purchaseLicense={purchaseLicense}
                           />
                         </div>
-                        <div className="flex flex-1 flex-col gap-1 self-start text-sm">
-                          <span className="line-clamp-1">{product.name}</span>
-                          <span className="line-clamp-1 text-muted-foreground">
-                            {license && formatPrice(license.price)}
-                          </span>
-                          <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                            {`${product.categories.join(" / ")}`}
-                          </span>
-                        </div>
-                        <UpdateCart productId={item.productId} licenseType={item.licenseType}/>
+                        <Separator />
                       </div>
-                      <Separator />
-                    </div>
-                    )
+                    );
                   })}
                 </div>
               </ScrollArea>

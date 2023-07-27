@@ -99,6 +99,7 @@ export function UpdateProductForm({
             uploaded: {
               uploadthingKey: image.key,
               size: image.size,
+              isThumbnail: image.isThumbnail ?? false,
             },
           });
 
@@ -165,6 +166,7 @@ export function UpdateProductForm({
           patchImages.updated.push({
             key: image.uploaded.uploadthingKey,
             index: image.index ?? 0,
+            isThumbnail: image.index === 0,
           });
         }
       });
@@ -182,6 +184,7 @@ export function UpdateProductForm({
               patchImages.added.push({
                 key: fileKey,
                 index: newAddedFile.index ?? Number.MAX_SAFE_INTEGER,
+                isThumbnail: newAddedFile.index === 0,
               })
             );
           })
@@ -422,7 +425,7 @@ export function UpdateProductForm({
               files={imagesWithPreview}
               setFiles={setImagesWithPreview}
               setDeletedFiles={setDeletedImages}
-              // isUploading={isUploading}
+              isUploading={isImagesUploading}
               disabled={isLoading}
             />
           </FormControl>

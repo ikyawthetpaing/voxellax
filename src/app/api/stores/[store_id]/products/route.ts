@@ -52,7 +52,7 @@ export async function POST(
     });
 
     // Link images to product images
-    body.images.forEach(async ({ key, index }) => {
+    body.images.forEach(async ({ key, index, isThumbnail }) => {
       const file = await db.file.findUnique({
         where: { key: key },
         select: { id: true },
@@ -64,6 +64,7 @@ export async function POST(
         },
         data: {
           index: index,
+          isThumbnail: isThumbnail,
           productImagesId: product.id,
         },
       });

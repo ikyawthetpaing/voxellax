@@ -184,10 +184,7 @@
           "rate": 4
         }
       ],
-      "categories": [
-        "Ebooks",
-        "Canva Themplates"
-      ],
+      "categories": ["Ebooks", "Canva Themplates"],
       "licenses": [
         { "type": "personal", "price": 19.0 },
         { "type": "commercial", "price": 21000 },
@@ -368,104 +365,7 @@
       ]
     }
   ],
-  "cartItems": [
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "someid",
-      "licenseType": "personal"
-    },
-    {
-      "productId": "otherid",
-      "licenseType": "commercial"
-    },
-    {
-      "productId": "fklajflk",
-      "licenseType": "personal"
-    }
-  ],
+  "cartItems": [],
   "likes": [
     {
       "productId": "someid"

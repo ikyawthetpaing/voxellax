@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icons } from "@/components/icons";
 import { formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,27 +9,24 @@ import {
 } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "./ui/skeleton";
-import { Product } from "@prisma/client";
-import { db } from "@/lib/db";
+import { File, Product, Store } from "@prisma/client";
 import { siteConfig } from "@/config/site";
-
+import { AddToCartButton } from "@/components/add-to-cart-button";
+import { ProductLikeButton } from "@/components/product-like-button";
+import { AddToCollectionDialog } from "./add-to-collection-dialog";
 interface ProductCardProps {
-  product: Product;
+  product: Pick<Product, "id" | "name" | "category">;
+  store: Pick<Store, "id" | "name">;
+  price: number;
+  thumbnail: Pick<File, "url"> | null;
 }
 
-export async function ProductCard({ product }: ProductCardProps) {
-  const store = await db.store.findFirst({
-    where: { id: product.storeId || undefined },
-  });
-  const license = await db.license.findFirst({
-    where: { productId: product.id },
-    select: { price: true },
-  });
-  const images = await db.file.findMany({
-    where: { productImagesId: product.id },
-    orderBy: { index: "asc" },
-  });
-
+export function ProductCard({
+  product,
+  store,
+  price,
+  thumbnail,
+}: ProductCardProps) {
   return (
     <Card className="group relative overflow-hidden rounded-lg">
       <CardHeader className="border-b p-0">
@@ -41,7 +36,7 @@ export async function ProductCard({ product }: ProductCardProps) {
             href={`/listing/${product.id}`}
           >
             <Image
-              src={images[0]?.url ?? siteConfig.placeholderImageUrl}
+              src={thumbnail?.url ?? siteConfig.placeholderImageUrl}
               alt={product.name}
               fill
               className="object-cover"
@@ -54,45 +49,32 @@ export async function ProductCard({ product }: ProductCardProps) {
         <div className="flex justify-between gap-2">
           <h1 className="line-clamp-1 text-base font-medium">{product.name}</h1>
           <div className="flex items-center rounded-md bg-accent px-1 text-sm font-semibold text-accent-foreground">
-            {formatPrice(license?.price ?? 0, 0)}
+            {formatPrice(price, 0)}
           </div>
         </div>
       </CardContent>
       <CardFooter className="p-2 pt-0">
         <div className="text-xs">
-          <span className="text-foreground/75">by </span>
-          <Link href={`/store/${product.storeId}`}>{store?.name}</Link>
-          <span className="text-foreground/75"> in </span>
+          <span className="text-muted-foreground">by </span>
+          <Link href={`/store/${store.id}`}>{store.name}</Link>
+          <span className="text-muted-foreground"> in </span>
           <Link href={`/category/${product.category}`} className="capitalize">
             {product.category}
           </Link>
         </div>
       </CardFooter>
-      <div className="absolute right-2 top-0 hidden flex-col gap-2 opacity-0 animate-in duration-100 group-hover:top-2 group-hover:opacity-100 sm:flex">
-        <Button
-          variant="secondary"
-          size="sm"
-          className="justify-center gap-2 rounded-full p-2"
-        >
-          <Icons.heart className="h-4 w-4" />
-          <span>Like</span>
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="justify-center gap-2 rounded-full p-2"
-        >
-          <Icons.shoppingCart className="h-4 w-4" />
-          <span>Cart</span>
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="justify-center gap-2 rounded-full p-2"
-        >
-          <Icons.bookmark className="h-4 w-4" />
-          <span>Save</span>
-        </Button>
+      <div className="absolute right-2 top-2 flex flex-col gap-2 duration-100 sm:top-0 sm:opacity-0 sm:group-hover:top-2 sm:group-hover:opacity-100">
+        <ProductLikeButton
+          layout="icon"
+          productId={product.id}
+          className="hidden rounded-full sm:inline-flex"
+        />
+        <AddToCartButton
+          layout="icon"
+          productId={product.id}
+          className="rounded-full"
+        />
+        <AddToCollectionDialog productId={product.id} />
       </div>
     </Card>
   );

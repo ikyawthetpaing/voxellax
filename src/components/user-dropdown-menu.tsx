@@ -12,7 +12,7 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Icons } from "@/components/icons";
+// import { Icons } from "@/components/icons";
 import { lobbyUserDropdownConfig } from "@/config/lobby";
 import { dashboardConfig } from "@/config/dashboard";
 
@@ -54,11 +54,11 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {lobbyUserDropdownConfig.navItems.map((navItem, index) => {
-            const Icon = Icons[navItem.icon ?? "check"];
+            // const Icon = Icons[navItem.icon ?? "check"];
             return (
               <Link key={index} href={navItem.href}>
                 <DropdownMenuItem key={navItem.title}>
-                  <Icon className="mr-2 h-4 w-4" />
+                  {/* <Icon className="mr-2 h-4 w-4" /> */}
                   <span>{navItem.title}</span>
                 </DropdownMenuItem>
               </Link>
@@ -70,11 +70,11 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               {dashboardConfig.navItems.map((navItem, index) => {
-                const Icon = Icons[navItem.icon ?? "check"];
+                // const Icon = Icons[navItem.icon ?? "check"];
                 return (
                   <Link key={index} href={navItem.href}>
                     <DropdownMenuItem key={navItem.title}>
-                      <Icon className="mr-2 h-4 w-4" />
+                      {/* <Icon className="mr-2 h-4 w-4" /> */}
                       <span>{navItem.title}</span>
                     </DropdownMenuItem>
                   </Link>
@@ -84,8 +84,8 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
           </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={async () => await signOut()}>
-          <Icons.logout className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={() => signOut()}>
+          {/* <Icons.logout className="mr-2 h-4 w-4" /> */}
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

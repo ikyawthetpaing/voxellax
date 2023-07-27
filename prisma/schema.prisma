@@ -36,19 +36,27 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String       @id @default(uuid())
   name          String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   stores        Store[]
   likes         Like[]
+  carts         Cart[]
+  collections   Collection[]
   reviews       Review[]
-  role          String    @default("user")
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  role          UserRole     @default(Basic)
+  createdAt     DateTime     @default(now()) @map(name: "created_at")
+  updatedAt     DateTime     @default(now()) @map(name: "updated_at")
+}
+
+enum UserRole {
+  Basic
+  Seller
+  Admin
 }
 
 model VerificationToken {
@@ -85,6 +93,7 @@ model Product {
   updatedAt   DateTime  @default(now()) @map(name: "updated_at")
   storeId     String?
   store       Store?    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  cart        Cart[]
 }
 
 model License {
@@ -101,7 +110,7 @@ model File {
   name            String
   size            Int
   url             String
-  isThumnail      Boolean? // Thumnail of product images
+  isThumbnail     Boolean? // Thumbnail of product images
   index           Int? // Order of product images
   createdAt       DateTime @default(now()) @map(name: "created_at")
   updatedAt       DateTime @default(now()) @map(name: "updated_at")
@@ -117,6 +126,8 @@ model Review {
   rate      Int
   userId    String?
   productId String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
@@ -124,9 +135,40 @@ model Review {
 model Like {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
   userId    String?
   productId String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Cart {
+  id                String   @id @default(uuid())
+  userId            String?
+  productId         String?
+  purchaseLicenseId String?
+  user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product           Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Collection {
+  id       String              @id @default(uuid())
+  name     String
+  privacy  CollectionPrivacy   @default(Private)
+  products CollectionProduct[]
+  user     User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String?
+}
+
+enum CollectionPrivacy {
+  Public
+  Unlisted
+  Private
+}
+
+model CollectionProduct {
+  id           String      @id @default(uuid())
+  productId    String
+  createdAt    DateTime    @default(now()) @map(name: "created_at")
+  collectionId String?
+  collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 }

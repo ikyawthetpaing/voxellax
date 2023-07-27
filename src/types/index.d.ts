@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import { cartPatchSchema } from "@/lib/validations/cart";
 import {
   productImagePostSchema,
   productImagesPatchSchema,
@@ -36,6 +37,7 @@ export type FileWithPreview = FileWithPath & {
   uploaded?: {
     uploadthingKey: string;
     size: number;
+    isThumbnail: boolean;
   };
   preview: string;
   index: number | null;
@@ -57,6 +59,10 @@ export type ProductPostSchema = z.infer<typeof productPostSchema>;
 export type ProductPatchSchema = z.infer<typeof productPatchSchema>;
 export type ProdcutImagePostSchema = z.infer<typeof productImagePostSchema>;
 export type ProductImagesPatchSchema = z.infer<typeof productImagesPatchSchema>;
+
+export type CartPatchSchema = z.infer<typeof cartPatchSchema>;
+
+cartPatchSchema;
 
 type Review = {
   message?: string;

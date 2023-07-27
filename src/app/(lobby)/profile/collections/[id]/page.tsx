@@ -2,13 +2,14 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { Product } from "@/types";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl, cn } from "@/lib/utils";
 import { Products } from "@/components/products";
 
 // for dev
 import data from "@/helpers/data.json";
-import { BackButton } from "@/components/back-button";
 import { Icons } from "@/components/icons";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 interface UserCollectionPageProps {
   params: {
@@ -93,10 +94,16 @@ export default async function UserCollectionPage({
   return (
     <section className="space-y-8">
       <div>
-        <BackButton variant="ghost" size="sm" className="flex gap-2">
+        <Link
+          href="/"
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "sm" }),
+            "gap-2"
+          )}
+        >
           <Icons.chevronLeft className="h-4 w-4" />
           Back to Collections
-        </BackButton>
+        </Link>
       </div>
       <div className="space-y-4">
         <h1 className="text-center text-2xl font-medium">{collection.name}</h1>

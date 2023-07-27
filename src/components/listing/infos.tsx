@@ -131,7 +131,7 @@ export async function Infos({
                     <Link href={`/store/${store?.id}`}>{store?.name}</Link>
                   </p>
                   <Button variant="secondary" size="sm" className="w-fit p-2">
-                    <Icons.heart className="mr-2 h-4 w-4" /> Follow shop
+                    <Icons.heartOutline className="mr-2 h-4 w-4" /> Follow shop
                   </Button>
                 </div>
               </div>
