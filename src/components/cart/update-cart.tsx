@@ -93,7 +93,7 @@ export function UpdateCart({
   }
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex items-center justify-between gap-2">
       {licenses.length !== 0 && (
         <div className="flex items-center space-x-1">
           <Popover open={open} onOpenChange={setOpen}>

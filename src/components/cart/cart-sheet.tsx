@@ -19,10 +19,16 @@ import { getCurrentUser } from "@/lib/session";
 import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { AspectRatio } from "../ui/aspect-ratio";
+import { Cart } from "@prisma/client";
 
 export async function CartSheet() {
   const user = await getCurrentUser();
-  const cartItems = await db.cart.findMany({ where: { userId: user?.id } });
+
+  let cartItems: Cart[] = [];
+
+  if (user) {
+    cartItems = await db.cart.findMany({ where: { userId: user?.id } });
+  }
 
   const data = await Promise.all(
     cartItems.map(async (cartItem) => {
@@ -118,7 +124,7 @@ export async function CartSheet() {
 
                     return (
                       <div key={cartItem.id} className="space-y-3">
-                        <div className="flex items-center space-x-4">
+                        <div className="flex flex-wrap items-center gap-4">
                           <div className="relative w-24 overflow-hidden rounded">
                             <AspectRatio ratio={4 / 3}>
                               <Image

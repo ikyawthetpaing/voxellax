@@ -29,10 +29,7 @@ export async function GET() {
   }
 }
 
-
-export async function POST(
-  req: Request,
-) {
+export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -47,7 +44,7 @@ export async function POST(
       data: {
         name: body.name,
         description: body.description,
-        userId: session.user.id
+        userId: session.user.id,
       },
       select: {
         id: true,

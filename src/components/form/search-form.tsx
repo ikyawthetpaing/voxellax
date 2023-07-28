@@ -66,7 +66,7 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
             variant="ghost"
             role="combobox"
             aria-expanded={open}
-            className="flex w-[100px] justify-end p-0 hover:bg-transparent"
+            className="flex w-full justify-end p-0 hover:bg-transparent"
           >
             {value
               ? categories.find((category) => category.value === value)?.label
@@ -76,8 +76,6 @@ export function SearchForm({ className, size, ...props }: SearchFormProps) {
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
-            <CommandInput placeholder="Search category..." />
-            <CommandEmpty>No category found.</CommandEmpty>
             <CommandGroup>
               {categories.map((category) => (
                 <CommandItem

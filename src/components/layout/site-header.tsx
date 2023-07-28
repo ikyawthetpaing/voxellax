@@ -20,13 +20,9 @@ export function SiteHeader({ user, navItems }: SiteHeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background">
-      <div className="container flex items-center justify-between gap-6 py-4">
-        <div className="sm:hidden">
-          <MobileNav navItems={navItems} />
-        </div>
+      <div className="container flex items-center justify-between py-4">
         <MainNav items={navItems} />
-
-        <nav className="flex gap-4 sm:gap-8">
+        <nav className="flex gap-2 sm:gap-8">
           <div className="hidden lg:block">
             <SearchForm size="sm" />
           </div>
@@ -45,6 +41,10 @@ export function SiteHeader({ user, navItems }: SiteHeaderProps) {
           ) : (
             <UserDropdownMenu user={user} isAdmin={isAdmin} />
           )}
+
+          <div className="sm:hidden">
+            <MobileNav navItems={navItems} />
+          </div>
         </nav>
       </div>
     </header>

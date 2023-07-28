@@ -24,16 +24,6 @@ export async function DELETE(
       return new Response(null, { status: 403 });
     }
 
-    // Delete the products from the store
-    await db.store.update({
-      where: { id: params.store_id },
-      data: {
-        products: {
-          deleteMany: {},
-        },
-      }
-    });
-
     // Delete the store.
     await db.store.delete({
       where: {
@@ -79,7 +69,7 @@ export async function PATCH(
       },
     });
 
-    return new Response(null, { status: 200 });
+    return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
