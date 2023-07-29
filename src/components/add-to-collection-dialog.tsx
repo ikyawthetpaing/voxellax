@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,12 +23,14 @@ import { CollectionPatchSchema } from "@/types/validations/collection";
 import { useRouter } from "next/navigation";
 import { toast } from "./ui/use-toast";
 
-interface AddToCollectionDialogProps {
+interface AddToCollectionDialogProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   productId: string;
 }
 
 export function AddToCollectionDialog({
   productId,
+  className,
 }: AddToCollectionDialogProps) {
   // State variables to manage component behavior
   const [isCollectionCreating, setIsCollectionCreating] = useState(false);
@@ -58,8 +60,8 @@ export function AddToCollectionDialog({
         <Button
           variant="secondary"
           size="icon"
-          className="hidden rounded-full sm:inline-flex"
           aria-label="Add to collection"
+          className={className}
         >
           <Icons.bookmark className="h-4 w-4" />
         </Button>

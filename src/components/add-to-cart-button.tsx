@@ -71,7 +71,7 @@ export function AddToCartButton({
   return (
     <Button
       variant={isAdded ? "default" : "secondary"}
-      size={layout === "icon" ? "icon" : "sm"}
+      size={layout === "icon" ? "icon" : "default"}
       className={cn("gap-2", className)}
       aria-label="Add to cart"
       onClick={handleOnClick}
@@ -83,7 +83,11 @@ export function AddToCartButton({
       ) : (
         <Icons.shoppingCart className="h-4 w-4" />
       )}
-      {layout === "default" && <span>Add to cart</span>}
+      {layout === "default"
+        ? isAdded
+          ? "Remove from cart"
+          : "Add to cart"
+        : null}
     </Button>
   );
 }

@@ -8,13 +8,16 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Button } from "../ui/button";
 import { File } from "@prisma/client";
 import { siteConfig } from "@/config/site";
+import { ProductActionButtons } from "../product-action-buttons";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
   images: File[];
+  productId: string;
 }
 
 export function ImageGallery({
   images,
+  productId,
   className,
   ...props
 }: ImageGalleryProps) {
@@ -36,7 +39,12 @@ export function ImageGallery({
           sizes="100vw"
           // placeholder="blur"
         />
-        <div className="absolute left-0 top-1/2 flex w-full -translate-y-1/2 justify-between px-6 opacity-0 animate-in duration-100 group-hover:opacity-100">
+        <ProductActionButtons
+          layout="listing"
+          productId={productId}
+          className="absolute right-2 top-2 sm:right-4 sm:top-4 sm:opacity-0 sm:group-hover:opacity-100"
+        />
+        <div className="absolute left-0 top-1/2 hidden w-full -translate-y-1/2 justify-between px-2 opacity-0 animate-in duration-100 group-hover:opacity-100 sm:flex sm:px-4">
           <Button
             variant="secondary"
             size="icon"

@@ -11,9 +11,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "./ui/skeleton";
 import { File, Product, Store } from "@prisma/client";
 import { siteConfig } from "@/config/site";
-import { AddToCartButton } from "@/components/add-to-cart-button";
-import { ProductLikeButton } from "@/components/product-like-button";
-import { AddToCollectionDialog } from "./add-to-collection-dialog";
+import { ProductActionButtons } from "./product-action-buttons";
 interface ProductCardProps {
   product: Pick<Product, "id" | "name" | "category">;
   store: Pick<Store, "id" | "name">;
@@ -63,19 +61,11 @@ export function ProductCard({
           </Link>
         </div>
       </CardFooter>
-      <div className="absolute right-2 top-2 flex flex-col gap-2 duration-100 sm:top-0 sm:opacity-0 sm:group-hover:top-2 sm:group-hover:opacity-100">
-        <ProductLikeButton
-          layout="icon"
-          productId={product.id}
-          className="hidden rounded-full sm:inline-flex"
-        />
-        <AddToCartButton
-          layout="icon"
-          productId={product.id}
-          className="rounded-full"
-        />
-        <AddToCollectionDialog productId={product.id} />
-      </div>
+      <ProductActionButtons
+        layout="card"
+        productId={product.id}
+        className="absolute right-2 top-2 sm:top-0 sm:opacity-0 sm:group-hover:top-2 sm:group-hover:opacity-100"
+      />
     </Card>
   );
 }

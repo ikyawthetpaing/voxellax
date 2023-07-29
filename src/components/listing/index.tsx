@@ -43,7 +43,7 @@ export async function Listing({ product }: { product: Product }) {
       <div className="grid gap-8 lg:flex">
         <div className="flex flex-1 flex-col gap-8">
           {/* Image and gallery code */}
-          <ImageGallery images={images} />
+          <ImageGallery images={images} productId={product.id} />
           {reviews.length > 0 && (
             <Reviews reviews={reviews} className="hidden lg:grid" />
           )}
@@ -57,6 +57,7 @@ export async function Listing({ product }: { product: Product }) {
             licenses={licenses}
             totalReviews={totalReviews}
             averageRates={getAverageRates()}
+            productId={product.id}
           />
           <Infos
             className="lg:w-96"

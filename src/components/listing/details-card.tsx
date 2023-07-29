@@ -16,6 +16,7 @@ import {
 import { RenderStars } from "@/components/listing/render-stars";
 import { License } from "@prisma/client";
 import Link from "next/link";
+import { AddToCartButton } from "../add-to-cart-button";
 
 interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -24,6 +25,7 @@ interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
   averageRates: number;
   category: string;
   subCategory: string | null;
+  productId: string;
 }
 
 export function DetailsCard({
@@ -33,6 +35,7 @@ export function DetailsCard({
   totalReviews,
   title,
   averageRates,
+  productId,
   className,
   ...props
 }: DetailsCardProps) {
@@ -45,7 +48,7 @@ export function DetailsCard({
           <CardTitle className="flex justify-between">
             <div>Price</div>
             <div className="flex items-center">
-              <span>{formatPrice(licenses[licenseIndex]?.price ?? 0)}</span>
+              <span>{formatPrice(licenses[licenseIndex]?.price, 2)}</span>
             </div>
           </CardTitle>
           <CardDescription>VAT Included</CardDescription>
@@ -78,7 +81,7 @@ export function DetailsCard({
                     >
                       <span className="capitalize">{license.type}</span>
                       <div className="flex items-center">
-                        {formatPrice(license.price)}
+                        {formatPrice(license.price, 2)}
                       </div>
                     </Label>
                   </div>
@@ -109,7 +112,8 @@ export function DetailsCard({
           </div>
         </CardContent>
         <CardFooter className="grid gap-3">
-          <Button variant="outline">Add to cart</Button>
+          <AddToCartButton productId={productId} />
+          {/* <Button variant="outline">Add to cart</Button> */}
           {!licenses[licenseIndex]?.price ? (
             <Button>Download now</Button>
           ) : (

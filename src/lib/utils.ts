@@ -8,7 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function absoluteUrl(path: string) {
-  return `${env.NEXT_PUBLIC_APP_URL}${path}`;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const formattedPath = path.replace(/^\//, ""); // Remove leading slash if present
+  return `${appUrl}/${formattedPath}`;
 }
 
 /**
