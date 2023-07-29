@@ -95,52 +95,56 @@ export async function PATCH(
     const json = await req.json();
     const body = productPatchSchema.parse(json);
 
-    console.log(body);
-
     // Link added images
-    body.images.added.forEach(async ({ key, index, isThumbnail }) => {
-      const file = await db.file.findUnique({
-        where: { key: key },
-        select: { id: true },
-      });
+    await Promise.all(
+      body.images.added.map(async ({ key, index, isThumbnail }) => {
+        const file = await db.file.findFirst({
+          where: { key: key },
+          select: { id: true },
+        });
 
-      await db.file.update({
-        where: {
-          id: file?.id,
-        },
-        data: {
-          index: index,
-          isThumbnail: isThumbnail,
-          productImagesId: params.product_id,
-        },
-      });
-    });
+        await db.file.update({
+          where: {
+            id: file?.id,
+          },
+          data: {
+            index: index,
+            isThumbnail: isThumbnail,
+            productImagesId: params.product_id,
+          },
+        });
+      })
+    );
 
     // Delete product images
-    body.images.deleted.forEach(async ({ key }) => {
-      const file = await db.file.findUnique({
-        where: { key: key },
-        select: { id: true, key: true },
-      });
+    await Promise.all(
+      body.images.deleted.map(async ({ key }) => {
+        const file = await db.file.findFirst({
+          where: { key: key },
+          select: { id: true, key: true },
+        });
 
-      // Delet file on uploadthing via key
-      utapi.deleteFiles(file!.key);
+        // Delet file on uploadthing via key
+        utapi.deleteFiles(file!.key);
 
-      await db.file.delete({ where: { id: file?.id } });
-    });
+        await db.file.delete({ where: { id: file?.id } });
+      })
+    );
 
     // Update product images
-    body.images.updated.forEach(async ({ key, index, isThumbnail }) => {
-      const file = await db.file.findUnique({
-        where: { key: key },
-        select: { id: true, key: true },
-      });
+    await Promise.all(
+      body.images.updated.map(async ({ key, index, isThumbnail }) => {
+        const file = await db.file.findFirst({
+          where: { key: key },
+          select: { id: true, key: true },
+        });
 
-      await db.file.update({
-        where: { id: file?.id },
-        data: { index: index, isThumbnail },
-      });
-    });
+        await db.file.update({
+          where: { id: file?.id },
+          data: { index: index, isThumbnail },
+        });
+      })
+    );
 
     // Convert license price to number
     let licenses = undefined;

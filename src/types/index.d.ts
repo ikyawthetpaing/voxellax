@@ -48,11 +48,6 @@ export type Option = {
   value: string;
 };
 
-export type MimeType = {
-  extension: string;
-  template: string;
-};
-
 export type ProductLicenseSchema = z.infer<typeof productLicenseSchema>;
 export type ProductFormSchema = z.infer<typeof productFormSchema>;
 export type ProductPostSchema = z.infer<typeof productPostSchema>;
@@ -61,42 +56,3 @@ export type ProdcutImagePostSchema = z.infer<typeof productImagePostSchema>;
 export type ProductImagesPatchSchema = z.infer<typeof productImagesPatchSchema>;
 
 export type CartPatchSchema = z.infer<typeof cartPatchSchema>;
-
-cartPatchSchema;
-
-type Review = {
-  message?: string;
-  rate: number;
-};
-
-export type License = {
-  type: string;
-  price?: number;
-};
-
-export type Product = {
-  id: string;
-  name: string;
-  description: string;
-  images: string[];
-  categories: string[];
-  licenses: License[];
-  reviews?: Review[];
-};
-
-export type Purchase = {
-  productId: string;
-  licenseType: string;
-};
-
-export type Collection = {
-  id: string;
-  name: string;
-  products: { id: string }[];
-};
-
-export type Activity = {
-  action: string;
-  date: string;
-  productId: string;
-};

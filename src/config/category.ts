@@ -1,6 +1,4 @@
-// import { type Product } from "@/db/schema"
 import type { Option } from "@/types";
-import { Product } from "@prisma/client";
 
 export const sortOptions = [
   { label: "Date: Old to new", value: "createdAt.asc" },
@@ -238,7 +236,7 @@ export const productTags = [
   "exclusive",
 ];
 
-export function getCategories() {
+export function getCategories(): Option[] {
   const categories = productCategories.map(({ title, slug }) => ({
     label: title,
     value: slug,

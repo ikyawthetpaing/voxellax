@@ -2,7 +2,6 @@ import { clsx, type ClassValue } from "clsx";
 import { env } from "@/env.mjs";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
-import { MimeType } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,30 +20,6 @@ export function absoluteUrl(path: string) {
  * @param fractionDigits - The number of fractional digits to display (default is 1).
  * @returns The formatted price as a string.
  */
-// export function formatPrice(price: number, fractionDigits: number = 1): string {
-//   if (typeof price !== "number" || isNaN(price)) {
-//     throw new Error("Invalid price value. Expected a number.");
-//   }
-
-//   if (typeof fractionDigits !== "number" || fractionDigits < 0) {
-//     throw new Error(
-//       "Invalid fractionDigits value. Expected a non-negative integer."
-//     );
-//   }
-
-//   if (price === 0) {
-//     return "Free";
-//   } else if (price >= 1000000) {
-//     const formattedPrice = (price / 1000000).toFixed(fractionDigits);
-//     return `$${formattedPrice}M`;
-//   } else if (price >= 1000) {
-//     const formattedPrice = (price / 1000).toFixed(fractionDigits);
-//     return `$${formattedPrice}K`;
-//   } else {
-//     const formattedPrice = price.toFixed(fractionDigits);
-//     return `$${formattedPrice}`;
-//   }
-// }
 export function formatPrice(price: number, fractionDigits: number = 1): string {
   if (typeof price !== "number" || isNaN(price)) {
     throw new Error("Invalid price value. Expected a number.");
@@ -134,48 +109,48 @@ export function isArrayOfFile(files: unknown): files is File[] {
   return files.every((file) => file instanceof File);
 }
 
-export function getMimeType(filename: string): string {
-  const mimeTypes: MimeType[] = [
-    { extension: "default", template: "application/octet-stream" },
-    { extension: "jpg", template: "image/jpeg" },
-    { extension: "jpeg", template: "image/jpeg" },
-    { extension: "png", template: "image/png" },
-    { extension: "gif", template: "image/gif" },
-    { extension: "bmp", template: "image/bmp" },
-    { extension: "svg", template: "image/svg+xml" },
-    { extension: "webp", template: "image/webp" },
-    { extension: "pdf", template: "application/pdf" },
-    { extension: "txt", template: "text/plain" },
-    { extension: "html", template: "text/html" },
-    { extension: "css", template: "text/css" },
-    { extension: "js", template: "text/javascript" },
-    { extension: "json", template: "application/json" },
-    { extension: "xml", template: "application/xml" },
-    { extension: "zip", template: "application/zip" },
-    { extension: "doc", template: "application/msword" },
-    {
-      extension: "docx",
-      template:
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    },
-    { extension: "xls", template: "application/vnd.ms-excel" },
-    {
-      extension: "xlsx",
-      template:
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    },
-    { extension: "ppt", template: "application/vnd.ms-powerpoint" },
-    {
-      extension: "pptx",
-      template:
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    },
-    // Add more MIME types as neededtemplate
-  ];
+// export function getMimeType(filename: string): string {
+//   const mimeTypes: MimeType[] = [
+//     { extension: "default", template: "application/octet-stream" },
+//     { extension: "jpg", template: "image/jpeg" },
+//     { extension: "jpeg", template: "image/jpeg" },
+//     { extension: "png", template: "image/png" },
+//     { extension: "gif", template: "image/gif" },
+//     { extension: "bmp", template: "image/bmp" },
+//     { extension: "svg", template: "image/svg+xml" },
+//     { extension: "webp", template: "image/webp" },
+//     { extension: "pdf", template: "application/pdf" },
+//     { extension: "txt", template: "text/plain" },
+//     { extension: "html", template: "text/html" },
+//     { extension: "css", template: "text/css" },
+//     { extension: "js", template: "text/javascript" },
+//     { extension: "json", template: "application/json" },
+//     { extension: "xml", template: "application/xml" },
+//     { extension: "zip", template: "application/zip" },
+//     { extension: "doc", template: "application/msword" },
+//     {
+//       extension: "docx",
+//       template:
+//         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+//     },
+//     { extension: "xls", template: "application/vnd.ms-excel" },
+//     {
+//       extension: "xlsx",
+//       template:
+//         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//     },
+//     { extension: "ppt", template: "application/vnd.ms-powerpoint" },
+//     {
+//       extension: "pptx",
+//       template:
+//         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+//     },
+//     // Add more MIME types as neededtemplate
+//   ];
 
-  const extension = filename.split(".").pop()!.toLowerCase();
-  const mimeTypeObj = mimeTypes.find((type) => type.extension === extension);
-  return mimeTypeObj
-    ? mimeTypeObj.template
-    : mimeTypes.find((type) => type.extension === "default")!.template;
-}
+//   const extension = filename.split(".").pop()!.toLowerCase();
+//   const mimeTypeObj = mimeTypes.find((type) => type.extension === extension);
+//   return mimeTypeObj
+//     ? mimeTypeObj.template
+//     : mimeTypes.find((type) => type.extension === "default")!.template;
+// }
