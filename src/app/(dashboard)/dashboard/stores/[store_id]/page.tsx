@@ -27,6 +27,8 @@ export default async function UpdateStorePage({
       id: true,
       name: true,
       description: true,
+      profileImageUrl: true,
+      coverImageUrl: true,
     },
   });
 
@@ -34,13 +36,20 @@ export default async function UpdateStorePage({
     notFound();
   }
 
+  const profileImage = await db.file.findFirst({
+    where: { url: store.profileImageUrl ?? "" },
+  });
+  const coverImage = await db.file.findFirst({
+    where: { url: store.coverImageUrl ?? "" },
+  });
+
   return (
     <div>
       {store && (
         <UpdateStoreForm
-          storeId={store.id}
-          storeName={store.name}
-          storeDescription={store.description}
+          store={store}
+          profileImage={profileImage}
+          coverImage={coverImage}
         />
       )}
     </div>

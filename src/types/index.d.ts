@@ -1,4 +1,3 @@
-import { Icons } from "@/components/icons";
 import { cartPatchSchema } from "@/lib/validations/cart";
 import {
   productImagePostSchema,
@@ -8,6 +7,7 @@ import {
   productPostSchema,
   productFormSchema,
 } from "@/lib/validations/product";
+import { storePatchSchema, storePostSchema } from "@/lib/validations/store";
 import { FileWithPath } from "react-dropzone";
 import * as z from "zod";
 
@@ -26,11 +26,6 @@ export type SiteConfig = {
 export type NavItem = {
   title: string;
   href: string;
-  icon?: keyof typeof Icons;
-};
-
-export type NavItemsConfig = {
-  navItems: NavItem[];
 };
 
 export type FileWithPreview = FileWithPath & {
@@ -54,5 +49,6 @@ export type ProductPostSchema = z.infer<typeof productPostSchema>;
 export type ProductPatchSchema = z.infer<typeof productPatchSchema>;
 export type ProdcutImagePostSchema = z.infer<typeof productImagePostSchema>;
 export type ProductImagesPatchSchema = z.infer<typeof productImagesPatchSchema>;
-
+export type StorePostSchema = z.infer<typeof storePostSchema>;
+export type StorePatchSchema = z.infer<typeof storePatchSchema>;
 export type CartPatchSchema = z.infer<typeof cartPatchSchema>;

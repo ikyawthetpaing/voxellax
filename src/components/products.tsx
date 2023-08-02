@@ -19,6 +19,7 @@ export async function Products({ products }: ProductsProps) {
         id,
         name,
         category,
+        storeId,
       };
 
       const store = await db.store.findFirst({

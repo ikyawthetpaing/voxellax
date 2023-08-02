@@ -22,6 +22,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Grid } from "@/components/layout/grid";
+import Image from "next/image";
 
 interface StorePageProps {
   params: {
@@ -112,20 +113,30 @@ export default async function StorePage({ params }: StorePageProps) {
         <div className="grid w-full gap-6">
           <div className="flex w-full flex-col items-center gap-2">
             <AspectRatio ratio={4 / 1} className="w-full">
-              <div className="relative h-full w-full bg-accent">
-                <Avatar className="absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 translate-y-1/2 cursor-pointer border-4 border-background">
-                  <AvatarImage
-                    // src={store.image?.toString()}
-                    alt={store.name?.toString()}
+              {!store.coverImageUrl ? (
+                <div className="relative h-full w-full bg-accent"></div>
+              ) : (
+                <div>
+                  <Image
+                    src={store.coverImageUrl}
+                    alt={store.name}
+                    fill
+                    className="object-cover"
                   />
-                  <AvatarFallback>
-                    {store.name
-                      .split(" ")
-                      .map((name) => name.charAt(0).toUpperCase())
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
+                </div>
+              )}
+              <Avatar className="absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 translate-y-1/2 cursor-pointer border-4 border-background">
+                <AvatarImage
+                  src={store.profileImageUrl?.toString()}
+                  alt={store.name?.toString()}
+                />
+                <AvatarFallback>
+                  {store.name
+                    .split(" ")
+                    .map((name) => name.charAt(0).toUpperCase())
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
             </AspectRatio>
             <Heading size="lg" className="mt-11">
               {store.name}
@@ -154,7 +165,7 @@ export default async function StorePage({ params }: StorePageProps) {
           </TabsList>
           <TabsContent value="shop" className="grid gap-8">
             {/* <div className="flex justify-between gap-8"> */}
-              {/* <Input placeholder="Seach something in this store..." />
+            {/* <Input placeholder="Seach something in this store..." />
               <Select value={"all"}>
                 <SelectTrigger className="capitalize">
                   <SelectValue />
@@ -180,36 +191,36 @@ export default async function StorePage({ params }: StorePageProps) {
                   </SelectGroup>
                 </SelectContent>
               </Select> */}
-              <Grid>
-                <Input placeholder="Seach something in this store..." />
-                <div className="hidden lg:block"></div>
-                <div className="hidden md:block"></div>
-                <Select value={"all"}>
-                  <SelectTrigger className="capitalize">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
+            <Grid>
+              <Input placeholder="Seach something in this store..." />
+              <div className="hidden lg:block"></div>
+              <div className="hidden md:block"></div>
+              <Select value={"all"}>
+                <SelectTrigger className="capitalize">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem
+                      key={"all"}
+                      value={"all"}
+                      className="capitalize"
+                    >
+                      all
+                    </SelectItem>
+                    {productCategories.map(({ title }) => (
                       <SelectItem
-                        key={"all"}
-                        value={"all"}
+                        key={title}
+                        value={title}
                         className="capitalize"
                       >
-                        all
+                        {title}
                       </SelectItem>
-                      {productCategories.map(({ title }) => (
-                        <SelectItem
-                          key={title}
-                          value={title}
-                          className="capitalize"
-                        >
-                          {title}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Grid>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Grid>
             {/* </div> */}
             <Products products={storeProducts} />
           </TabsContent>

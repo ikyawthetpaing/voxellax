@@ -23,15 +23,63 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
-
       await db.file.create({
         data: {
           key: file.key,
           name: file.name,
           url: file.url,
           size: file.size,
+          userId: metadata.userId,
+        },
+      });
+    }),
+  profileImage: f({
+    image: { maxFileSize: "1MB", maxFileCount: 1 },
+  })
+    // Set permissions and file types for this FileRoute
+    .middleware(async () => {
+      // This code runs on your server before upload
+      const user = await getCurrentUser();
+
+      // If you throw, the user will not be able to upload
+      if (!user) throw new Error("Unauthorized");
+
+      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      return { userId: user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      await db.file.create({
+        data: {
+          key: file.key,
+          name: file.name,
+          url: file.url,
+          size: file.size,
+          userId: metadata.userId,
+        },
+      });
+    }),
+  coverImage: f({
+    image: { maxFileSize: "8MB", maxFileCount: 1 },
+  })
+    // Set permissions and file types for this FileRoute
+    .middleware(async () => {
+      // This code runs on your server before upload
+      const user = await getCurrentUser();
+
+      // If you throw, the user will not be able to upload
+      if (!user) throw new Error("Unauthorized");
+
+      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      return { userId: user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      await db.file.create({
+        data: {
+          key: file.key,
+          name: file.name,
+          url: file.url,
+          size: file.size,
+          userId: metadata.userId,
         },
       });
     }),

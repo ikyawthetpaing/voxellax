@@ -42,6 +42,7 @@ import {
   ImageOff,
   ImagePlus,
   MoveRight,
+  AtSign,
   LucideProps,
 } from "lucide-react";
 
@@ -89,6 +90,7 @@ export const Icons = {
   imageOff: ImageOff,
   heartOutline: Heart,
   moveRight: MoveRight,
+  atSign: AtSign,
   voxellax: ({ ...props }: LucideProps) => (
     <svg
       data-v-423bf9ae=""

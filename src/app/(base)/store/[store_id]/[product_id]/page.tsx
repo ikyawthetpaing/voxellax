@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 
 interface ProductPageProps {
   params: {
+    store_id: string;
     product_id: string;
   };
 }
@@ -41,7 +42,7 @@ export async function generateMetadata({
   const url = process.env.NEXT_PUBLIC_APP_URL;
 
   const authors = await db.store.findMany({
-    where: { id: product.storeId ?? "" },
+    where: { id: params.store_id },
     select: { name: true, id: true },
   });
 
@@ -63,7 +64,7 @@ export async function generateMetadata({
       title: product.name,
       description: product.description,
       type: "article",
-      url: absoluteUrl(`/listing/${product.id}`),
+      url: absoluteUrl(`/store/${product.storeId}/${product.id}`),
       images: [
         {
           url: ogUrl.toString(),

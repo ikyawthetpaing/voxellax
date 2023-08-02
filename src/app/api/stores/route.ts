@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { storeSchema } from "@/lib/validations/store";
+import { storePostSchema } from "@/lib/validations/store";
 import * as z from "zod";
 
 export async function GET() {
@@ -38,20 +38,38 @@ export async function POST(req: Request) {
     }
 
     const json = await req.json();
-    const body = storeSchema.parse(json);
+    const body = storePostSchema.parse(json);
 
-    const store = await db.store.create({
+    const isStoreIdTaken = await db.store.findFirst({
+      where: { id: body.id },
+    });
+
+    if (isStoreIdTaken) {
+      return new Response("Already taken", { status: 409 });
+    }
+
+    const profileImage = await db.file.findFirst({
+      where: { key: body.profileImage?.key },
+      select: { url: true },
+    });
+
+    const coverImage = await db.file.findFirst({
+      where: { key: body.coverImage?.key },
+      select: { url: true },
+    });
+
+    await db.store.create({
       data: {
+        id: body.id,
         name: body.name,
         description: body.description,
         userId: session.user.id,
-      },
-      select: {
-        id: true,
+        profileImageUrl: profileImage?.url,
+        coverImageUrl: coverImage?.url,
       },
     });
 
-    return new Response(JSON.stringify(store));
+    return new Response(null, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });

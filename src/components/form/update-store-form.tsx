@@ -1,7 +1,7 @@
 "use client";
 
 import type { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,69 +36,225 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { File as FileModel, Store } from "@prisma/client";
+import { FileWithPreview, StorePatchSchema } from "@/types";
+import { StoreMediaFileForm } from "./store-media-file-form";
+import { generateReactHelpers } from "@uploadthing/react/hooks";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { Icons } from "../icons";
+import { DebounceInput } from "../debounce-input";
 
 interface UpdateStoreFormProps {
-  storeId: string;
-  storeName: string;
-  storeDescription: string;
+  store: Pick<Store, "id" | "name" | "description">;
+  profileImage: FileModel | null;
+  coverImage: FileModel | null;
 }
 
 type Inputs = z.infer<typeof storePatchSchema>;
 
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+
 export function UpdateStoreForm({
-  storeId,
-  storeName,
-  storeDescription,
+  store,
+  profileImage,
+  coverImage,
 }: UpdateStoreFormProps) {
   const router = useRouter();
+  const [storeId, setStoreId] = useState(store.id);
+  const [isInputValid, setIsInputValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [coverImageFile, setCoverImageFile] = useState<FileWithPreview | null>(
+    null
+  );
+  const [profileImageFile, setProfileImageFile] =
+    useState<FileWithPreview | null>(null);
+  const [profileImageUploadProgress, setProfileImageUploadProgress] =
+    useState(0);
+  const [coverImageUploadProgress, setCoverImageUploadProgress] = useState(0);
+  const [isLoadingDeleteBtn, setIsLoadingDeleteBtn] = useState(false);
+
+  useEffect(() => {
+    if (profileImage) {
+      setProfileImageFile(() => {
+        const file = new File([], profileImage.name, {
+          type: "image",
+          lastModified: profileImage.updatedAt.getDate(),
+        });
+        const fileWithPreview: FileWithPreview = Object.assign(file, {
+          preview: profileImage.url,
+          index: profileImage.index,
+          uploaded: {
+            uploadthingKey: profileImage.key,
+            size: profileImage.size,
+            isThumbnail: profileImage.isThumbnail ?? false,
+          },
+        });
+
+        return fileWithPreview;
+      });
+    }
+
+    if (coverImage) {
+      setCoverImageFile(() => {
+        const file = new File([], coverImage.name, {
+          type: "image",
+          lastModified: coverImage.updatedAt.getSeconds(),
+        });
+        const fileWithPreview: FileWithPreview = Object.assign(file, {
+          preview: coverImage.url,
+          index: coverImage.index,
+          uploaded: {
+            uploadthingKey: coverImage.key,
+            size: coverImage.size,
+            isThumbnail: coverImage.isThumbnail ?? false,
+          },
+        });
+
+        return fileWithPreview;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(storePatchSchema),
     defaultValues: {
-      name: storeName,
-      description: storeDescription,
+      id: store.id,
+      name: store.name,
+      description: store.description,
     },
   });
 
-  async function onSubmit(data: Inputs) {
-    console.log(data);
-    setIsLoading(true);
+  const {
+    isUploading: isProfileImageUploading,
+    startUpload: startProfileImageUpload,
+  } = useUploadThing("profileImage", {
+    onUploadError: () => {
+      toast({
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    },
+    onUploadProgress: (progress: number) => {
+      setProfileImageUploadProgress(progress);
+    },
+  });
 
-    const response = await fetch(`/api/stores/${storeId}`, {
-      method: "PATCH",
+  const {
+    isUploading: isCoverImageUploading,
+    startUpload: startCoverImageUpload,
+  } = useUploadThing("coverImage", {
+    onUploadError: () => {
+      toast({
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    },
+    onUploadProgress: (progress: number) => {
+      setCoverImageUploadProgress(progress);
+    },
+  });
+
+  async function isValidStoreId() {
+    const response = await fetch("/api/checkStore", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: data.name,
-        description: data.description,
+        storeId: storeId,
       }),
     });
 
-    setIsLoading(false);
+    if (!response.ok) {
+      if (response.status === 404) {
+        setIsInputValid(true);
+        form.setValue("id", storeId);
+      } else {
+        return toast({
+          description: "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } else {
+      setIsInputValid(false);
+      return toast({
+        description: "Handle already taken",
+        variant: "destructive",
+      });
+    }
+  }
 
-    if (!response?.ok) {
-      if (response.status === 403) {
+  useEffect(() => {
+    if (storeId !== store.id) {
+      isValidStoreId();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeId]);
+
+  async function onSubmit(data: Inputs) {
+    setIsLoading(true);
+
+    try {
+      const patchData: StorePatchSchema = {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+      };
+
+      if (!profileImageFile?.uploaded && profileImageFile) {
+        const res = await startProfileImageUpload([profileImageFile]);
+        if (res) {
+          patchData.profileImage = { added: { key: res[0].fileKey } };
+        }
+      }
+
+      if (!coverImageFile?.uploaded && coverImageFile) {
+        const res = await startCoverImageUpload([coverImageFile]);
+        if (res) {
+          patchData.coverImage = { added: { key: res[0].fileKey } };
+        }
+      }
+
+      const response = await fetch(`/api/stores/${storeId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(patchData),
+      });
+
+      setIsLoading(false);
+
+      if (!response?.ok) {
+        if (response.status === 403) {
+          return toast({
+            title: "Permission denied",
+            variant: "destructive",
+          });
+        }
+        if (response.status === 500) {
+          return toast({
+            title: "Internal Server Error",
+            variant: "destructive",
+          });
+        }
         return toast({
-          title: "Permission denied",
+          title: "Something went wrong.",
+          description: "Your store was not updated. Please try again.",
           variant: "destructive",
         });
       }
-      if (response.status === 500) {
-        return toast({
-          title: "Internal Server Error",
-          variant: "destructive",
-        });
-      }
+    } catch (error) {
+      console.error(error);
       return toast({
         title: "Something went wrong.",
         description: "Your store was not updated. Please try again.",
         variant: "destructive",
       });
     }
-
+    setIsLoading(false);
     form.reset();
     router.refresh();
     return toast({
@@ -107,22 +263,29 @@ export function UpdateStoreForm({
   }
 
   async function deleteStore() {
-    // setDeleteIsLoading(true);
+    setIsLoadingDeleteBtn(true);
 
-    const response = await fetch(`/api/stores/${storeId}`, {
-      method: "DELETE",
-    });
+    try {
+      const response = await fetch(`/api/stores/${storeId}`, {
+        method: "DELETE",
+      });
 
-    // setDeleteIsLoading(false);
-
-    if (!response?.ok) {
+      if (!response?.ok) {
+        return toast({
+          title: "Something went wrong.",
+          description: "Your store was not deleted. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
       return toast({
         title: "Something went wrong.",
         description: "Your store was not deleted. Please try again.",
         variant: "destructive",
       });
     }
-
+    setIsLoadingDeleteBtn(false);
     router.push("/dashboard/stores");
     router.refresh();
 
@@ -133,18 +296,43 @@ export function UpdateStoreForm({
 
   return (
     <Card>
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Update store</CardTitle>
-        <CardDescription>
-          Update your store name and description, or delete it
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="flex justify-center p-6">
         <Form {...form}>
           <form
             className="grid w-full max-w-xl gap-5"
             onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
           >
+            <StoreMediaFileForm
+              profileImage={profileImageFile}
+              setProfileImage={setProfileImageFile}
+              coverImage={coverImageFile}
+              setCoverImage={setCoverImageFile}
+              isUploading={isLoading}
+              disabled={isLoading}
+            />
+            <FormField
+              control={form.control}
+              name="id"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Handle</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Icons.atSign className="absolute top-1/2 ml-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <DebounceInput
+                        className="pl-9"
+                        placeholder="Type your store handle here..."
+                        onChange={(value) => {
+                          setStoreId(String(value));
+                        }}
+                        value={storeId}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="name"
@@ -177,10 +365,10 @@ export function UpdateStoreForm({
                 </FormItem>
               )}
             />
-            <div className="flex space-x-2">
+            <div className="grid grid-cols-2 gap-6">
               <LoadingButton
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || !isInputValid || isLoadingDeleteBtn}
                 isLoading={isLoading}
               >
                 Update
@@ -191,7 +379,7 @@ export function UpdateStoreForm({
                   <Button
                     type="button"
                     variant="destructive"
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingDeleteBtn}
                   >
                     Delete
                     <span className="sr-only">Delete store</span>
@@ -205,14 +393,15 @@ export function UpdateStoreForm({
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
-                    <Button
+                    <LoadingButton
                       type="button"
                       onClick={deleteStore}
                       variant="destructive"
-                      disabled={isLoading}
+                      isLoading={isLoadingDeleteBtn}
+                      disabled={isLoadingDeleteBtn}
                     >
                       Delete
-                    </Button>
+                    </LoadingButton>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>

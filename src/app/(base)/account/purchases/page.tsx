@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/table";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
-import data from "@/helpers/data.json"; // <- for dev
 import { SearchForm } from "@/components/form/search-form";
 import { Metadata } from "next";
 
@@ -46,7 +45,7 @@ export default function UserPurchasesPage() {
             </TableRow>
           </TableHeader>
           <TableBody className="font-light">
-            {data.invoices.map((invoice) => {
+            {/* {data.invoices.map((invoice) => {
               const product = data.products.find(
                 ({ id }) => id === invoice.productId
               );
@@ -94,7 +93,7 @@ export default function UserPurchasesPage() {
                   <TableCell>Download</TableCell>
                 </TableRow>
               );
-            })}
+            })} */}
           </TableBody>
         </Table>
       </div>

@@ -13,7 +13,7 @@ import { File, Product, Store } from "@prisma/client";
 import { siteConfig } from "@/config/site";
 import { ProductActionButtons } from "./product-action-buttons";
 interface ProductCardProps {
-  product: Pick<Product, "id" | "name" | "category">;
+  product: Pick<Product, "id" | "name" | "category" | "storeId">;
   store: Pick<Store, "id" | "name">;
   price: number;
   thumbnail: Pick<File, "url"> | null;
@@ -31,7 +31,7 @@ export function ProductCard({
         <AspectRatio ratio={4 / 3}>
           <Link
             aria-label={`View ${product.name} details`}
-            href={`/listing/${product.id}`}
+            href={`/store/${product.storeId}/${product.id}`}
           >
             <Image
               src={thumbnail?.url ?? siteConfig.placeholderImageUrl}

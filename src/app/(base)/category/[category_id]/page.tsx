@@ -1,31 +1,30 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { absoluteUrl, cn } from "@/lib/utils";
+import { absoluteUrl } from "@/lib/utils";
 import { Products } from "@/components/products";
 import { db } from "@/lib/db";
-import { getSubcategories, productCategories } from "@/config/category";
+import { productCategories } from "@/config/category";
 import { siteConfig } from "@/config/site";
 import { Shell } from "@/components/shell";
 import { Heading } from "@/components/ui/heading";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Image from "next/image";
 import Link from "next/link";
 
-interface UserCollectionPageProps {
+interface CategoryPageProps {
   params: {
     category_id: string;
   };
 }
 
-function getCategoryDetail(collectionId: string) {
+function getCategory(collectionId: string) {
   const category = productCategories.find(({ slug }) => slug === collectionId);
   return category;
 }
 
 export async function generateMetadata({
   params,
-}: UserCollectionPageProps): Promise<Metadata> {
-  const category = getCategoryDetail(params.category_id);
+}: CategoryPageProps): Promise<Metadata> {
+  const category = getCategory(params.category_id);
 
   if (!category) {
     return {};
@@ -65,10 +64,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({
-  params,
-}: UserCollectionPageProps) {
-  const category = getCategoryDetail(params.category_id);
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const category = getCategory(params.category_id);
 
   if (!category) {
     notFound();

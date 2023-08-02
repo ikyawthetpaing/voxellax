@@ -12,9 +12,7 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { Icons } from "@/components/icons";
-import { lobbyUserDropdownConfig } from "@/config/lobby";
-import { dashboardConfig } from "@/config/dashboard";
+import { baseConfig } from "@/config/base";
 
 interface UserDropdownMenuProps {
   user: User;
@@ -53,12 +51,10 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {lobbyUserDropdownConfig(user.id).navItems.map((navItem, index) => {
-            // const Icon = Icons[navItem.icon ?? "check"];
+          {baseConfig.userDropdown(user.id).navItems.map((navItem, index) => {
             return (
               <Link key={index} href={navItem.href}>
                 <DropdownMenuItem key={navItem.title}>
-                  {/* <Icon className="mr-2 h-4 w-4" /> */}
                   <span>{navItem.title}</span>
                 </DropdownMenuItem>
               </Link>
@@ -69,12 +65,10 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              {dashboardConfig.navItems.map((navItem, index) => {
-                // const Icon = Icons[navItem.icon ?? "check"];
+              {baseConfig.storeDropdown().navItems.map((navItem, index) => {
                 return (
                   <Link key={index} href={navItem.href}>
                     <DropdownMenuItem key={navItem.title}>
-                      {/* <Icon className="mr-2 h-4 w-4" /> */}
                       <span>{navItem.title}</span>
                     </DropdownMenuItem>
                   </Link>
@@ -85,7 +79,6 @@ export function UserDropdownMenu({ user, isAdmin }: UserDropdownMenuProps) {
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
-          {/* <Icons.logout className="mr-2 h-4 w-4" /> */}
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
