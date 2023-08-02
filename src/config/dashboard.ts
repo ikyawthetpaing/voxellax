@@ -1,31 +1,31 @@
-import type { NavItemsConfig } from "@/types";
+import { NavItem } from "@/types";
 
-export const dashboardConfig: NavItemsConfig = {
+type DashboardConfig = {
+  navItems: NavItem[];
+};
+
+export const dashboardConfig: DashboardConfig = {
   navItems: [
     {
       title: "Overview",
       href: "/dashboard/overview",
-      icon: "settings",
     },
     {
       title: "Stores",
       href: "/dashboard/stores",
-      icon: "store",
     },
     {
       title: "Customers",
       href: "/dashboard/customers",
-      icon: "store",
     },
     {
       title: "Products",
       href: "/dashboard/products",
-      icon: "store",
     },
   ],
 };
 
-export function dashboardStoreConfig(store_id: string): NavItemsConfig {
+export function dashboardStoreConfig(store_id: string): DashboardConfig {
   return {
     navItems: [
       {

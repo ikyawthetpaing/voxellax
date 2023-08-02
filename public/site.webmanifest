@@ -51,6 +51,12 @@
   "scope": "/",
   "prefer_related_applications": false,
   "related_applications": [],
-  "categories": ["e-commerce", "digital products"],
+  "categories": [
+    "digital products",
+    "e-commerce",
+    "e-books",
+    "graphics",
+    "templates"
+  ],
   "lang": "en-US"
 }

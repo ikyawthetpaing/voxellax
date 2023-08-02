@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@/components/analytics";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -70,6 +71,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <Analytics />
           <Toaster />
         </ThemeProvider>
       </body>

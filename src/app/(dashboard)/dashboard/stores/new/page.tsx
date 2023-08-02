@@ -29,7 +29,7 @@ export default async function NewStorePage() {
           easy-to-use platform.
         </p>
       </div>
-      <AddStoreForm userId={user.id} />
+      <AddStoreForm />
     </Shell>
   );
 }

@@ -1,11 +1,11 @@
 import { Shell } from "@/components/shell";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs } from "@/components/tabs";
-import { lobbyUserConfig } from "@/config/lobby";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { absoluteUrl } from "@/lib/utils";
+import { baseConfig } from "@/config/base";
 
 interface UserProfileLayoutProps {
   children: React.ReactNode;
@@ -95,7 +95,7 @@ export default async function UserProfileLayout({
       </div>
       <div className="flex justify-center">
         <Tabs
-          items={lobbyUserConfig(user.id).navItems}
+          items={baseConfig.userProfile(user.id).navItems}
           className="grid-cols-3"
         />
       </div>

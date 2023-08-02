@@ -3,7 +3,6 @@ import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 
-import data from "@/helpers/data.json";
 import { Icons } from "@/components/icons";
 import { Metadata } from "next";
 
@@ -26,7 +25,7 @@ export default function UserPage({ params }: UserPageProps) {
         <Button variant="secondary">All activity</Button>
       </div>
       <div className="grid gap-8">
-        {data.activities.map((activity, index) => {
+        {/* {data.activities.map((activity, index) => {
           const product = data.products.find(
             ({ id }) => id === activity.productId
           );
@@ -57,7 +56,7 @@ export default function UserPage({ params }: UserPageProps) {
               </div>
             </div>
           );
-        })}
+        })} */}
       </div>
     </div>
   );

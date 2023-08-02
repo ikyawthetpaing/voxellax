@@ -1,5 +1,5 @@
 import { NavItem } from "@/types";
-import { productCategories } from "./category";
+// import { productCategories } from "./category";
 
 export const baseConfig = {
   mainNavItems: [
@@ -8,17 +8,17 @@ export const baseConfig = {
       href: "/free-assets",
     },
   ],
-  subNavBar: () => {
-    const categories = productCategories.map((category) => {
-      return {
-        label: category.title,
-        value: category.slug,
-        subcategories: category.subcategories.map((subcategory) => {
-          return { label: subcategory.title, value: subcategory.slug };
-        }),
-      };
-    });
-  },
+  // subNavBar: () => {
+  //   const categories = productCategories.map((category) => {
+  //     return {
+  //       label: category.title,
+  //       value: category.slug,
+  //       subcategories: category.subcategories.map((subcategory) => {
+  //         return { label: subcategory.title, value: subcategory.slug };
+  //       }),
+  //     };
+  //   });
+  // },
   userProfile: (userId: string) => {
     const navItems: NavItem[] = [
       {
