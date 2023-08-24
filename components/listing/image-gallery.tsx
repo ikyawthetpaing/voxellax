@@ -2,6 +2,7 @@
 
 import { HTMLAttributes, useState } from "react";
 import Image from "next/image";
+import { ProductImageUploadedFile } from "@/types";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 import { cn } from "@/lib/utils";
@@ -13,7 +14,7 @@ import { Icons } from "@/components/icons";
 // import { ProductActionButtons } from "../product-action-buttons";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
-  images: string[];
+  images: ProductImageUploadedFile[] | null;
   productId: string;
 }
 
@@ -31,10 +32,10 @@ export function ImageGallery({
         ratio={4 / 3}
         className="group relative overflow-hidden rounded-lg border"
       >
-        {images.length > 0 ? (
+        {images && images.length > 0 ? (
           <Image
-            src={images[currentImageIndex]}
-            alt={images[currentImageIndex]}
+            src={images[currentImageIndex].url}
+            alt={images[currentImageIndex].name}
             fill
             className="object-cover"
             loading="lazy"
@@ -50,63 +51,67 @@ export function ImageGallery({
           productId={productId}
           className="absolute right-2 top-2 sm:right-4 sm:top-4 sm:opacity-0 sm:group-hover:opacity-100"
         /> */}
-        <div className="absolute left-0 top-1/2 hidden w-full -translate-y-1/2 justify-between px-2 opacity-0 duration-100 animate-in group-hover:opacity-100 sm:flex sm:px-4">
-          <Button
-            variant="secondary"
-            size="icon"
-            className="rounded-full"
-            onClick={() =>
-              setCurrentImageIndex((currentImageIndex) => {
-                let newIndex = currentImageIndex - 1;
-                if (newIndex < 0) {
-                  newIndex = images.length - 1;
-                }
-                return newIndex;
-              })
-            }
-          >
-            <Icons.chevronLeft className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="secondary"
-            size="icon"
-            className="rounded-full"
-            onClick={() =>
-              setCurrentImageIndex((currentImageIndex) => {
-                let newIndex = currentImageIndex + 1;
-                if (newIndex >= images.length) {
-                  newIndex = 0;
-                }
-                return newIndex;
-              })
-            }
-          >
-            <Icons.chevronRight className="h-5 w-5" />
-          </Button>
-        </div>
-      </AspectRatio>
-      <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={cn(
-              "flex w-20 shrink-0 overflow-hidden rounded-lg border border-background md:w-24",
-              { "border-primary": index === currentImageIndex }
-            )}
-            onMouseOver={() => setCurrentImageIndex(index)}
-          >
-            <AspectRatio ratio={4 / 3}>
-              <Image
-                src={image}
-                alt={image}
-                fill
-                className="object-cover"
-                loading="lazy"
-              />
-            </AspectRatio>
+        {images && (
+          <div className="absolute left-0 top-1/2 hidden w-full -translate-y-1/2 justify-between px-2 opacity-0 duration-100 animate-in group-hover:opacity-100 sm:flex sm:px-4">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="rounded-full"
+              onClick={() =>
+                setCurrentImageIndex((currentImageIndex) => {
+                  let newIndex = currentImageIndex - 1;
+                  if (newIndex < 0) {
+                    newIndex = images.length - 1;
+                  }
+                  return newIndex;
+                })
+              }
+            >
+              <Icons.chevronLeft className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="rounded-full"
+              onClick={() =>
+                setCurrentImageIndex((currentImageIndex) => {
+                  let newIndex = currentImageIndex + 1;
+                  if (newIndex >= images.length) {
+                    newIndex = 0;
+                  }
+                  return newIndex;
+                })
+              }
+            >
+              <Icons.chevronRight className="h-5 w-5" />
+            </Button>
           </div>
-        ))}
-      </div>
+        )}
+      </AspectRatio>
+      {images && (
+        <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={cn(
+                "flex w-20 shrink-0 overflow-hidden rounded-lg border border-background md:w-24",
+                { "border-primary": index === currentImageIndex }
+              )}
+              onMouseOver={() => setCurrentImageIndex(index)}
+            >
+              <AspectRatio ratio={4 / 3}>
+                <Image
+                  src={image.url}
+                  alt={image.name}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                />
+              </AspectRatio>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

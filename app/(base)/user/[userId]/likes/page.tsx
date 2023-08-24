@@ -26,6 +26,8 @@ export default async function UserLikesPage({ params }: UserLikesPageProps) {
   });
 
   return (
-    <div>{likedProducts && <ProductsList products={likedProducts} />}</div>
+    <div>
+      {/* {likedProducts && <ProductsList products={likedProducts} />} */}
+    </div>
   );
 }

@@ -35,33 +35,10 @@ export const baseConfig = {
           title: "Dashboard",
           href: "/dashboard",
         },
-        // {
-        //   title: "Stores",
-        //   href: "/dashboard/stores",
-        // },
-        // {
-        //   title: "Customers",
-        //   href: "/dashboard/customers",
-        // },
-        // {
-        //   title: "Products",
-        //   href: "/dashboard/products",
-        // },
       ];
       return { navItems };
     },
   },
-  // subNavBar: () => {
-  //   const categories = productCategories.map((category) => {
-  //     return {
-  //       label: category.title,
-  //       value: category.slug,
-  //       subcategories: category.subcategories.map((subcategory) => {
-  //         return { label: subcategory.title, value: subcategory.slug };
-  //       }),
-  //     };
-  //   });
-  // },
   userProfile: (userId: string) => {
     const navItems: NavItem[] = [
       {
@@ -79,26 +56,37 @@ export const baseConfig = {
     ];
     return { navItems };
   },
-  // storeProfile: (storeId: string) => {
-  //   const navItems: NavItem[] = [
-  //     {
-  //       title: "Shop",
-  //       href: `/store/${storeId}`,
-  //     },
-  //     {
-  //       title: "About",
-  //       href: `/store/${storeId}/about`,
-  //     },
-  //     {
-  //       title: "Announcements",
-  //       href: `/store/${storeId}/announcements`,
-  //     },
-  //     {
-  //       title: "Reviews",
-  //       href: `/store/${storeId}/reviews`,
-  //     },
-  //   ];
-  //   return { navItems };
+  storeProfile: (storeId: string) => {
+    const navItems: NavItem[] = [
+      {
+        title: "Shop",
+        href: `/store/${storeId}`,
+      },
+      {
+        title: "About",
+        href: `/store/${storeId}/about`,
+      },
+      {
+        title: "Announcements",
+        href: `/store/${storeId}/announcements`,
+      },
+      {
+        title: "Reviews",
+        href: `/store/${storeId}/reviews`,
+      },
+    ];
+    return { navItems };
+  },
+  // subNavBar: () => {
+  //   const categories = productCategories.map((category) => {
+  //     return {
+  //       label: category.title,
+  //       value: category.slug,
+  //       subcategories: category.subcategories.map((subcategory) => {
+  //         return { label: subcategory.title, value: subcategory.slug };
+  //       }),
+  //     };
+  //   });
   // },
   // userDropdown: (userId: string) => {
   // const navItems: NavItem[] = [

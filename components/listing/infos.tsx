@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import Link from "next/link";
+import { Store, User } from "@/db/schema";
 
-import { Store, User } from "@/types/dev";
 import { siteConfig } from "@/config/site";
 import {
   Accordion,
@@ -10,7 +10,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { Store, User } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 

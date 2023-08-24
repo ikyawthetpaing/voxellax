@@ -1,9 +1,7 @@
-// import { toast } from "@/components/ui/use-toast";
 import { clsx, type ClassValue } from "clsx";
+import cuid from "cuid";
 import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
-
-// import * as z from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -102,10 +100,6 @@ export function absoluteUrl(path: string) {
   return `${appUrl}/${formattedPath}`;
 }
 
-export function isImage(mimeType: string): boolean {
-  return mimeType.split("/")[0] === "image";
-}
-
 export function groupArray(array: number[], groupSize: number): number[][] {
   const groups: number[][] = [];
 
@@ -117,26 +111,32 @@ export function groupArray(array: number[], groupSize: number): number[][] {
   return groups;
 }
 
-// export function catchError(err: unknown) {
-//   if (err instanceof z.ZodError) {
-//     const errors = err.issues.map((issue) => {
-//       return issue.message;
-//     });
-//     return toast({ description: errors.join("\n"), variant: "destructive" });
-//   } else if (err instanceof Error) {
-//     return toast({ description: err.message, variant: "destructive" });
-//   } else {
-//     return toast({
-//       description: "Something went wrong, please try again later.",
-//       variant: "destructive",
-//     });
-//   }
-// }
-
 export function formatDate(date: Date | string) {
   return dayjs(date).format("MMMM D, YYYY");
 }
 
-// export function removeHttpsPrefix(url: string): string {
-//   return url.replace(/^https:\/\/(www\.)?/, "");
-// }
+export function slugify(str: string) {
+  return str
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+}
+
+/**
+ * Generates a unique identifier based on the provided name.
+ *
+ * @param name The name to be used for generating the identifier.
+ * @returns A unique identifier string.
+ */
+export function generatedId(name: string): string {
+  let slug = slugify(name);
+  const uniqueSlug = cuid.slug();
+  const separator = "-";
+
+  if (slug.length + uniqueSlug.length + separator.length > 255) {
+    slug = slug.slice(0, 255 - uniqueSlug.length - separator.length);
+  }
+  const id = slug + separator + uniqueSlug;
+  return id;
+}

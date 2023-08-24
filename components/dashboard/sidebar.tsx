@@ -1,7 +1,5 @@
-"use client";
-
 import { HTMLAttributes } from "react";
-import { data } from "@/constants/data-dev";
+import { Store } from "@/db/schema";
 
 import { SidebarNavItem } from "@/config/dashboard";
 import { cn } from "@/lib/utils";
@@ -9,11 +7,16 @@ import { cn } from "@/lib/utils";
 import { NavItems } from "./nav-items";
 
 interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
+  store: Store;
   navItems: SidebarNavItem[];
 }
 
-export function Sidebar({ navItems, className, ...props }: SidebarProps) {
-  const store = data.stores[0];
+export async function Sidebar({
+  store,
+  navItems,
+  className,
+  ...props
+}: SidebarProps) {
   return (
     <section
       className={cn(

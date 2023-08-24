@@ -1,193 +1,76 @@
-import {
-  Dispatch,
-  HTMLAttributes,
-  SetStateAction,
-  useCallback,
-  useEffect,
-} from "react";
-import Image from "next/image";
-import { FileWithPreview } from "@/types";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+"use client";
+
+import { Dispatch, HTMLAttributes, SetStateAction, useCallback } from "react";
+import { ProductFileWithPath } from "@/types";
 import {
   useDropzone,
-  type Accept,
   type FileRejection,
   type FileWithPath,
 } from "react-dropzone";
 
-import { cn, formatBytes, isImage } from "@/lib/utils";
-import { useIsMounted } from "@/hooks/use-is-mounted";
+import { cn, formatBytes } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 
-type UploadFor = "product-image-file" | "product-digital-file";
-
 interface ProductFileFormProps extends HTMLAttributes<HTMLDivElement> {
-  accept?: Accept;
-  totalSize?: number;
-  maxSize?: number;
-  maxFiles?: number;
-  files: FileWithPreview[];
-  setFiles: Dispatch<SetStateAction<FileWithPreview[]>>;
-  setDeletedFiles?: Dispatch<SetStateAction<string[]>>;
+  totalSize: number;
+  maxFiles: number;
+  files: ProductFileWithPath[];
+  setFiles: Dispatch<SetStateAction<ProductFileWithPath[]>>;
   isUploading?: boolean;
   disabled?: boolean;
-  uploadFor: UploadFor;
 }
 
 export function ProductFileForm({
-  accept,
   totalSize,
-  maxSize,
   maxFiles,
   files,
   setFiles,
-  setDeletedFiles,
   isUploading = false,
   disabled = false,
-  uploadFor,
   className,
   ...props
 }: ProductFileFormProps) {
-  if (totalSize && maxSize) {
-    throw new Error(
-      "ProductFileForm: can't use totalSize and maxSize at the same time."
-    );
-  }
-  if (!totalSize && !maxSize) {
-    throw new Error(
-      "ProductFileForm: must assign one value totalSize or maxSize."
-    );
-  }
-
-  const isMounted = useIsMounted();
-
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
-      const totalFilesCount = files.length;
+      let addedFilesSize = 0;
 
-      if (maxFiles && uploadFor === "product-image-file") {
-        if (files.length >= maxFiles) {
-          toast({
-            description: `You can only upload up to ${maxFiles} file(s).`,
-            variant: "destructive",
-          });
-          return;
-        }
-        const remainingSlots = maxFiles - totalFilesCount;
-        const filesToAdd = acceptedFiles
-          .slice(0, remainingSlots)
-          .map((file, i) => {
-            let preview = undefined;
-            let index = totalFilesCount + i;
-            if (isImage(file.type) && uploadFor === "product-image-file") {
-              preview = URL.createObjectURL(file);
-            }
-            return Object.assign(file, {
-              preview,
-              index,
-            });
-          });
+      files.map((file) => (addedFilesSize += file.size));
+      acceptedFiles.map((file) => (addedFilesSize += file.size));
+
+      if (addedFilesSize > totalSize) {
+        toast({
+          description: `Total limit is${formatBytes(totalSize)}.`,
+        });
+      } else {
+        const filesToAdd = acceptedFiles.map((file, i) => {
+          return Object.assign(file);
+        });
+
         setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
-      }
-
-      if (totalSize && uploadFor === "product-digital-file") {
-        let addedFilesSize = 0;
-
-        files.map((file) => (addedFilesSize += file.size));
-        acceptedFiles.map((file) => (addedFilesSize += file.size));
-
-        if (addedFilesSize > totalSize) {
-          toast({ description: `${formatBytes(totalSize)} limit.` });
-        } else {
-          const filesToAdd = acceptedFiles.map((file, i) => {
-            return Object.assign(file, {
-              index: totalFilesCount + i,
-            });
-          });
-
-          setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
-        }
       }
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
-          if (errors[0]?.code === "file-too-large" && maxSize) {
-            toast({
-              description: `File is too large. Max size is ${formatBytes(
-                maxSize
-              )}`,
-              variant: "destructive",
-            });
-            return;
-          }
           errors[0]?.message &&
             toast({ description: errors[0].message, variant: "destructive" });
         });
       }
     },
-    [files, maxFiles, maxSize, setFiles, totalSize, uploadFor]
+    [files, setFiles, totalSize]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept,
-    maxSize,
     maxFiles,
-    multiple: true,
+    multiple: maxFiles > 1,
     disabled,
   });
 
-  useEffect(() => {
-    if (uploadFor === "product-image-file") {
-      if (isMounted()) {
-        setFiles((oldFiles) => {
-          const newFiles: FileWithPreview[] = [];
-
-          oldFiles.map((file) => {
-            newFiles.push(
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-                index: file.index,
-              })
-            );
-          });
-          return newFiles;
-        });
-      } else {
-        return () => {
-          files.forEach((file) => URL.revokeObjectURL(file.preview));
-        };
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function onDragEnd(result: DropResult) {
-    if (!result.destination) {
-      return;
-    }
-    const newFiles = Array.from(files);
-    const [removed] = newFiles.splice(result.source.index, 1);
-    newFiles.splice(result.destination.index, 0, removed);
-
-    // Update the index property for each image in the newFiles array
-    newFiles.map((image, index) => {
-      image.index = index;
-    });
-
-    setFiles(newFiles);
-  }
-
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-4">
       <div
         {...getRootProps()}
         className={cn(
@@ -213,10 +96,7 @@ export function ProductFileForm({
               className={cn("h-8 w-8", isDragActive && "animate-bounce")}
               aria-hidden="true"
             />
-            <p className="text-base font-medium">
-              Drop the{" "}
-              {uploadFor === "product-image-file" ? "image(s)" : "file(s)"} here
-            </p>
+            <p className="text-base font-medium">Drop the file(s) here</p>
           </div>
         ) : (
           <div className="grid place-items-center gap-1 sm:px-5">
@@ -225,65 +105,29 @@ export function ProductFileForm({
               aria-hidden="true"
             />
             <p className="mt-2 text-base font-medium text-muted-foreground">
-              Drop your{" "}
-              {uploadFor === "product-image-file" ? "image(s)" : "file(s)"}{" "}
-              here, or <span className="text-blue-500">click to browse</span>
+              Drop your file(s) here, or{" "}
+              <span className="text-blue-500">click to browse</span>
             </p>
             <p className="text-sm text-slate-500">
-              {uploadFor === "product-image-file"
-                ? "1600 x 1200 (4:3) recommended,"
-                : "Unlimited files,"}{" "}
-              {maxSize && `up to ${formatBytes(maxSize)} each.`}
-              {totalSize && `${formatBytes(totalSize)} total limit.`}
+              Unlimited files, {formatBytes(totalSize)} total limit.
             </p>
           </div>
         )}
       </div>
       {files.length ? (
-        <>
+        <div className="grid gap-2">
           <h1>Uploads: </h1>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={uploadFor}>
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="w-full overflow-hidden"
-                >
-                  {files.map((file, index) => (
-                    <Draggable
-                      index={index}
-                      draggableId={file.name + index}
-                      key={file.name + index}
-                      isDragDisabled={disabled}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <FileCard
-                            i={index}
-                            files={files}
-                            setFiles={setFiles}
-                            setDeletedFiles={setDeletedFiles}
-                            file={file}
-                            uploadFor={uploadFor}
-                            className={cn({
-                              "border-y bg-background": snapshot.isDragging,
-                            })}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </>
+          <div className="w-full overflow-hidden">
+            {files.map((file, index) => (
+              <FileCard
+                i={index}
+                files={files}
+                setFiles={setFiles}
+                file={file}
+              />
+            ))}
+          </div>
+        </div>
       ) : null}
       {files.length ? (
         <Button
@@ -292,15 +136,6 @@ export function ProductFileForm({
           size="sm"
           className="w-full"
           onClick={() => {
-            const uploadedFiles = files.filter((file) => file.uploaded);
-            uploadedFiles.map((file) => {
-              if (file.uploaded && setDeletedFiles) {
-                setDeletedFiles((prev) => [
-                  ...prev,
-                  file.uploaded!.uploadthingKey,
-                ]);
-              }
-            });
             setFiles([]);
           }}
         >
@@ -315,44 +150,22 @@ export function ProductFileForm({
 
 interface FileCardProps extends HTMLAttributes<HTMLDivElement> {
   i: number;
-  file: FileWithPreview;
-  files: FileWithPreview[];
-  setFiles: Dispatch<SetStateAction<FileWithPreview[]>>;
-  setDeletedFiles?: Dispatch<SetStateAction<string[]>>;
-  uploadFor: UploadFor;
+  file: ProductFileWithPath;
+  files: ProductFileWithPath[];
+  setFiles: Dispatch<SetStateAction<ProductFileWithPath[]>>;
 }
 
-function FileCard({
-  i,
-  file,
-  files,
-  setFiles,
-  setDeletedFiles,
-  uploadFor,
-  className,
-}: FileCardProps) {
-  const fileExtension = file.type.split("/").pop();
+function FileCard({ i, file, files, setFiles, className }: FileCardProps) {
+  const matchResult = file.name.match(/\.([^.]+)$/);
+  const extension = matchResult ? matchResult[1] : "Unknown";
+
   return (
     <div className={cn("flex gap-4 py-2", className)}>
       <div className="w-24">
         <AspectRatio ratio={4 / 3} className="relative">
-          {uploadFor === "product-image-file" && file.preview ? (
-            <Image
-              src={file.preview}
-              alt={file.name}
-              fill
-              className="rounded-lg object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center rounded-lg bg-accent text-xl font-medium uppercase text-accent-foreground">
-              {fileExtension ? fileExtension : "None"}
-            </div>
-          )}
-          {i === 0 && uploadFor === "product-image-file" && (
-            <div className="absolute right-0 top-0 flex h-6 w-6 -translate-y-1/4 translate-x-1/4 items-center justify-center rounded-full bg-blue-500">
-              <Icons.star className="h-4 w-4" />
-            </div>
-          )}
+          <div className="flex h-full w-full items-center justify-center rounded-lg bg-accent text-lg font-medium uppercase text-accent-foreground">
+            {extension}
+          </div>
         </AspectRatio>
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-4">
@@ -367,27 +180,17 @@ function FileCard({
         <Button
           type="button"
           variant="outline"
-          size="sm"
           className="h-7 w-7 p-0"
           onClick={() => {
-            if (!files) return;
-            if (file.uploaded && setDeletedFiles) {
-              setDeletedFiles((prev) => [
-                ...prev,
-                file.uploaded!.uploadthingKey,
-              ]);
-            }
             const newFiles = files.filter((_, j) => j !== i);
-
-            // Update the index property for each image in the newFiles array
-            newFiles.map((image, index) => {
-              image.index = index;
-            });
             setFiles(newFiles);
           }}
         >
-          <Icons.x className="h-4 w-4" aria-hidden="true" />
-          <span className="sr-only">Remove file</span>
+          {file.uploaded ? (
+            <Icons.trash className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Icons.x className="h-4 w-4" aria-hidden="true" />
+          )}
         </Button>
       </div>
     </div>

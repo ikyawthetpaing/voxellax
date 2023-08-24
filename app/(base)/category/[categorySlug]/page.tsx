@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { data } from "@/constants/data-dev";
 
-import { productCategories } from "@/config/category";
+import { getCategory } from "@/config/category";
 import { siteConfig } from "@/config/site";
+import { getProductsAction } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Heading } from "@/components/heading";
@@ -13,19 +13,17 @@ import { Shell } from "@/components/shell";
 
 interface CategoryPageProps {
   params: {
-    categoryId: string;
+    categorySlug: string;
   };
-}
-
-function getCategory(collectionId: string) {
-  const category = productCategories.find(({ slug }) => slug === collectionId);
-  return category;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
 
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
-  const category = getCategory(params.categoryId);
+  const category = getCategory(params.categorySlug);
 
   if (!category) {
     return {};
@@ -41,7 +39,7 @@ export async function generateMetadata({
   return {
     title: category.title,
     description: category.description,
-    authors: [{ name: siteConfig.name, url: url }],
+    authors: [{ name: siteConfig.name, url: url }, ...siteConfig.authors],
     openGraph: {
       title: category.title,
       description: category.description,
@@ -65,8 +63,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const category = getCategory(params.categoryId);
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: CategoryPageProps) {
+  const category = getCategory(params.categorySlug);
 
   if (!category) {
     notFound();
@@ -74,9 +75,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const subCategories = category.subcategories;
 
-  const products = data.products.filter(
-    ({ category }) => category === params.categoryId
-  );
+  const { page, per_page, sort, subcategories, price_range, store_ids } =
+    searchParams;
+
+  // Products transaction
+  const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
+  const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
+
+  const products = await getProductsAction({
+    limit,
+    offset,
+    sort: typeof sort === "string" ? sort : null,
+    categories: category.slug,
+    subcategories: typeof subcategories === "string" ? subcategories : null,
+    price_range: typeof price_range === "string" ? price_range : null,
+    store_ids: typeof store_ids === "string" ? store_ids : null,
+  });
 
   return (
     <Shell>

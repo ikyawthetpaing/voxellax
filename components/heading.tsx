@@ -19,6 +19,7 @@ const headingVariants = cva("font-medium leading-tight capitalize", {
       // sm: "text-sm",
       // xs: "text-xs",
       default: "text-lg md:text-xl",
+      "2xl": "text-3xl md:text-4xl",
       xl: "text-2xl md:text-3xl",
       lg: "text-xl md:text-2xl",
       sm: "text-base md:text-lg",

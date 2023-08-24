@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { data } from "@/constants/data-dev";
+import { Store } from "@/db/schema";
 import {
   CreditCard,
   LogOut,
@@ -16,7 +16,6 @@ import {
   Users,
 } from "lucide-react";
 
-import { Store } from "@/types/dev";
 import { SidebarNavItem } from "@/config/dashboard";
 import { cn } from "@/lib/utils";
 import {
@@ -41,7 +40,7 @@ import {
 import { Icons } from "@/components/icons";
 
 interface NavItemsProps {
-  store: Pick<Store, "name" | "profileImageUrl">;
+  store: Store;
   navItems: SidebarNavItem[];
 }
 
@@ -55,8 +54,6 @@ export function NavItems({ store, navItems }: NavItemsProps) {
       defaultItem = href;
     }
   });
-
-  const stores = data.stores; // <- dev
 
   return (
     <>
@@ -154,26 +151,24 @@ export function NavItems({ store, navItems }: NavItemsProps) {
           <div className="flex cursor-pointer items-center justify-between gap-4 rounded-lg px-4 py-2 hover:bg-accent/25">
             <div className="flex items-center gap-2">
               <Avatar className="h-6 w-6 cursor-pointer">
-                <AvatarImage src={store.profileImageUrl} alt={store.name} />
-                <AvatarFallback>{store.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={store?.avatar?.url} alt={store?.name} />
+                <AvatarFallback>{store?.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              <h1 className="text-sm font-medium">{store.name}</h1>
+              <h1 className="text-sm font-medium">{store?.name}</h1>
             </div>
             <Icons.moreHorizontal className="h-4 w-4" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuGroup>
-            {stores.map((store, index) => (
-              <DropdownMenuItem key={index}>
-                <Icons.store className="mr-2 h-4 w-4 text-muted-foreground" />
-                <span>{store.name}</span>
-              </DropdownMenuItem>
-            ))}
             <DropdownMenuItem>
+              <Icons.store className="mr-2 h-4 w-4 text-muted-foreground" />
+              <span>{store?.name}</span>
+            </DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Icons.plus className="mr-2 h-4 w-4 text-muted-foreground" />
               <span>Add new store</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

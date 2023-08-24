@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Product } from "@/db/schema";
 // import { products, type Product } from "@/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { Product } from "@/types/dev";
 import { getCategories } from "@/config/category";
 // import { toast } from "sonner";
 
@@ -25,6 +26,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 
 import { Icons } from "../icons";
+import { UpdateProductFormSheet } from "./update-product-form-sheet";
 
 // import { deleteProductAction } from "@/app/_actions/product";
 
@@ -41,6 +43,9 @@ export function ProductsTable({
 }: ProductsTableProps) {
   const [isPending, startTransition] = React.useTransition();
   const [selectedRowIds, setSelectedRowIds] = React.useState<string[]>([]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   // Memoize the columns so they don't re-render on every render
   const columns = React.useMemo<ColumnDef<Product, unknown>[]>(
@@ -120,6 +125,7 @@ export function ProductsTable({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Rating" />
         ),
+        cell: () => 0,
       },
       {
         accessorKey: "createdAt",
@@ -143,15 +149,27 @@ export function ProductsTable({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-              <DropdownMenuItem asChild>
-                <Link
-                  href={`/dashboard/stores/${storeId}/products/${row.original.id}`}
-                >
-                  Edit
-                </Link>
+              <DropdownMenuItem
+                onClick={() => {
+                  // now you got a read/write object
+                  const current = new URLSearchParams(
+                    Array.from(searchParams.entries())
+                  ); // -> has to use this form
+
+                  current.set("edit", row.original.id);
+
+                  // cast to string
+                  const search = current.toString();
+                  // or const query = `${'?'.repeat(search.length && 1)}${search}`;
+                  const query = search ? `?${search}` : "";
+
+                  router.push(`${pathname}${query}`);
+                }}
+              >
+                <span>Edit</span>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/product/${row.original.id}`}>View</Link>
+                <Link href={`/listing/${row.original.id}`}>View</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

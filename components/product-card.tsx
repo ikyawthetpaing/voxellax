@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Product } from "@/db/schema";
 
-import { Product } from "@/types/dev";
-import { siteConfig } from "@/config/site";
+import { getStoreAction } from "@/lib/actions/store";
 import { formatPrice } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -12,39 +12,30 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-
-import { Icons } from "./icons";
-
-type Store = {
-  id: string;
-  name: string;
-};
+import { Icons } from "@/components/icons";
 
 interface ProductCardProps {
-  product: Pick<Product, "id" | "name" | "category" | "storeId">;
-  store: Pick<Store, "id" | "name">;
-  price: number;
-  thumbnail: string | null;
+  product: Product;
 }
 
-export function ProductCard({
-  product,
-  store,
-  price,
-  thumbnail,
-}: ProductCardProps) {
+export async function ProductCard({ product }: ProductCardProps) {
+  const store = await getStoreAction(product.storeId);
+  const thumbnail =
+    product.images?.find((image) => image.isThumbnail) ??
+    product.images?.[0] ??
+    null;
   return (
     <Card className="group relative overflow-hidden rounded-lg">
       <CardHeader className="border-b p-0">
         <AspectRatio ratio={4 / 3}>
           <Link
             aria-label={`View ${product.name} details`}
-            href={`/store/${product.storeId}/${product.id}`}
+            href={`/listing/${product.id}`}
           >
             {thumbnail ? (
               <Image
-                src={thumbnail}
-                alt={product.name}
+                src={thumbnail.url}
+                alt={thumbnail.name}
                 fill
                 className="object-cover"
                 loading="lazy"
@@ -61,20 +52,22 @@ export function ProductCard({
         <div className="flex justify-between gap-2">
           <h1 className="line-clamp-1 text-base font-medium">{product.name}</h1>
           <div className="flex items-center rounded-md bg-accent px-1 text-sm font-semibold text-accent-foreground">
-            {formatPrice(price, 0)}
+            {formatPrice(product.price, 0)}
           </div>
         </div>
       </CardContent>
-      <CardFooter className="p-2 pt-0">
-        <div className="text-xs">
-          <span className="text-muted-foreground">by </span>
-          <Link href={`/store/${store.id}`}>{store.name}</Link>
-          <span className="text-muted-foreground"> in </span>
-          <Link href={`/category/${product.category}`} className="capitalize">
-            {product.category}
-          </Link>
-        </div>
-      </CardFooter>
+      {store && (
+        <CardFooter className="p-2 pt-0">
+          <div className="text-xs">
+            <span className="text-muted-foreground">by </span>
+            <Link href={`/store/${store.id}`}>{store.name}</Link>
+            <span className="text-muted-foreground"> in </span>
+            <Link href={`/category/${product.category}`} className="capitalize">
+              {product.category}
+            </Link>
+          </div>
+        </CardFooter>
+      )}
       {/* <ProductActionButtons
         layout="card"
         productId={product.id}

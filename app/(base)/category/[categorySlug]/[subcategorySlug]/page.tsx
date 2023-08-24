@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { data } from "@/constants/data-dev";
 
-import { productCategories } from "@/config/category";
+import { getSubcategory } from "@/config/category";
 import { siteConfig } from "@/config/site";
+import { getProductsAction } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { Heading } from "@/components/heading";
 import { ProductsList } from "@/components/products-list";
@@ -11,22 +11,21 @@ import { Shell } from "@/components/shell";
 
 interface SubcategoryPageProps {
   params: {
-    categoryId: string;
-    subcategoryId: string;
+    categorySlug: string;
+    subcategorySlug: string;
   };
-}
-
-function getSubategory(categoryId: string, subcategoryId: string) {
-  const subcategory = productCategories
-    .find((category) => category.slug === categoryId)
-    ?.subcategories.find((subcategory) => subcategory.slug === subcategoryId);
-  return subcategory;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
 
 export async function generateMetadata({
   params,
 }: SubcategoryPageProps): Promise<Metadata> {
-  const subcategory = getSubategory(params.categoryId, params.subcategoryId);
+  const subcategory = getSubcategory(
+    params.categorySlug,
+    params.subcategorySlug
+  );
 
   if (!subcategory) {
     return {};
@@ -42,12 +41,12 @@ export async function generateMetadata({
   return {
     title: subcategory.title,
     description: subcategory.description,
-    authors: [{ name: siteConfig.name, url: url }],
+    authors: [{ name: siteConfig.name, url: url }, ...siteConfig.authors],
     openGraph: {
       title: subcategory.title,
       description: subcategory.description,
       type: "website",
-      url: absoluteUrl(`/category/${params.categoryId}/${subcategory.slug}`),
+      url: absoluteUrl(`/category/${params.categorySlug}/${subcategory.slug}`),
       images: [
         {
           url: ogUrl.toString(),
@@ -68,16 +67,32 @@ export async function generateMetadata({
 
 export default async function SubcategoryPage({
   params,
+  searchParams,
 }: SubcategoryPageProps) {
-  const subcategory = getSubategory(params.categoryId, params.subcategoryId);
+  const subcategory = getSubcategory(
+    params.categorySlug,
+    params.subcategorySlug
+  );
 
   if (!subcategory) {
     notFound();
   }
 
-  const products = data.products.filter(
-    ({ subcategory }) => subcategory === params.subcategoryId
-  );
+  const { page, per_page, sort, price_range, store_ids } = searchParams;
+
+  // Products transaction
+  const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
+  const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
+
+  const products = await getProductsAction({
+    limit,
+    offset,
+    sort: typeof sort === "string" ? sort : null,
+    categories: params.categorySlug,
+    subcategories: params.subcategorySlug,
+    price_range: typeof price_range === "string" ? price_range : null,
+    store_ids: typeof store_ids === "string" ? store_ids : null,
+  });
 
   return (
     <Shell>

@@ -115,7 +115,7 @@ export default async function UserCollectionPage({
         </h1>
       </div>
       <hr />
-      {products && <ProductsList products={products} />}
+      {/* {products && <ProductsList products={products} />} */}
     </section>
   );
 }

@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { data } from "@/constants/data-dev";
 
+import { siteConfig } from "@/config/site";
+import { getProductAction } from "@/lib/actions/product";
+import { getStoreAction } from "@/lib/actions/store";
 import { absoluteUrl } from "@/lib/utils";
 import { Listing } from "@/components/listing";
 import { Shell } from "@/components/shell";
@@ -13,50 +15,45 @@ interface ProductPageProps {
   };
 }
 
-async function getProduct(productId: string) {
-  const product = data.products.find(({ id }) => id === productId); // <- dev
-
-  if (!product) {
-    null;
-  }
-
-  return product;
-}
-
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const product = await getProduct(params.productId);
+  const product = await getProductAction(params.productId);
 
   if (!product) {
     return {};
   }
 
-  const thumbnail = { url: undefined }; // <- dev
-
   const url = process.env.NEXT_PUBLIC_APP_URL;
-
-  const sanitizedAuthors = data.stores.filter(
-    ({ id }) => id === product.storeId
-  ); // <- dev
-
-  const ogUrl = new URL(thumbnail?.url ?? `${url}/og.png`);
+  const thumbnail =
+    product.images?.find((image) => image.isThumbnail) ??
+    product.images?.[0] ??
+    null;
+  const ogUrl = new URL(thumbnail?.url || `${url}/og.png`);
   ogUrl.searchParams.set("heading", product.name);
   ogUrl.searchParams.set("type", "Listing product");
   ogUrl.searchParams.set("mode", "dark");
 
+  const store = await getStoreAction(product.storeId);
+  const sanitizedAuthors = store
+    ? [{ name: store.name, url: `${url}/store/${store.id}` }]
+    : [];
+
+  const description =
+    product.description ?? `Check out ${product.name} on ${siteConfig.name}`;
+
   return {
     title: product.name,
-    description: product.description,
+    description: description,
     authors: sanitizedAuthors,
     openGraph: {
       title: product.name,
-      description: product.description,
+      description: description,
       type: "article",
-      url: absoluteUrl(`/store/${product.storeId}/${product.id}`),
+      url: absoluteUrl(`/listing/${product.id}`),
       images: [
         {
-          url: ogUrl.toString(),
+          url: ogUrl,
           width: 1200,
           height: 900,
           alt: product.name,
@@ -66,14 +63,14 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: product.name,
-      description: product.description,
-      images: [ogUrl.toString()],
+      description: description,
+      images: [ogUrl],
     },
   };
 }
 
 export default async function ListingPage({ params }: ProductPageProps) {
-  const product = await getProduct(params.productId);
+  const product = await getProductAction(params.productId);
 
   if (!product) {
     notFound();

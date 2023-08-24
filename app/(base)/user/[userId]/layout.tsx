@@ -35,10 +35,11 @@ export async function generateMetadata({
 
   const url = process.env.NEXT_PUBLIC_APP_URL;
 
-  const ogUrl = new URL(`${url}/og.png`);
-  ogUrl.searchParams.set("heading", user.name ?? "");
-  ogUrl.searchParams.set("type", "Profile");
-  ogUrl.searchParams.set("mode", "dark");
+  // const ogUrl = new URL(`${url}/og.png`);
+  // ogUrl.searchParams.set("heading", user.name ?? "");
+  // ogUrl.searchParams.set("type", "Profile");
+  // ogUrl.searchParams.set("mode", "dark");
+  const ogUrl = `${url}/og.png`;
 
   return {
     title: user.name,

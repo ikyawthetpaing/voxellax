@@ -2,6 +2,7 @@
 
 import { HTMLAttributes, useState } from "react";
 import { data } from "@/constants/data-dev";
+import { Store } from "@/db/schema";
 
 import { SidebarNavItem } from "@/config/dashboard";
 import { Button } from "@/components/ui/button";
@@ -10,16 +11,17 @@ import { NavItems } from "@/components/dashboard/nav-items";
 import { Icons } from "@/components/icons";
 
 interface DashboardMobileNavProps extends HTMLAttributes<HTMLDivElement> {
+  store: Store;
   navItems: SidebarNavItem[];
 }
 
 export function DashboardMobileNav({
+  store,
   navItems,
   className,
   ...props
 }: DashboardMobileNavProps) {
   const [open, setOpen] = useState(false);
-  const store = data.stores[0]; // <- dev
 
   return (
     <div className={className} {...props}>

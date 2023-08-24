@@ -2,11 +2,12 @@
 
 import { Dispatch, SetStateAction } from "react";
 import {
+  PRODUCT_DIGITAL_FILE_MAX_COUNT,
   PRODUCT_DIGITAL_FILE_MAX_SIZE_BYTES,
   PRODUCT_IMAGE_FILE_MAX_COUNT,
   PRODUCT_IMAGE_FILE_MAX_SIZE_BYTES,
 } from "@/constants/product";
-import { FileWithPreview } from "@/types";
+import { ProductFileWithPath, ProductImageWithPreview } from "@/types";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 
 import { getCategories, getSubcategories } from "@/config/category";
@@ -27,8 +28,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { ProductFileForm } from "../forms/product-file-form";
 import {
   Select,
   SelectContent,
@@ -36,15 +35,20 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { ProductFileForm } from "@/components/forms/product-file-form";
+
+import { ProductImageFileForm } from "./product-image-file-form";
 
 interface ProductFormProps {
   form: UseFormReturn<ProductSchema>;
   onSubmit: SubmitHandler<ProductSchema>;
-  imageFiles: FileWithPreview[];
-  setImageFiles: Dispatch<SetStateAction<FileWithPreview[]>>;
-  digitalFiles: FileWithPreview[];
-  setDigitalFiles: Dispatch<SetStateAction<FileWithPreview[]>>;
+  imageFiles: ProductImageWithPreview[];
+  setImageFiles: Dispatch<SetStateAction<ProductImageWithPreview[]>>;
+  digitalFiles: ProductFileWithPath[];
+  setDigitalFiles: Dispatch<SetStateAction<ProductFileWithPath[]>>;
+  disabled: boolean;
   submitId: string;
 }
 
@@ -55,6 +59,7 @@ export function ProductForm({
   setImageFiles,
   digitalFiles,
   setDigitalFiles,
+  disabled,
   submitId,
 }: ProductFormProps) {
   const categories = getCategories();
@@ -101,7 +106,7 @@ export function ProductForm({
                     <FormItem>
                       <FormLabel>Description *</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Textarea {...field} />
                       </FormControl>
                       <FormDescription>
                         <p>Give your product a short and clear description.</p>
@@ -190,6 +195,7 @@ export function ProductForm({
                         <Select
                           value={field.value?.toString()}
                           onValueChange={field.onChange}
+                          disabled={!subcategories.length}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a subcategory" />
@@ -221,9 +227,7 @@ export function ProductForm({
             </AccordionTrigger>
             <AccordionContent>
               <div className="px-4 py-6">
-                <ProductFileForm
-                  accept={{ "image/*": [] }}
-                  uploadFor="product-image-file"
+                <ProductImageFileForm
                   maxFiles={PRODUCT_IMAGE_FILE_MAX_COUNT}
                   maxSize={PRODUCT_IMAGE_FILE_MAX_SIZE_BYTES}
                   files={imageFiles}
@@ -239,16 +243,16 @@ export function ProductForm({
             <AccordionContent>
               <div className="px-4 py-6">
                 <ProductFileForm
+                  maxFiles={PRODUCT_DIGITAL_FILE_MAX_COUNT}
                   totalSize={PRODUCT_DIGITAL_FILE_MAX_SIZE_BYTES}
                   files={digitalFiles}
                   setFiles={setDigitalFiles}
-                  uploadFor="product-digital-file"
                 />
               </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <input type="submit" id={submitId} hidden />
+        <input type="submit" id={submitId} hidden disabled={disabled} />
       </form>
     </Form>
   );

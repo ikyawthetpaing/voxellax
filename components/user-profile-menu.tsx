@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { data } from "@/constants/data-dev";
+import { User } from "@/db/schema";
+import { signOut } from "next-auth/react";
 
 import { baseConfig } from "@/config/base";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -15,22 +16,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface UserProfileMenuProps {
-  // user: User;
-  // isAdmin: boolean;
+  user: User;
 }
 
-export function UserProfileMenu() {
-  //{ user, isAdmin }: UserProfileMenuProps
-  const user = data.users[0];
-  const isSeller = true;
+export function UserProfileMenu({ user }: UserProfileMenuProps) {
   const userNavItems = baseConfig.profileMenu.user(user.id).navItems;
   const sellerNavItems = baseConfig.profileMenu.seller().navItems;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="h-9 w-9 cursor-pointer">
-          <AvatarImage src={user.image} alt={user.name} />
-          <AvatarFallback>U</AvatarFallback>
+          <AvatarImage src={user.image || ""} alt={user.name || ""} />
+          <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -38,8 +35,8 @@ export function UserProfileMenu() {
           <DropdownMenuItem>
             <div className="flex gap-3">
               <Avatar className="h-9 w-9">
-                <AvatarImage src={user.image} alt={user.name} />
-                <AvatarFallback>U</AvatarFallback>
+                <AvatarImage src={user.image || ""} alt={user.name || ""} />
+                <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
                 <h1 className="font-medium">{user.name}</h1>
@@ -60,7 +57,16 @@ export function UserProfileMenu() {
             );
           })}
         </DropdownMenuGroup>
-        {isSeller ? (
+        {user.role === "user" ? (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <Link href="/seller">
+                <DropdownMenuItem>Become a seller</DropdownMenuItem>
+              </Link>
+            </DropdownMenuGroup>
+          </>
+        ) : (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
@@ -75,18 +81,13 @@ export function UserProfileMenu() {
               })}
             </DropdownMenuGroup>
           </>
-        ) : (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>Become a seller</DropdownMenuItem>
-            </DropdownMenuGroup>
-          </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        {/* <Link href="/logout"> */}
+        <DropdownMenuItem onClick={() => signOut()}>
           <span>Log out</span>
         </DropdownMenuItem>
+        {/* </Link> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

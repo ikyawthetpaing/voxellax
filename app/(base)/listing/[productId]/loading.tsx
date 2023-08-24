@@ -16,9 +16,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProductsListSkeleton } from "@/components/products-list";
 import { Shell } from "@/components/shell";
-
-// import { ProductsSkeleton } from "@/components/products";
 
 export default function ListingLoadingPage() {
   return (
@@ -41,7 +40,7 @@ export default function ListingLoadingPage() {
         </div>
         <div className="space-y-4">
           <h1 className="text-xl font-medium capitalize">You may also like</h1>
-          {/* <ProductsSkeleton /> */}
+          <ProductsListSkeleton />
         </div>
       </div>
     </Shell>

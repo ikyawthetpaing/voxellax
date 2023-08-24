@@ -1,11 +1,13 @@
-import { data } from "@/constants/data-dev";
-
+import { getProductsAction } from "@/lib/actions/product";
 import { Heading } from "@/components/heading";
 import { ProductsList } from "@/components/products-list";
 import { Search } from "@/components/search";
 
 export default async function IndexPage() {
-  const products = data.products;
+  const products = await getProductsAction({
+    limit: 4,
+    offset: 0,
+  });
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">

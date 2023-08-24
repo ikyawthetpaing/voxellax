@@ -1,3 +1,5 @@
+import { FileWithPath } from "react-dropzone";
+
 import { type Icons } from "@/components/icons";
 
 export type SiteConfig = {
@@ -23,7 +25,20 @@ export type NavItem = {
 
 export type FileWithPreview = FileWithPath & {
   preview?: string;
+  index?: number;
+  isThumbnail?: boolean;
+  uploaded?: UploadedFile;
+};
+
+export type ProductImageWithPreview = FileWithPath & {
+  preview: string;
   index: number;
+  isThumbnail: boolean;
+  uploaded?: UploadedFile;
+};
+
+export type ProductFileWithPath = FileWithPath & {
+  uploaded?: UploadedFile;
 };
 
 export interface DataTableSearchableColumn<TData> {
@@ -39,4 +54,16 @@ export interface DataTableFilterableColumn<TData>
 export interface Option {
   label: string;
   value: string;
+}
+
+export type UploadedFile = {
+  name: string;
+  key: string;
+  url: string;
+  size: number;
+};
+
+export interface ProductImageUploadedFile extends UploadedFile {
+  index: number;
+  isThumbnail: boolean;
 }
