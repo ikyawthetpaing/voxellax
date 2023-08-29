@@ -1,3 +1,5 @@
+import { CartItemsProvdier } from "@/context/cart-items-context";
+
 import { baseConfig } from "@/config/base";
 import { getCurrentUserAction } from "@/lib/actions/user";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -11,10 +13,12 @@ export default async function BaseLayout({ children }: BaseLayoutProps) {
   const user = await getCurrentUserAction();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader navItems={baseConfig.mainNavItems} user={user} />
-      <main className="flex-1">{children}</main>
-      <SiteFooter />
-    </div>
+    <CartItemsProvdier>
+      <div className="flex min-h-screen flex-col">
+        <SiteHeader navItems={baseConfig.mainNavItems} user={user} />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+      </div>
+    </CartItemsProvdier>
   );
 }

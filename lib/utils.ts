@@ -1,3 +1,4 @@
+import { ProductImageUploadedFile } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import cuid from "cuid";
 import dayjs from "dayjs";
@@ -139,4 +140,11 @@ export function generatedId(name: string): string {
   }
   const id = slug + separator + uniqueSlug;
   return id;
+}
+
+export function getProductThumbnailImage(
+  images: ProductImageUploadedFile[]
+): ProductImageUploadedFile | undefined {
+  const thumbnailImage = images.find((image) => image.isThumbnail);
+  return thumbnailImage || images[0];
 }

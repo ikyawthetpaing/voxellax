@@ -1,112 +1,45 @@
 "use client";
 
-import * as React from "react";
+import { useContext, useTransition } from "react";
+import { CartItemsContext } from "@/context/cart-items-context";
 
+import { cartToggleAction } from "@/lib/actions/cart";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 
-// import {
-//   deleteCartItemAction,
-//   updateCartItemAction,
-// } from "@/app/_actions/cart";
+import { toast } from "../ui/use-toast";
 
-export function UpdateCart() {
-  const [isPending, startTransition] = React.useTransition();
+export function UpdateCart({ productId }: { productId: string }) {
+  const [isPending, startTransition] = useTransition();
+  const cartItemsContext = useContext(CartItemsContext);
 
   return (
-    <div className="flex items-center space-x-1">
-      <div className="flex items-center space-x-1">
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => {
-            startTransition(async () => {
-              // try {
-              //   await updateCartItemAction({
-              //     productId: cartLineItem.id,
-              //     quantity: Number(cartLineItem.quantity) - 1,
-              //   });
-              // } catch (error) {
-              //   error instanceof Error
-              //     ? toast.error(error.message)
-              //     : toast.error("Something went wrong, please try again.");
-              // }
-            });
-          }}
-          disabled={isPending}
-        >
-          <Icons.minus className="h-3 w-3" aria-hidden="true" />
-          <span className="sr-only">Remove one item</span>
-        </Button>
-        <Input
-          type="number"
-          min="0"
-          className="h-8 w-14"
-          value={5}
-          onChange={(e) => {
-            startTransition(async () => {
-              // try {
-              //   await updateCartItemAction({
-              //     productId: cartLineItem.id,
-              //     quantity: Number(e.target.value),
-              //   });
-              // } catch (error) {
-              //   error instanceof Error
-              //     ? toast.error(error.message)
-              //     : toast.error("Something went wrong.");
-              // }
-            });
-          }}
-          disabled={isPending}
-        />
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => {
-            startTransition(async () => {
-              // try {
-              //   await updateCartItemAction({
-              //     productId: cartLineItem.id,
-              //     quantity: Number(cartLineItem.quantity) + 1,
-              //   });
-              // } catch (error) {
-              //   error instanceof Error
-              //     ? toast.error(error.message)
-              //     : toast.error("Something went wrong.");
-              // }
-            });
-          }}
-          disabled={isPending}
-        >
-          <Icons.plus className="h-3 w-3" aria-hidden="true" />
-          <span className="sr-only">Add one item</span>
-        </Button>
-      </div>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-8 w-8"
-        onClick={() => {
-          startTransition(async () => {
-            // try {
-            //   await deleteCartItemAction({
-            //     productId: cartLineItem.id,
-            //   });
-            // } catch (error) {
-            //   error instanceof Error
-            //     ? toast.error(error.message)
-            //     : toast.error("Something went wrong.");
-            // }
-          });
-        }}
-        disabled={isPending}
-      >
-        <Icons.trash className="h-3 w-3" aria-hidden="true" />
-        <span className="sr-only">Delete item</span>
-      </Button>
-    </div>
+    // <div className="flex items-center space-x-1">
+    <Button
+      variant="outline"
+      size="icon"
+      className="h-8 w-8"
+      onClick={() => {
+        startTransition(async () => {
+          try {
+            await cartToggleAction(productId);
+            cartItemsContext?.setRefresh(true);
+          } catch (error) {
+            error instanceof Error
+              ? toast({ description: error.message, variant: "destructive" })
+              : toast({
+                  description: "Something went wrong.",
+                  variant: "destructive",
+                });
+          }
+        });
+      }}
+      disabled={isPending}
+    >
+      <Icons.trash className="h-3 w-3" aria-hidden="true" />
+      <span className="sr-only">Delete item</span>
+    </Button>
+    // </div>
   );
 }

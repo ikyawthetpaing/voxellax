@@ -14,6 +14,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Icons } from "@/components/icons";
 
+import { ProductActionButtons } from "./product-action-buttons";
+
 interface ProductCardProps {
   product: Product;
 }
@@ -68,11 +70,11 @@ export async function ProductCard({ product }: ProductCardProps) {
           </div>
         </CardFooter>
       )}
-      {/* <ProductActionButtons
+      <ProductActionButtons
         layout="card"
         productId={product.id}
         className="absolute right-2 top-2 sm:top-0 sm:opacity-0 sm:group-hover:top-2 sm:group-hover:opacity-100"
-      /> */}
+      />
     </Card>
   );
 }
