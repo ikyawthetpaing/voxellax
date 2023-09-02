@@ -115,46 +115,6 @@ export function CartSheet() {
                 </div>
               )
             )}
-            {filteredCartProducts.map(
-              ({ id, name, category, images, price }, index) => (
-                <div key={id} className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <CartItemThumbnail images={images} />
-                    <div className="flex flex-1 flex-col gap-1 self-start text-sm">
-                      <span className="line-clamp-1">{name}</span>
-                      <span className="line-clamp-1 text-muted-foreground">
-                        {formatPrice(price, 2)}
-                      </span>
-                      <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                        {`${category}`}
-                      </span>
-                    </div>
-                    <UpdateCart productId={id} />
-                  </div>
-                  {index !== cartItems.length - 1 && <Separator />}
-                </div>
-              )
-            )}
-            {filteredCartProducts.map(
-              ({ id, name, category, images, price }, index) => (
-                <div key={id} className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <CartItemThumbnail images={images} />
-                    <div className="flex flex-1 flex-col gap-1 self-start text-sm">
-                      <span className="line-clamp-1">{name}</span>
-                      <span className="line-clamp-1 text-muted-foreground">
-                        {formatPrice(price, 2)}
-                      </span>
-                      <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                        {`${category}`}
-                      </span>
-                    </div>
-                    <UpdateCart productId={id} />
-                  </div>
-                  {index !== cartItems.length - 1 && <Separator />}
-                </div>
-              )
-            )}
           </div>
         </ScrollArea>
         <SheetFooter className="bottom-0 grid w-full grid-cols-1 gap-1.5 border-t p-6">
