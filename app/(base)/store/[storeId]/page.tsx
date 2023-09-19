@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 
 import { categories } from "@/config/category";
 import { siteConfig } from "@/config/site";
-import { getProductsAction } from "@/lib/actions/product";
-import { getStoreAction } from "@/lib/actions/store";
+import { getProducts } from "@/lib/actions/product";
+import { getStore } from "@/lib/actions/store";
 import { getUserAction } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -29,7 +29,7 @@ interface StorePageProps {
 export async function generateMetadata({
   params,
 }: StorePageProps): Promise<Metadata> {
-  const store = await getStoreAction(params.storeId);
+  const store = await getStore(params.storeId);
 
   if (!store) {
     return {};
@@ -78,13 +78,13 @@ export async function generateMetadata({
 }
 
 export default async function StorePage({ params }: StorePageProps) {
-  const store = await getStoreAction(params.storeId);
+  const store = await getStore(params.storeId);
 
   if (!store) {
     notFound();
   }
 
-  const storeProducts = await getProductsAction({
+  const storeProducts = await getProducts({
     limit: 8,
     offset: 0,
     store_ids: store.id,

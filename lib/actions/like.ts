@@ -12,13 +12,13 @@ import { authOptions } from "../auth";
 export async function isUserLiked(productId: string) {
   try {
     const session = await getSession();
-    // if (!session) {
-    //   throw new Error("Unauthorized");
-    // }
+    if (!session) {
+      return false;
+    }
 
     const likedProduct = await db.query.likes.findFirst({
       where: and(
-        eq(likes.userId, session?.user.id || ""),
+        eq(likes.userId, session.user.id),
         eq(likes.productId, productId)
       ),
     });
@@ -30,22 +30,22 @@ export async function isUserLiked(productId: string) {
   }
 }
 
-export async function getUserLikesAction(userId: string) {
+async function getUserLikes(userId: string) {
   const userLikes = await db.query.likes.findMany({
     where: eq(likes.userId, userId),
   });
   return userLikes;
 }
 
-export async function getCurrentUserLikesAction() {
+export async function getCurrentUserLikes() {
   try {
-    // Get session information
     const session = await getSession();
     if (!session) {
-      throw new Error("Unauthorized");
+      return [];
     }
 
-    const currentUserLikes = await getUserLikesAction(session.user.id);
+    const currentUserLikes = await getUserLikes(session.user.id);
+
     return currentUserLikes;
   } catch (error) {
     console.error(error);
@@ -53,13 +53,11 @@ export async function getCurrentUserLikesAction() {
   }
 }
 
-export async function likeToggleAction(productId: string) {
+export async function toggleLike(productId: string) {
   try {
-    // Get session information
     const session = await getSession();
     if (!session) {
       redirect(authOptions.pages?.signIn || "/login");
-      // throw new Error("Unauthorized");
     }
 
     const exitingLike = await db.query.likes.findFirst({

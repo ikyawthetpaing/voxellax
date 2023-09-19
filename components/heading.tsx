@@ -36,8 +36,8 @@ interface HeadingProps
 
 export function Heading({ children, className, size, ...props }: HeadingProps) {
   return (
-    <h1 className={cn(headingVariants({ size, className }))} {...props}>
+    <h2 className={cn(headingVariants({ size, className }))} {...props}>
       {children}
-    </h1>
+    </h2>
   );
 }

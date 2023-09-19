@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { CartItem } from "@/db/schema";
 
-import { getCurrentUserCartItemsAction } from "@/lib/actions/cart";
+import { getCurrentUserCartItems } from "@/lib/actions/cart";
 
 export const CartItemsContext = createContext<
   | {
@@ -30,7 +30,7 @@ export function CartItemsProvdier({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (refresh) {
       startTransition(async () => {
-        const data = await getCurrentUserCartItemsAction();
+        const data = await getCurrentUserCartItems();
         setCartItems(data);
       });
       setRefresh(false);

@@ -3,13 +3,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Product } from "@/db/schema";
-// import { products, type Product } from "@/db/schema";
+import { Product, products } from "@/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import { getCategories } from "@/config/category";
-// import { toast } from "sonner";
-
 import { formatDate, formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,11 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-
-import { Icons } from "../icons";
-import { UpdateProductFormSheet } from "./update-product-form-sheet";
-
-// import { deleteProductAction } from "@/app/_actions/product";
+import { Icons } from "@/components/icons";
 
 interface ProductsTableProps {
   data: Product[];
@@ -95,10 +88,10 @@ export function ProductsTable({
           <DataTableColumnHeader column={column} title="Category" />
         ),
         cell: ({ cell }) => {
-          // const categories = Object.values(products.category.enumValues);
+          const categories = Object.values(products.category.enumValues);
           const category = cell.getValue() as Product["category"];
 
-          // if (!categories.includes(category)) return null;
+          if (!categories.includes(category)) return null;
 
           return (
             <Badge variant="outline" className="capitalize">
@@ -114,12 +107,6 @@ export function ProductsTable({
         ),
         cell: ({ cell }) => formatPrice(cell.getValue() as number, 2),
       },
-      // {
-      //   accessorKey: "inventory",
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title="Inventory" />
-      //   ),
-      // },
       {
         accessorKey: "rating",
         header: ({ column }) => (
@@ -200,7 +187,7 @@ export function ProductsTable({
         ),
       },
     ],
-    [data, isPending, storeId]
+    [data, isPending, pathname, router, searchParams]
   );
 
   function deleteSelectedRows() {

@@ -6,7 +6,7 @@ import { CartItemsContext } from "@/context/cart-items-context";
 import { Product } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
 
-import { getProductAction } from "@/lib/actions/product";
+import { getProduct } from "@/lib/actions/product";
 import { formatPrice, getProductThumbnailImage } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,9 +40,7 @@ export function CartSheet() {
     if (cartItems) {
       const fetchCartProducts = async () => {
         const cartProducts = await Promise.all(
-          cartItems.map(
-            async ({ productId }) => await getProductAction(productId)
-          )
+          cartItems.map(async ({ productId }) => await getProduct(productId))
         );
 
         // Filter out undefined values

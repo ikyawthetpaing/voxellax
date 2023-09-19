@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getSubcategory } from "@/config/category";
 import { siteConfig } from "@/config/site";
-import { getProductsAction } from "@/lib/actions/product";
+import { getProducts } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { Heading } from "@/components/heading";
 import { ProductsList } from "@/components/products-list";
@@ -84,7 +84,7 @@ export default async function SubcategoryPage({
   const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
   const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
 
-  const products = await getProductsAction({
+  const products = await getProducts({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,

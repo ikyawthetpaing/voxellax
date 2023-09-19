@@ -33,6 +33,39 @@ export function getSubcategories(category?: string): Option[] {
   return subcategories;
 }
 
+export function getTrendingCategories() {
+  const maxCount = 6;
+  const trendingCategories: { title: string; href: string }[] = [];
+
+  // Shuffle the categories to get a random order
+  const shuffledCategories = shuffleArray(categories);
+
+  for (const category of shuffledCategories) {
+    for (const subcategory of category.subcategories) {
+      if (trendingCategories.length >= maxCount) {
+        return trendingCategories;
+      }
+
+      trendingCategories.push({
+        title: subcategory.title,
+        href: `/category/${category.slug}/${subcategory.slug}`,
+      });
+    }
+  }
+
+  return trendingCategories;
+}
+
+// Helper function to shuffle an array randomly
+function shuffleArray(array: Category[]) {
+  const shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 type Category = {
   title: string;
   description: string;
@@ -399,16 +432,14 @@ export const categories: Category[] = [
   },
 ];
 
-// export const productTags = [
-//   "new",
-//   "sale",
-//   "bestseller",
-//   "featured",
-//   "popular",
-//   "trending",
-//   "limited",
-//   "exclusive",
-// ];
+export const productTags = [
+  "bestseller",
+  "featured",
+  "popular",
+  "trending",
+  "limited",
+  "exclusive",
+];
 
 // export const sortOptions = [
 //   { label: "Date: Old to new", value: "createdAt.asc" },

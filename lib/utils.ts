@@ -135,6 +135,7 @@ export function generatedId(name: string): string {
   const uniqueSlug = cuid.slug();
   const separator = "-";
 
+  // max characters limit 255
   if (slug.length + uniqueSlug.length + separator.length > 255) {
     slug = slug.slice(0, 255 - uniqueSlug.length - separator.length);
   }

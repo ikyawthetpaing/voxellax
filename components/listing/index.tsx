@@ -1,7 +1,7 @@
 import { Product } from "@/db/schema";
 
-import { getProductsAction } from "@/lib/actions/product";
-import { getStoreAction } from "@/lib/actions/store";
+import { getProducts } from "@/lib/actions/product";
+import { getStore } from "@/lib/actions/store";
 import { getUserAction } from "@/lib/actions/user";
 import { Heading } from "@/components/heading";
 import { ProductsList } from "@/components/products-list";
@@ -11,10 +11,10 @@ import { ImageGallery } from "./image-gallery";
 import { Infos } from "./infos";
 
 export async function Listing({ product }: { product: Product }) {
-  const store = await getStoreAction(product.storeId);
+  const store = await getStore(product.storeId);
   const seller = await getUserAction(store?.userId || "");
 
-  const products = await getProductsAction({
+  const products = await getProducts({
     limit: 4,
     offset: 0,
     store_ids: product.storeId,

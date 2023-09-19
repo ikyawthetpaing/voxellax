@@ -13,14 +13,14 @@ import {
   UpdateProductSchema,
 } from "@/lib/validations/product";
 
-export async function getProductAction(productId: string) {
+export async function getProduct(productId: string) {
   const product = await db.query.products.findFirst({
     where: eq(products.id, productId),
   });
   return product;
 }
 
-export async function getProductsAction(input: GetProductsSchema) {
+export async function getProducts(input: GetProductsSchema) {
   const [column, order] =
     (input.sort?.split(".") as [
       keyof Product | undefined,
@@ -63,12 +63,8 @@ export async function getProductsAction(input: GetProductsSchema) {
   return items;
 }
 
-export async function addProductAction(
-  data: AddProductSchema,
-  storeId: string
-) {
+export async function addProduct(data: AddProductSchema, storeId: string) {
   try {
-    // Get session information
     const session = await getSession();
     if (!session) {
       throw new Error("Unauthorized");
@@ -91,18 +87,17 @@ export async function addProductAction(
   }
 }
 
-export async function updateProductAction(
+export async function updateProduct(
   data: UpdateProductSchema,
   productId: string
 ) {
   try {
-    // Get session information
     const session = await getSession();
     if (!session) {
       throw new Error("Unauthorized");
     }
 
-    const product = await getProductAction(productId);
+    const product = await getProduct(productId);
 
     if (!product) {
       throw new Error("Product not found.");

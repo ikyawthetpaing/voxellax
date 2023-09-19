@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { addProductAction } from "@/lib/actions/product";
+import { addProduct } from "@/lib/actions/product";
 import { cn } from "@/lib/utils";
 import {
   AddProductSchema,
@@ -92,7 +92,7 @@ export function AddProductFormSheet({
           }
         }
 
-        await addProductAction(addData, storeId);
+        await addProduct(addData, storeId);
 
         form.reset();
         setImages([]);

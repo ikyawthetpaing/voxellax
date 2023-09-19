@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { updateProductAction } from "@/lib/actions/product";
+import { updateProduct } from "@/lib/actions/product";
 import { cn } from "@/lib/utils";
 import {
   ProductSchema,
@@ -198,7 +198,7 @@ export function UpdateProductFormSheet({
           files,
         };
 
-        await updateProductAction(updateData, product.id);
+        await updateProduct(updateData, product.id);
         setIsOpen(false);
         router.refresh();
         toast({ description: "Product updated sucessfully." });

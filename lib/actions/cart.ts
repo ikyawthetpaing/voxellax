@@ -5,17 +5,19 @@ import { db } from "@/db";
 import { cartItems } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
+import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";
-
-import { authOptions } from "../auth";
 
 export async function isUserAddedCartItem(productId: string) {
   try {
     const session = await getSession();
+    if (!session) {
+      return false;
+    }
 
     const addedCartItem = await db.query.cartItems.findFirst({
       where: and(
-        eq(cartItems.userId, session?.user.id || ""),
+        eq(cartItems.userId, session.user.id),
         eq(cartItems.productId, productId)
       ),
     });
@@ -27,7 +29,7 @@ export async function isUserAddedCartItem(productId: string) {
   }
 }
 
-export async function getUserCartItemsAction(userId: string) {
+async function getUserCartItems(userId: string) {
   const userCartItems = await db.query.cartItems.findMany({
     where: eq(cartItems.userId, userId),
     with: { product: true },
@@ -35,15 +37,15 @@ export async function getUserCartItemsAction(userId: string) {
   return userCartItems;
 }
 
-export async function getCurrentUserCartItemsAction() {
+export async function getCurrentUserCartItems() {
   try {
-    // Get session information
     const session = await getSession();
     if (!session) {
-      throw new Error("Unauthorized");
+      return [];
     }
 
-    const currentUserCartItems = await getUserCartItemsAction(session.user.id);
+    const currentUserCartItems = await getUserCartItems(session.user.id);
+
     return currentUserCartItems;
   } catch (error) {
     console.error(error);
@@ -51,13 +53,11 @@ export async function getCurrentUserCartItemsAction() {
   }
 }
 
-export async function cartToggleAction(productId: string) {
+export async function toggleCartItem(productId: string) {
   try {
-    // Get session information
     const session = await getSession();
     if (!session) {
       redirect(authOptions.pages?.signIn || "/login");
-      // throw new Error("Unauthorized");
     }
 
     const exitingCartItem = await db.query.cartItems.findFirst({

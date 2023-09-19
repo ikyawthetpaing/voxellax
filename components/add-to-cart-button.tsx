@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState, useTransition } from "react";
 import { CartItemsContext } from "@/context/cart-items-context";
 
-import { cartToggleAction, isUserAddedCartItem } from "@/lib/actions/cart";
+import { isUserAddedCartItem, toggleCartItem } from "@/lib/actions/cart";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -34,7 +34,7 @@ export function AddToCartButton({
   async function handleOnClick() {
     startTransition(async () => {
       try {
-        await cartToggleAction(productId);
+        await toggleCartItem(productId);
         cartItemsContext?.setRefresh(true);
       } catch (err) {
         console.error(err);

@@ -3,7 +3,7 @@
 import { useContext, useTransition } from "react";
 import { CartItemsContext } from "@/context/cart-items-context";
 
-import { cartToggleAction } from "@/lib/actions/cart";
+import { toggleCartItem } from "@/lib/actions/cart";
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
@@ -23,7 +23,7 @@ export function UpdateCart({ productId }: { productId: string }) {
       onClick={() => {
         startTransition(async () => {
           try {
-            await cartToggleAction(productId);
+            await toggleCartItem(productId);
             cartItemsContext?.setRefresh(true);
           } catch (error) {
             error instanceof Error

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/db/schema";
 
-import { getStoreAction } from "@/lib/actions/store";
+import { getStore } from "@/lib/actions/store";
 import { formatPrice } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -21,7 +21,7 @@ interface ProductCardProps {
 }
 
 export async function ProductCard({ product }: ProductCardProps) {
-  const store = await getStoreAction(product.storeId);
+  const store = await getStore(product.storeId);
   const thumbnail =
     product.images?.find((image) => image.isThumbnail) ??
     product.images?.[0] ??

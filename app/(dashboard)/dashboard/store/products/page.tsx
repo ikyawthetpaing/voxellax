@@ -6,7 +6,7 @@ import { Product, products } from "@/db/schema";
 import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm";
 
 import { env } from "@/env.mjs";
-import { getProductAction } from "@/lib/actions/product";
+import { getProduct } from "@/lib/actions/product";
 import { getCurrentUserStore } from "@/lib/actions/store";
 import { Button } from "@/components/ui/button";
 import { AddProductFormSheet } from "@/components/dashboard/add-product-form-sheet";
@@ -116,7 +116,7 @@ export default async function StoreProductsPage({
   let editProduct = undefined;
 
   if (edit && typeof edit === "string") {
-    editProduct = await getProductAction(edit);
+    editProduct = await getProduct(edit);
   }
 
   return (

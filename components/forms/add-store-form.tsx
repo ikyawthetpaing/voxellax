@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { addStoreAction } from "@/lib/actions/store";
+import { addStore } from "@/lib/actions/store";
 import { cn } from "@/lib/utils";
 import {
   AddStoreSchema,
@@ -57,7 +57,7 @@ export function AddStoreForm() {
           }
         }
 
-        await addStoreAction(postData);
+        await addStore(postData);
 
         toast({
           description: "Store created successfully.",

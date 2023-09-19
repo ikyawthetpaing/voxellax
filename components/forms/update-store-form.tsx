@@ -7,7 +7,7 @@ import { FileWithPreview, UploadedFile } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { deleteStoreAction, updateStoreAction } from "@/lib/actions/store";
+import { deleteStore, updateStore } from "@/lib/actions/store";
 import { cn } from "@/lib/utils";
 import {
   StoreSchema,
@@ -109,7 +109,7 @@ export function UpdateStoreForm({ store }: UpdateStoreFormProps) {
         }
       }
 
-      await updateStoreAction(updateData, store.id);
+      await updateStore(updateData, store.id);
 
       toast({
         description: "Store updated successfully.",
@@ -129,7 +129,7 @@ export function UpdateStoreForm({ store }: UpdateStoreFormProps) {
   async function onDelete() {
     setIsDeleting(true);
     try {
-      await deleteStoreAction(store.id);
+      await deleteStore(store.id);
       toast({ description: "Store deleted sucessfully." });
     } catch (err) {
       toast({ description: "Something went wrong.", variant: "destructive" });

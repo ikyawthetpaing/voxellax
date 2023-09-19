@@ -2,7 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { baseConfig } from "@/config/base";
-import { getStoreAction } from "@/lib/actions/store";
+import { getStore } from "@/lib/actions/store";
 import { formatDate } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ export default async function StoreLayoutPage({
   params,
   children,
 }: StoreLayoutPageProps) {
-  const store = await getStoreAction(params.storeId);
+  const store = await getStore(params.storeId);
 
   if (!store) {
     notFound();

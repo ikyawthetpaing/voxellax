@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
-import { getProductAction } from "@/lib/actions/product";
-import { getStoreAction } from "@/lib/actions/store";
+import { getProduct } from "@/lib/actions/product";
+import { getStore } from "@/lib/actions/store";
 import { absoluteUrl } from "@/lib/utils";
 import { Listing } from "@/components/listing";
 import { Shell } from "@/components/shell";
@@ -18,7 +18,7 @@ interface ProductPageProps {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const product = await getProductAction(params.productId);
+  const product = await getProduct(params.productId);
 
   if (!product) {
     return {};
@@ -34,7 +34,7 @@ export async function generateMetadata({
   ogUrl.searchParams.set("type", "Listing product");
   ogUrl.searchParams.set("mode", "dark");
 
-  const store = await getStoreAction(product.storeId);
+  const store = await getStore(product.storeId);
   const sanitizedAuthors = store
     ? [{ name: store.name, url: `${url}/store/${store.id}` }]
     : [];
@@ -70,7 +70,7 @@ export async function generateMetadata({
 }
 
 export default async function ListingPage({ params }: ProductPageProps) {
-  const product = await getProductAction(params.productId);
+  const product = await getProduct(params.productId);
 
   if (!product) {
     notFound();

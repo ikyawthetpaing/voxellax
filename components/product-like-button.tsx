@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 
-import { isUserLiked, likeToggleAction } from "@/lib/actions/like";
+import { isUserLiked, toggleLike } from "@/lib/actions/like";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -31,7 +31,7 @@ export function ProductLikeButton({
   async function handleOnClick() {
     startTransition(async () => {
       try {
-        setIsLiked(await likeToggleAction(productId));
+        setIsLiked(await toggleLike(productId));
       } catch (err) {
         console.error(err);
         toast({
