@@ -52,7 +52,7 @@ export async function ProductCard({ product }: ProductCardProps) {
       </CardHeader>
       <CardContent className="p-2 pb-0">
         <div className="flex justify-between gap-2">
-          <h1 className="line-clamp-1 text-base font-medium">{product.name}</h1>
+          <h2 className="line-clamp-1 text-base font-medium">{product.name}</h2>
           <div className="flex items-center rounded-md bg-accent px-1 text-sm font-semibold text-accent-foreground">
             {formatPrice(product.price, 0)}
           </div>

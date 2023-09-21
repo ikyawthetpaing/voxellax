@@ -4,6 +4,7 @@ import { type Icons } from "@/components/icons";
 
 export type SiteConfig = {
   name: string;
+  title: string;
   description: string;
   url: string;
   ogImage: string;

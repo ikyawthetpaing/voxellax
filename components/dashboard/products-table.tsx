@@ -3,11 +3,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Product, products } from "@/db/schema";
+import { Product } from "@/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
+import { toast } from "sonner";
 
 import { getCategories } from "@/config/category";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { deleteProduct } from "@/lib/actions/product";
+import { catchError, formatDate, formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,7 +18,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-table/data-table";
@@ -88,11 +89,7 @@ export function ProductsTable({
           <DataTableColumnHeader column={column} title="Category" />
         ),
         cell: ({ cell }) => {
-          const categories = Object.values(products.category.enumValues);
           const category = cell.getValue() as Product["category"];
-
-          if (!categories.includes(category)) return null;
-
           return (
             <Badge variant="outline" className="capitalize">
               {category}
@@ -160,27 +157,20 @@ export function ProductsTable({
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                // onClick={() => {
-                //   startTransition(() => {
-                //     row.toggleSelected(false);
+                onClick={() => {
+                  startTransition(() => {
+                    row.toggleSelected(false);
 
-                //     toast.promise(
-                //       deleteProductAction({
-                //         id: row.original.id,
-                //         storeId,
-                //       }),
-                //       {
-                //         loading: "Deleting...",
-                //         success: () => "Product deleted successfully.",
-                //         error: (err: unknown) => catchError(err),
-                //       }
-                //     );
-                //   });
-                // }}
+                    toast.promise(deleteProduct(row.original.id), {
+                      loading: "Deleting...",
+                      success: () => "Product deleted successfully.",
+                      error: (err: unknown) => catchError(err),
+                    });
+                  });
+                }}
                 disabled={isPending}
               >
                 Delete
-                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -191,27 +181,17 @@ export function ProductsTable({
   );
 
   function deleteSelectedRows() {
-    // toast.promise(
-    //   Promise.all(
-    //     selectedRowIds.map((id) =>
-    //       deleteProductAction({
-    //         id,
-    //         storeId,
-    //       })
-    //     )
-    //   ),
-    //   {
-    //     loading: "Deleting...",
-    //     success: () => {
-    //       setSelectedRowIds([]);
-    //       return "Products deleted successfully.";
-    //     },
-    //     error: (err: unknown) => {
-    //       setSelectedRowIds([]);
-    //       return catchError(err);
-    //     },
-    //   }
-    // );
+    toast.promise(Promise.all(selectedRowIds.map((id) => deleteProduct(id))), {
+      loading: "Deleting...",
+      success: () => {
+        setSelectedRowIds([]);
+        return "Products deleted successfully.";
+      },
+      error: (err: unknown) => {
+        setSelectedRowIds([]);
+        return catchError(err);
+      },
+    });
   }
 
   return (

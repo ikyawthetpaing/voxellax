@@ -1,6 +1,6 @@
 import { ProductImageUploadedFile, UploadedFile } from "@/types";
 import type { AdapterAccount } from "@auth/core/adapters";
-import { InferModel, relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import {
   double,
   int,
@@ -25,13 +25,11 @@ export const users = mysqlTable("user", {
   role: mysqlEnum("role", ["user", "seller", "admin"])
     .default("user")
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow(),
 });
-export type User = InferModel<typeof users>;
+export type User = InferSelectModel<typeof users>;
 
 export const usersRelations = relations(users, ({ many, one }) => ({
-  stores: many(stores),
-  cartItems: many(cartItems),
-  likes: many(likes),
   account: one(accounts, {
     fields: [users.id],
     references: [accounts.userId],
@@ -40,6 +38,10 @@ export const usersRelations = relations(users, ({ many, one }) => ({
     fields: [users.id],
     references: [sessions.userId],
   }),
+  stores: many(stores),
+  cartItems: many(cartItems),
+  likes: many(likes),
+  collections: many(collections),
 }));
 
 export const accounts = mysqlTable(
@@ -106,7 +108,7 @@ export const stores = mysqlTable("store", {
   createdAt: timestamp("createdAt").defaultNow(),
   userId: varchar("userId", { length: 255 }).notNull(),
 });
-export type Store = InferModel<typeof stores>;
+export type Store = InferSelectModel<typeof stores>;
 
 export const storesRelations = relations(stores, ({ many, one }) => ({
   user: one(users, {
@@ -128,7 +130,7 @@ export const products = mysqlTable("product", {
   createdAt: timestamp("createdAt").defaultNow(),
   storeId: varchar("storeId", { length: 255 }).notNull(),
 });
-export type Product = InferModel<typeof products>;
+export type Product = InferSelectModel<typeof products>;
 
 export const productsRelations = relations(products, ({ one, many }) => ({
   store: one(stores, {
@@ -143,12 +145,13 @@ export const cartItems = mysqlTable(
   {
     userId: varchar("userId", { length: 255 }).notNull(),
     productId: varchar("productId", { length: 255 }).notNull(),
+    createdAt: timestamp("createdAt").defaultNow(),
   },
   (cartItems) => ({
     pk: primaryKey(cartItems.userId, cartItems.productId),
   })
 );
-export type CartItem = InferModel<typeof cartItems>;
+export type CartItem = InferSelectModel<typeof cartItems>;
 
 export const cartItemsRelations = relations(cartItems, ({ one }) => ({
   user: one(users, {
@@ -166,12 +169,13 @@ export const likes = mysqlTable(
   {
     userId: varchar("userId", { length: 255 }).notNull(),
     productId: varchar("productId", { length: 255 }).notNull(),
+    createdAt: timestamp("createdAt").defaultNow(),
   },
   (likes) => ({
     pk: primaryKey(likes.userId, likes.productId),
   })
 );
-export type Like = InferModel<typeof likes>;
+export type Like = InferSelectModel<typeof likes>;
 
 export const likesRelations = relations(likes, ({ one }) => ({
   user: one(users, {
@@ -183,3 +187,39 @@ export const likesRelations = relations(likes, ({ one }) => ({
     references: [products.id],
   }),
 }));
+
+export const collections = mysqlTable("collection", {
+  id: varchar("id", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  privacy: mysqlEnum("privacy", ["public", "private", "unlisted"])
+    .default("private")
+    .notNull(),
+  createdAt: timestamp("createdAt").defaultNow(),
+  userId: varchar("userId", { length: 255 }).notNull(),
+});
+export type Collection = InferSelectModel<typeof collections>;
+
+export const collectionsRelations = relations(collections, ({ one, many }) => ({
+  user: one(users, {
+    fields: [collections.userId],
+    references: [users.id],
+  }),
+  collectionProducts: many(collectionProducts),
+}));
+
+export const collectionProducts = mysqlTable("collection-product", {
+  collectionId: varchar("collectionId", { length: 255 }).notNull(),
+  productId: varchar("productId", { length: 255 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow(),
+});
+export type CollectionProduct = InferSelectModel<typeof collectionProducts>;
+
+export const collectionProductRealtions = relations(
+  collectionProducts,
+  ({ one }) => ({
+    collection: one(collections, {
+      fields: [collectionProducts.collectionId],
+      references: [collections.id],
+    }),
+  })
+);

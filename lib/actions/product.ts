@@ -2,11 +2,12 @@
 
 import { db } from "@/db";
 import { Product, products } from "@/db/schema";
+import { ProductImageUploadedFile } from "@/types";
 import { and, asc, desc, eq, gte, inArray, lte } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
 import { getSession } from "@/lib/session";
-import { generatedId } from "@/lib/utils";
+import { generatedId, getProductThumbnailImage } from "@/lib/utils";
 import {
   AddProductSchema,
   GetProductsSchema,
@@ -149,4 +150,54 @@ export async function updateProduct(
     console.error(error);
     throw error;
   }
+}
+
+export async function deleteProduct(productId: string) {
+  const session = await getSession();
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+
+  const product = await getProduct(productId);
+
+  if (!product) {
+    throw new Error("Product not found.");
+  }
+
+  if (product.images) {
+    const removedImageKeys = product.images.map((image) => image.key);
+
+    try {
+      await utapi.deleteFiles(removedImageKeys);
+    } catch (deleteError) {
+      console.error(
+        "Error deleting product images on uploadthing:",
+        deleteError
+      );
+    }
+  }
+
+  if (product.files) {
+    const removedFileKeys = product.files.map((file) => file.key);
+
+    try {
+      await utapi.deleteFiles(removedFileKeys);
+    } catch (deleteError) {
+      console.error(
+        "Error deleting product files on uploadthing:",
+        deleteError
+      );
+    }
+  }
+
+  await db.delete(products).where(eq(products.id, product.id));
+}
+
+export async function getProductThumbnail(productId: string) {
+  const product = await getProduct(productId);
+  let thumbnail: ProductImageUploadedFile | null = null;
+  if (product && product.images) {
+    thumbnail = getProductThumbnailImage(product.images);
+  }
+  return thumbnail;
 }

@@ -1,4 +1,5 @@
-import { Collection } from "@/types/dev";
+import { Collection } from "@/db/schema";
+
 import {
   CollectionCard,
   CollectionCardSkeleton,

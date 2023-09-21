@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "a20736a7-9359-48a1-ad3c-e359518cae9a",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "ecf6d091-f728-4882-a7b3-84addcbd500d",
+  "prevId": "a20736a7-9359-48a1-ad3c-e359518cae9a",
   "tables": {
     "account": {
       "name": "account",
@@ -111,14 +111,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(now())"
         }
       },
       "indexes": {},
@@ -147,14 +139,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(now())"
         }
       },
       "indexes": {},
@@ -409,14 +393,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'user'"
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(now())"
         }
       },
       "indexes": {},

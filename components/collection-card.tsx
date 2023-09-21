@@ -1,50 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
-import { data } from "@/constants/data-dev";
+import { Collection } from "@/db/schema";
 
-import { Collection } from "@/types/dev";
+import {
+  getCollectionProducts,
+  getCollectionThumbnails,
+} from "@/lib/actions/collections";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// import { Collection } from "@prisma/client";
-// import { db } from "@/lib/db";
 
 interface CollectionCardProps {
   collection: Collection;
 }
 
 export async function CollectionCard({ collection }: CollectionCardProps) {
-  // const collectionProducts = await db.collectionProduct.findMany({
-  //   where: { collectionId: collection.id },
-  // });
-
-  // const totalProducts = collectionProducts.length;
-  // const images = await Promise.all(
-  //   collectionProducts.map(async (item) => {
-  //     const image = await db.file.findFirst({
-  //       where: { productImagesId: item.productId },
-  //       select: { url: true, name: true },
-  //     });
-  //     return image;
-  //   })
-  // );
-
-  const collectionProducts = data.collectionProducts.filter(
-    ({ collectionId }) => collectionId === collection.id
-  );
+  const collectionProducts = await getCollectionProducts(collection.id);
 
   const totalProducts = collectionProducts.length;
-  const images: string[] = [];
+  const thumbnails = await getCollectionThumbnails(collection.id, 3);
 
   return (
     <Link href={`/user/${collection.userId}/collections/${collection.id}`}>
       <div className="grid gap-3">
         <div className="overflow-hidden rounded-lg">
           <AspectRatio ratio={4.5 / 3}>
-            {images[0] ? (
+            {thumbnails[0] ? (
               <Image
-                src={images[0]}
-                alt={images[0]}
+                src={thumbnails[0].url}
+                alt={thumbnails[0].name}
                 fill
                 className="object-cover"
                 loading="lazy"
@@ -57,10 +40,10 @@ export async function CollectionCard({ collection }: CollectionCardProps) {
         <div className="grid grid-cols-2 gap-3">
           <div className="overflow-hidden rounded-lg">
             <AspectRatio ratio={4.5 / 3}>
-              {images[1] ? (
+              {thumbnails[1] ? (
                 <Image
-                  src={images[1]}
-                  alt={images[1]}
+                  src={thumbnails[1].url}
+                  alt={thumbnails[1].name}
                   fill
                   className="object-cover"
                   loading="lazy"
@@ -72,10 +55,10 @@ export async function CollectionCard({ collection }: CollectionCardProps) {
           </div>
           <div className="overflow-hidden rounded-lg">
             <AspectRatio ratio={4.5 / 3}>
-              {images[2] ? (
+              {thumbnails[2] ? (
                 <Image
-                  src={images[2]}
-                  alt={images[2]}
+                  src={thumbnails[2].url}
+                  alt={thumbnails[2].name}
                   fill
                   className="object-cover"
                   loading="lazy"

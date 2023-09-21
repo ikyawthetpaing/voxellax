@@ -3,6 +3,7 @@ import { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 import { AddToCartButton } from "./add-to-cart-button";
+import { AddToCollectionDialog } from "./add-to-collection-dialog";
 import { ProductLikeButton } from "./product-like-button";
 
 interface ProductActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
@@ -33,12 +34,12 @@ export function ProductActionButtons({
         productId={productId}
         className="rounded-full"
       />
-      {/* <AddToCollectionDialog
+      <AddToCollectionDialog
         productId={productId}
         className={cn("rounded-full", {
           "hidden sm:inline-flex": layout === "card",
         })}
-      /> */}
+      />
     </div>
   );
 }

@@ -30,7 +30,7 @@ export async function isUserLiked(productId: string) {
   }
 }
 
-async function getUserLikes(userId: string) {
+export async function getUserLikes(userId: string) {
   const userLikes = await db.query.likes.findMany({
     where: eq(likes.userId, userId),
   });

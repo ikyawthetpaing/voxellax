@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { data } from "@/constants/data-dev";
+import { Collection } from "@/db/schema";
 
-import { Collection } from "@/types/dev";
+import { getUserCollections } from "@/lib/actions/collections";
 import { CollectionsList } from "@/components/collections-list";
 
 export const metadata: Metadata = {
@@ -18,9 +18,7 @@ interface UserCollectionsPageProps {
 export default async function UserCollectionsPage({
   params,
 }: UserCollectionsPageProps) {
-  const collections: Collection[] = data.collections.filter(
-    ({ userId }) => userId === params.userId
-  );
+  const collections: Collection[] = await getUserCollections(params.userId);
 
   return <CollectionsList collections={collections} />;
 }

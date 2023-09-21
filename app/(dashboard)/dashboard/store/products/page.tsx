@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { data } from "@/constants/data-dev";
 import { db } from "@/db";
 import { Product, products } from "@/db/schema";
 import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm";
@@ -8,8 +7,6 @@ import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm";
 import { env } from "@/env.mjs";
 import { getProduct } from "@/lib/actions/product";
 import { getCurrentUserStore } from "@/lib/actions/store";
-import { Button } from "@/components/ui/button";
-import { AddProductFormSheet } from "@/components/dashboard/add-product-form-sheet";
 import { ProductsTable } from "@/components/dashboard/products-table";
 import { UpdateProductFormSheet } from "@/components/dashboard/update-product-form-sheet";
 import { Shell } from "@/components/shell";

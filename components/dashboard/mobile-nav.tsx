@@ -1,7 +1,6 @@
 "use client";
 
 import { HTMLAttributes, useState } from "react";
-import { data } from "@/constants/data-dev";
 import { Store } from "@/db/schema";
 
 import { SidebarNavItem } from "@/config/dashboard";

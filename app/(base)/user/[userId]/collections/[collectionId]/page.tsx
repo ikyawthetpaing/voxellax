@@ -1,9 +1,16 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { data } from "@/constants/data-dev";
+import { Product } from "@/db/schema";
 
-import { Product } from "@/types/dev";
+import { siteConfig } from "@/config/site";
+import {
+  getCollection,
+  getCollectionProducts,
+  getCollectionThumbnails,
+} from "@/lib/actions/collections";
+import { getProduct } from "@/lib/actions/product";
+import { getUserAction } from "@/lib/actions/user";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -15,40 +22,36 @@ interface UserCollectionPageProps {
   };
 }
 
-async function getCollection(collectionId: string) {
-  const collection = data.collections.find(({ id }) => id === collectionId);
-
-  if (!collection) {
-    null;
-  }
-  return collection;
-}
-
 export async function generateMetadata({
   params,
 }: UserCollectionPageProps): Promise<Metadata> {
   const collection = await getCollection(params.collectionId);
-
-  const user = data.users.find(({ id }) => id === collection?.userId);
-
   if (!collection) {
     return {};
   }
 
-  const url = process.env.NEXT_PUBLIC_APP_URL;
+  const user = await getUserAction(collection?.userId);
 
-  const ogUrl = new URL(`${url}/api/og`);
+  const title = `${user?.name}'s ${collection.name} collection`;
+  const description = `Check out ${collection.name} collection by ${user?.name}.`;
+
+  const thumbnails = await getCollectionThumbnails(collection.id, 1);
+  const ogImage = thumbnails.length ? thumbnails[0].url : siteConfig.ogImage;
+
+  const ogUrl = new URL(ogImage);
   ogUrl.searchParams.set("heading", collection.name);
   ogUrl.searchParams.set("type", "Listing Post");
   ogUrl.searchParams.set("mode", "dark");
 
   return {
-    title: collection.name,
-    description: `${collection.name} by ${user?.name}`,
-    authors: [{ name: user?.name ?? "", url: `${url}/user/${user?.id}` }],
+    title: title,
+    description: description,
+    authors: [
+      { name: user?.name ?? "Unknown", url: absoluteUrl(`/user/${user?.id}`) },
+    ],
     openGraph: {
-      title: collection.name,
-      description: `${collection.name} by ${user?.name}`,
+      title: title,
+      description: description,
       type: "website",
       url: absoluteUrl(`user/${user?.id}/collections/${collection.id}`),
       images: [
@@ -56,14 +59,14 @@ export async function generateMetadata({
           url: ogUrl.toString(),
           width: 1200,
           height: 900,
-          alt: collection.name,
+          alt: title,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: collection.name,
-      description: `${collection.name} by ${user?.name}`,
+      title: title,
+      description: description,
       images: [ogUrl.toString()],
     },
   };
@@ -78,18 +81,18 @@ export default async function UserCollectionPage({
     notFound();
   }
 
-  const collectionProducts = data.collectionProducts.filter(
-    ({ collectionId }) => collectionId === collection.id
-  );
+  const collectionProducts = await getCollectionProducts(collection.id);
 
   const products: Product[] = [];
 
-  collectionProducts.map((p) => {
-    const product = data.products.find(({ id }) => id === p.productId);
-    if (product) {
-      products.push(product);
-    }
-  });
+  await Promise.all(
+    collectionProducts.map(async (value) => {
+      const product = await getProduct(value.productId);
+      if (product) {
+        products.push(product);
+      }
+    })
+  );
 
   const totalProducts = products.length;
 
@@ -108,14 +111,14 @@ export default async function UserCollectionPage({
         </Link>
       </div>
       <div className="space-y-4">
-        <h1 className="text-center text-2xl font-medium">{collection.name}</h1>
-        <h1 className="text-center text-xs">
-          {collection.privacy} • {totalProducts}{" "}
-          {totalProducts > 1 ? "Products" : "Product"}
-        </h1>
+        <h3 className="text-center text-2xl font-medium">{collection.name}</h3>
+        <h3 className="text-center text-xs">
+          <span className="capitalize">{collection.privacy}</span> •{" "}
+          {totalProducts} {totalProducts > 1 ? "Products" : "Product"}
+        </h3>
       </div>
       <hr />
-      {/* {products && <ProductsList products={products} />} */}
+      {products && <ProductsList products={products} />}
     </section>
   );
 }

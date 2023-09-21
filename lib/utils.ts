@@ -2,7 +2,11 @@ import { ProductImageUploadedFile } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import cuid from "cuid";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
+import * as z from "zod";
+
+import { env } from "@/env.mjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -96,7 +100,7 @@ export function generateRandomString(length: number = 8): string {
 }
 
 export function absoluteUrl(path: string) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const appUrl = env.NEXT_PUBLIC_APP_URL;
   const formattedPath = path.replace(/^\//, ""); // Remove leading slash if present
   return `${appUrl}/${formattedPath}`;
 }
@@ -143,9 +147,19 @@ export function generatedId(name: string): string {
   return id;
 }
 
-export function getProductThumbnailImage(
-  images: ProductImageUploadedFile[]
-): ProductImageUploadedFile | undefined {
-  const thumbnailImage = images.find((image) => image.isThumbnail);
-  return thumbnailImage || images[0];
+export function getProductThumbnailImage(images: ProductImageUploadedFile[]) {
+  return images.find((image) => image.isThumbnail) || images[0] || null;
+}
+
+export function catchError(err: unknown) {
+  if (err instanceof z.ZodError) {
+    const errors = err.issues.map((issue) => {
+      return issue.message;
+    });
+    return toast(errors.join("\n"));
+  } else if (err instanceof Error) {
+    return toast(err.message);
+  } else {
+    return toast("Something went wrong, please try again later.");
+  }
 }

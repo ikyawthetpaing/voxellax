@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { Inter as FontSans } from "next/font/google";
+import { UserCollectionsProvdier } from "@/context/user-collections";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -12,7 +13,7 @@ const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = {
   title: {
-    default: siteConfig.name,
+    default: siteConfig.title,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -60,7 +61,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <UserCollectionsProvdier>{children}</UserCollectionsProvdier>
           <Analytics />
           <Toaster />
         </ThemeProvider>

@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
+import { ProductActionButtons } from "../product-action-buttons";
+
 // import { File } from "@prisma/client";
 // import { siteConfig } from "@/config/site";
 // import { ProductActionButtons } from "../product-action-buttons";
@@ -46,11 +48,11 @@ export function ImageGallery({
             <Icons.image className="h-16 w-16" />
           </div>
         )}
-        {/* <ProductActionButtons
+        <ProductActionButtons
           layout="listing"
           productId={productId}
           className="absolute right-2 top-2 sm:right-4 sm:top-4 sm:opacity-0 sm:group-hover:opacity-100"
-        /> */}
+        />
         {images && (
           <div className="absolute left-0 top-1/2 hidden w-full -translate-y-1/2 justify-between px-2 opacity-0 duration-100 animate-in group-hover:opacity-100 sm:flex sm:px-4">
             <Button

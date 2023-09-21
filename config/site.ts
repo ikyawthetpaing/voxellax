@@ -1,11 +1,15 @@
 import { SiteConfig } from "@/types";
 
+import { env } from "@/env.mjs";
+
 export const siteConfig: SiteConfig = {
   name: "Voxellax",
+  title:
+    "Voxellax: Exceptional Stock Photos, Graphics, Fonts, and Design Templates",
   description:
-    "Voxellax is a comprehensive e-commerce platform built specifically for digital products. With a sleek and user-friendly interface, Voxellax allows users to discover, purchase, and manage a wide range of digital products conveniently.",
-  url: "https://voxellax.vercel.app",
-  ogImage: "https://voxellax.com/og.png",
+    "Elevate your creative endeavors with an array of millions distinctive fonts, graphics, themes, images, and templates crafted by talented independent creators worldwide.",
+  url: env.NEXT_PUBLIC_APP_URL,
+  ogImage: `${env.NEXT_PUBLIC_APP_URL}/og.png`,
   links: {
     twitter: "https://twitter.com/voxellax",
     github: "https://github.com/ikyawthetpaing/voxellax",

@@ -5,6 +5,7 @@ import {
   ArrowUp,
   AtSign,
   Bell,
+  Bookmark,
   Calendar,
   Check,
   ChevronLeft,
@@ -98,6 +99,7 @@ export const Icons = {
   crop: Crop,
   spinner: Loader2,
   atSign: AtSign,
+  bookmark: Bookmark,
   voxellax: ({ ...props }: LucideProps) => {
     const id1 = generateRandomString();
     const id2 = generateRandomString();

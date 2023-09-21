@@ -16,12 +16,14 @@ CREATE TABLE `account` (
 CREATE TABLE `cartItem` (
 	`userId` varchar(255) NOT NULL,
 	`productId` varchar(255) NOT NULL,
+	`createdAt` timestamp DEFAULT (now()),
 	CONSTRAINT `cartItem_productId_userId` PRIMARY KEY(`productId`,`userId`)
 );
 --> statement-breakpoint
 CREATE TABLE `like` (
 	`userId` varchar(255) NOT NULL,
 	`productId` varchar(255) NOT NULL,
+	`createdAt` timestamp DEFAULT (now()),
 	CONSTRAINT `like_productId_userId` PRIMARY KEY(`productId`,`userId`)
 );
 --> statement-breakpoint
@@ -65,6 +67,7 @@ CREATE TABLE `user` (
 	`emailVerified` timestamp(3) DEFAULT (now()),
 	`image` varchar(255),
 	`role` enum('user','seller','admin') NOT NULL DEFAULT 'user',
+	`createdAt` timestamp DEFAULT (now()),
 	CONSTRAINT `user_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint

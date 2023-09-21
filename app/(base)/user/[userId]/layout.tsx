@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { data } from "@/constants/data-dev";
 
 import { baseConfig } from "@/config/base";
+import { siteConfig } from "@/config/site";
+import { getUserAction } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Shell } from "@/components/shell";
@@ -15,39 +16,33 @@ interface UserProfileLayoutProps {
   };
 }
 
-async function getUser(userId: string) {
-  const user = data.users.find(({ id }) => id === userId);
-  if (!user) {
-    null;
-  }
-
-  return user;
-}
-
 export async function generateMetadata({
   params,
 }: UserProfileLayoutProps): Promise<Metadata> {
-  const user = await getUser(params.userId);
+  const user = await getUserAction(params.userId);
 
   if (!user) {
     return {};
   }
 
-  const url = process.env.NEXT_PUBLIC_APP_URL;
+  const userName = user.name ?? "Unknown";
+  const description = `${userName} is on Voxellax.`;
 
-  // const ogUrl = new URL(`${url}/og.png`);
-  // ogUrl.searchParams.set("heading", user.name ?? "");
-  // ogUrl.searchParams.set("type", "Profile");
-  // ogUrl.searchParams.set("mode", "dark");
-  const ogUrl = `${url}/og.png`;
+  const ogUrl = new URL(user.image ?? siteConfig.ogImage);
+  ogUrl.searchParams.set("heading", userName);
+  ogUrl.searchParams.set("type", "profile");
+  ogUrl.searchParams.set("mode", "dark");
 
   return {
-    title: user.name,
-    // description: user.description,
-    authors: [{ name: user?.name ?? "", url: `${url}/user/${user?.id}` }],
+    title: {
+      default: userName,
+      template: `%s | ${userName} | ${siteConfig.name}`,
+    },
+    description: description,
+    authors: [{ name: userName, url: absoluteUrl(`/user/${user.id}`) }],
     openGraph: {
-      title: user.name ?? "",
-      // description: user.description,
+      title: userName,
+      description: description,
       type: "profile",
       url: absoluteUrl(`/user/${user.id}`),
       images: [
@@ -55,14 +50,14 @@ export async function generateMetadata({
           url: ogUrl.toString(),
           width: 1200,
           height: 900,
-          alt: user.name ?? "",
+          alt: userName,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: user.name ?? "",
-      // description: user.description,
+      title: userName,
+      description: description,
       images: [ogUrl.toString()],
     },
   };
@@ -72,7 +67,7 @@ export default async function UserProfileLayout({
   children,
   params,
 }: UserProfileLayoutProps) {
-  const user = await getUser(params.userId);
+  const user = await getUserAction(params.userId);
 
   if (!user) {
     notFound();

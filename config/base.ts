@@ -20,7 +20,7 @@ export const baseConfig = {
         },
         {
           title: "Likes",
-          href: `/user/${userId}/likes`,
+          href: `/user/${userId}/`,
         },
         {
           title: "Settings",
@@ -42,16 +42,16 @@ export const baseConfig = {
   userProfile: (userId: string) => {
     const navItems: NavItem[] = [
       {
-        title: "Activity",
-        href: `/user/${userId}`,
-      },
-      {
         title: "Likes",
-        href: `/user/${userId}/likes`,
+        href: `/user/${userId}`,
       },
       {
         title: "Collections",
         href: `/user/${userId}/collections`,
+      },
+      {
+        title: "About",
+        href: `/user/${userId}/about`,
       },
     ];
     return { navItems };

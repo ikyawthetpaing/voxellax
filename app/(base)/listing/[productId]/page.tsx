@@ -24,12 +24,13 @@ export async function generateMetadata({
     return {};
   }
 
-  const url = process.env.NEXT_PUBLIC_APP_URL;
-  const thumbnail =
-    product.images?.find((image) => image.isThumbnail) ??
-    product.images?.[0] ??
-    null;
-  const ogUrl = new URL(thumbnail?.url || `${url}/og.png`);
+  const url = siteConfig.url;
+  const thumbnailUrl =
+    product.images?.find((image) => image.isThumbnail)?.url ??
+    product.images?.[0].url ??
+    siteConfig.ogImage;
+
+  const ogUrl = new URL(thumbnailUrl);
   ogUrl.searchParams.set("heading", product.name);
   ogUrl.searchParams.set("type", "Listing product");
   ogUrl.searchParams.set("mode", "dark");
