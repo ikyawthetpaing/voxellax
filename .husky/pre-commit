@@ -4,7 +4,7 @@
 echo '🏗️👷 Styling, testing and building your project before committing'
 
 # Check Prettier standards
-npm run check-format ||
+npm run check:format ||
 (
     echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮
     Prettier Check Failed. Run npm run format, add changes and try commit again.';
@@ -12,7 +12,7 @@ npm run check-format ||
 )
 
 # Check ESLint Standards
-npm run check-lint ||
+npm run check:lint ||
 (
     echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤
     ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
@@ -20,7 +20,7 @@ npm run check-lint ||
 )
 
 # Check tsconfig standards
-npm run check-types ||
+npm run check:types ||
 (
     echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡
     Are you seriously trying to write that? Make the changes required above.'
