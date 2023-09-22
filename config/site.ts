@@ -4,8 +4,7 @@ import { env } from "@/env.mjs";
 
 export const siteConfig: SiteConfig = {
   name: "Voxellax",
-  title:
-    "Voxellax: Exceptional Stock Photos, Graphics, Fonts, and Design Templates",
+  title: "Voxellax: Exceptional Graphics, Fonts, Books, and Design Templates",
   description:
     "Elevate your creative endeavors with an array of millions distinctive fonts, graphics, themes, images, and templates crafted by talented independent creators worldwide.",
   url: env.NEXT_PUBLIC_APP_URL,

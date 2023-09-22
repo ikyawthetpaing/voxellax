@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useUserCollections } from "@/context/user-collections";
 import { collections } from "@/db/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -39,8 +39,8 @@ interface CreateCollectionFormProps {
 export function CreateCollectionForm({
   setCreating,
 }: CreateCollectionFormProps) {
+  const { setRefresh } = useUserCollections();
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const collectionPrivacies = collections.privacy.enumValues;
 
@@ -67,6 +67,7 @@ export function CreateCollectionForm({
     } finally {
       setIsLoading(false);
       setCreating(false);
+      setRefresh(true);
     }
   }
 

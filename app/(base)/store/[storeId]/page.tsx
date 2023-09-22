@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { categories } from "@/config/category";
 import { siteConfig } from "@/config/site";
 import { getProducts } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
 import { getUserAction } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -96,23 +96,7 @@ export default async function StorePage({ params }: StorePageProps) {
         <Input placeholder="Seach something in this store..." />
         <div className="hidden lg:block"></div>
         <div className="hidden md:block"></div>
-        <Select value={"all"}>
-          <SelectTrigger className="capitalize">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem key={"all"} value={"all"} className="capitalize">
-                all
-              </SelectItem>
-              {categories.map(({ title }) => (
-                <SelectItem key={title} value={title} className="capitalize">
-                  {title}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <Button variant="outline">Sort</Button>
       </Grid>
       <ProductsList products={storeProducts} />
     </Shell>

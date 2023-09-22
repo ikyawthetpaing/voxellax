@@ -23,7 +23,7 @@ import {
 } from "react-dropzone";
 
 import { cn, formatBytes } from "@/lib/utils";
-import { useIsMounted } from "@/hooks/use-is-mounted";
+import { useMounted } from "@/hooks/mounted";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,7 +56,7 @@ export function ProductImageFileForm({
   className,
   ...props
 }: ProductImageFileFormProps) {
-  const isMounted = useIsMounted();
+  const mounted = useMounted();
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
@@ -111,7 +111,7 @@ export function ProductImageFileForm({
   });
 
   useEffect(() => {
-    if (isMounted()) {
+    if (mounted()) {
       setFiles((oldFiles) => {
         const newFiles: ProductImageWithPreview[] = [];
 

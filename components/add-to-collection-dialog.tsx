@@ -3,7 +3,6 @@
 import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useUserCollections } from "@/context/user-collections";
 import { Collection } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
@@ -134,9 +133,8 @@ function CollectionCard({ collection, productId }: CollectionCardProps) {
     null
   );
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const [refresh, setRefresh] = useState(true);
 
-  // Use the refactored function in the useEffect hook
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -146,15 +144,17 @@ function CollectionCard({ collection, productId }: CollectionCardProps) {
       setIsProductAdded(!!added);
       setIsLoading(false);
     }
-    fetchData();
-  }, [collection.id, productId]);
+    if (refresh) {
+      fetchData();
+      setRefresh(false);
+    }
+  }, [collection.id, productId, refresh]);
 
   async function toggleProduct() {
     setIsAdding(true);
     try {
       await toggleCollectionProduct(collection.id, productId);
     } catch (error) {
-      console.error(error);
       return toast({
         title: "Something went wrong.",
         description: "Your collection was not added. Please try again.",
@@ -162,14 +162,14 @@ function CollectionCard({ collection, productId }: CollectionCardProps) {
       });
     } finally {
       setIsAdding(false);
-      router.refresh();
+      setRefresh(true);
     }
   }
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <div className="w-24">
+        <div className="w-24 overflow-hidden rounded-md">
           <AspectRatio ratio={4 / 3}>
             {/* Display an image with a placeholder URL */}
             <Link

@@ -20,7 +20,7 @@ import {
   productSchema,
   UpdateProductSchema,
 } from "@/lib/validations/product";
-import { useUploadThing } from "@/hooks/use-uploadthing";
+import { useUploadThing } from "@/hooks/uploadthing";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Sheet,

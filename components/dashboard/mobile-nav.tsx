@@ -2,8 +2,8 @@
 
 import { HTMLAttributes, useState } from "react";
 import { Store } from "@/db/schema";
+import { SidebarNavItem } from "@/types";
 
-import { SidebarNavItem } from "@/config/dashboard";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NavItems } from "@/components/dashboard/nav-items";

@@ -1,4 +1,4 @@
-import { Option } from "@/types";
+import { Category, Option } from "@/types";
 
 export function getCategory(categorySlug: string) {
   const category = categories.find(({ slug }) => slug === categorySlug);
@@ -33,6 +33,7 @@ export function getSubcategories(category?: string): Option[] {
   return subcategories;
 }
 
+// in currently get random picks
 export function getTrendingCategories() {
   const maxCount = 6;
   const trendingCategories: { title: string; href: string }[] = [];
@@ -65,17 +66,6 @@ function shuffleArray(array: Category[]) {
   }
   return shuffled;
 }
-
-type Category = {
-  title: string;
-  description: string;
-  slug: string;
-  subcategories: {
-    title: string;
-    description?: string;
-    slug: string;
-  }[];
-};
 
 export const categories: Category[] = [
   {
@@ -431,30 +421,3 @@ export const categories: Category[] = [
     ],
   },
 ];
-
-export const productTags = [
-  "bestseller",
-  "featured",
-  "popular",
-  "trending",
-  "limited",
-  "exclusive",
-];
-
-// export const sortOptions = [
-//   { label: "Date: Old to new", value: "createdAt.asc" },
-//   {
-//     label: "Date: New to old",
-//     value: "createdAt.desc",
-//   },
-//   { label: "Price: Low to high", value: "price.asc" },
-//   { label: "Price: High to low", value: "price.desc" },
-//   {
-//     label: "Alphabetical: A to Z",
-//     value: "name.asc",
-//   },
-//   {
-//     label: "Alphabetical: Z to A",
-//     value: "name.desc",
-//   },
-// ];

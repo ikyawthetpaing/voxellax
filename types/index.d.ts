@@ -68,3 +68,19 @@ export interface ProductImageUploadedFile extends UploadedFile {
   index: number;
   isThumbnail: boolean;
 }
+
+export type Category = {
+  title: string;
+  description: string;
+  slug: string;
+  subcategories: {
+    title: string;
+    description?: string;
+    slug: string;
+  }[];
+};
+
+export type SidebarNavItem = {
+  navItem: NavItem;
+  subNavItems?: NavItem[];
+};

@@ -20,7 +20,7 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 
-import { useDebounce } from "@/hooks/use-debounce";
+import { useDebounce } from "@/hooks/debounce";
 import {
   Table,
   TableBody,

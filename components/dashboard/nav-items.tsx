@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Store } from "@/db/schema";
+import { SidebarNavItem } from "@/types";
 import {
   CreditCard,
   LogOut,
@@ -16,7 +17,6 @@ import {
   Users,
 } from "lucide-react";
 
-import { SidebarNavItem } from "@/config/dashboard";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -63,7 +63,6 @@ export function NavItems({ store, navItems }: NavItemsProps) {
         </Link>
       </div>
       <div className="hide-scrollbar flex-1 overflow-y-auto">
-        {/* <ScrollArea className="h-full"> */}
         <Accordion
           type="single"
           collapsible
@@ -165,10 +164,6 @@ export function NavItems({ store, navItems }: NavItemsProps) {
               <Icons.store className="mr-2 h-4 w-4 text-muted-foreground" />
               <span>{store?.name}</span>
             </DropdownMenuItem>
-            {/* <DropdownMenuItem>
-              <Icons.plus className="mr-2 h-4 w-4 text-muted-foreground" />
-              <span>Add new store</span>
-            </DropdownMenuItem> */}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

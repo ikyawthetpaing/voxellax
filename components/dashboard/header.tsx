@@ -2,8 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { Store } from "@/db/schema";
+import { SidebarNavItem } from "@/types";
 
-import { SidebarNavItem } from "@/config/dashboard";
 import { Button } from "@/components/ui/button";
 import { AddProductFormSheet } from "@/components/dashboard/add-product-form-sheet";
 import { DashboardMobileNav } from "@/components/dashboard/mobile-nav";

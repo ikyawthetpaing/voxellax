@@ -12,7 +12,7 @@ import {
   StoreSchema,
   storeSchema,
 } from "@/lib/validations/store";
-import { useUploadThing } from "@/hooks/use-uploadthing";
+import { useUploadThing } from "@/hooks/uploadthing";
 import { buttonVariants } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { StoreForm } from "@/components/forms/store-form";

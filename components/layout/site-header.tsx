@@ -25,7 +25,7 @@ export function SiteHeader({ navItems, user }: SiteHeaderProps) {
         </Link>
         <nav className="flex gap-2 sm:gap-8">
           <div className="hidden w-80 md:block">
-            <Search layout="default" />
+            <Search size="sm" />
           </div>
           <CartSheet />
 

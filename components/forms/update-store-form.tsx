@@ -14,7 +14,7 @@ import {
   storeSchema,
   UpdateStoreSchema,
 } from "@/lib/validations/store";
-import { useUploadThing } from "@/hooks/use-uploadthing";
+import { useUploadThing } from "@/hooks/uploadthing";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,

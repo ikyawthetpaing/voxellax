@@ -39,7 +39,7 @@ export function MobileNav({ navItems }: MobileNavProps) {
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
             <Accordion type="single" collapsible className="w-full">
-              {getCategories()?.map((category, index) => (
+              {getCategories().map((category, index) => (
                 <AccordionItem value={category.value} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
                     {category.label}

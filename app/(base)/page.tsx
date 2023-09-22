@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { getTrendingCategories, productTags } from "@/config/category";
+import { getTrendingCategories } from "@/config/category";
+import { productTags } from "@/config/product";
 import { getProducts } from "@/lib/actions/product";
 import { CategoryBox } from "@/components/category-box";
 import { Heading } from "@/components/heading";
@@ -29,11 +30,11 @@ export default async function IndexPage() {
             </p>
           </div>
           <div className="w-full sm:w-[600px]">
-            <Search layout="landing" />
+            <Search size="lg" />
           </div>
           <div className="flex flex-wrap justify-center gap-2">
             {productTags.map((value) => (
-              <Link href={`/search/q=${value}`}>
+              <Link href={`/search?q=${value}`}>
                 <div className="group flex items-center gap-2 rounded-2xl border px-7 py-3 hover:bg-accent">
                   <Icons.search className="hidden h-4 w-4 transition group-hover:block" />
                   <p>{value}</p>
