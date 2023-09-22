@@ -84,3 +84,15 @@ export type SidebarNavItem = {
   navItem: NavItem;
   subNavItems?: NavItem[];
 };
+
+export type FilterItem = {
+  title: string;
+  key: string;
+  type: "multiple" | "single";
+  options: Option[];
+};
+
+export type QueryParam = {
+  key: string;
+  value: string | null;
+};

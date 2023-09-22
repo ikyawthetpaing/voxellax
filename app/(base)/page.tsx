@@ -34,7 +34,7 @@ export default async function IndexPage() {
           </div>
           <div className="flex flex-wrap justify-center gap-2">
             {productTags.map((value) => (
-              <Link href={`/search?q=${value}`}>
+              <Link href={`/search?query=${value}`}>
                 <div className="group flex items-center gap-2 rounded-2xl border px-7 py-3 hover:bg-accent">
                   <Icons.search className="hidden h-4 w-4 transition group-hover:block" />
                   <p>{value}</p>

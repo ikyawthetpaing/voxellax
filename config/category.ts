@@ -19,9 +19,7 @@ export function getCategories(): Option[] {
   }));
 }
 
-export function getSubcategories(category?: string): Option[] {
-  if (!category) return [];
-
+export function getSubcategories(category: string): Option[] {
   const subcategories =
     categories
       .find((c) => c.slug === category)

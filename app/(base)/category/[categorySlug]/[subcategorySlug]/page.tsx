@@ -2,11 +2,12 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getSubcategory } from "@/config/category";
+import { priceRangeFilterItem } from "@/config/filter";
 import { siteConfig } from "@/config/site";
 import { getProducts } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { Heading } from "@/components/heading";
-import { ProductsList } from "@/components/products-list";
+import { ProductsListWithFilter } from "@/components/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
 interface SubcategoryPageProps {
@@ -78,7 +79,7 @@ export default async function SubcategoryPage({
     notFound();
   }
 
-  const { page, per_page, sort, price_range, store_ids } = searchParams;
+  const { page, per_page, sort, price_range } = searchParams;
 
   // Products transaction
   const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
@@ -91,7 +92,6 @@ export default async function SubcategoryPage({
     categories: params.categorySlug,
     subcategories: params.subcategorySlug,
     price_range: typeof price_range === "string" ? price_range : null,
-    store_ids: typeof store_ids === "string" ? store_ids : null,
   });
 
   return (
@@ -106,7 +106,12 @@ export default async function SubcategoryPage({
           </p>
         </div>
       </div>
-      {products && <ProductsList products={products} />}
+      {products && (
+        <ProductsListWithFilter
+          products={products}
+          filterItems={[priceRangeFilterItem]}
+        />
+      )}
     </Shell>
   );
 }

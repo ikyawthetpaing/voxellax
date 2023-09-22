@@ -3,12 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getCategory } from "@/config/category";
+import { priceRangeFilterItem, subcategoriesFilterItem } from "@/config/filter";
 import { siteConfig } from "@/config/site";
 import { getProducts } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Heading } from "@/components/heading";
-import { ProductsList } from "@/components/products-list";
+import { ProductsListWithFilter } from "@/components/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
 interface CategoryPageProps {
@@ -73,10 +74,7 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const subCategories = category.subcategories;
-
-  const { page, per_page, sort, subcategories, price_range, store_ids } =
-    searchParams;
+  const { page, per_page, sort, subcategories, price_range } = searchParams;
 
   // Products transaction
   const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
@@ -89,7 +87,6 @@ export default async function CategoryPage({
     categories: category.slug,
     subcategories: typeof subcategories === "string" ? subcategories : null,
     price_range: typeof price_range === "string" ? price_range : null,
-    store_ids: typeof store_ids === "string" ? store_ids : null,
   });
 
   return (
@@ -103,7 +100,7 @@ export default async function CategoryPage({
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center">
-        {subCategories.map((subCategory) => (
+        {category.subcategories.map((subCategory) => (
           <Link
             key={subCategory.slug}
             href={`/category/${category.slug}/${subCategory.slug}`}
@@ -121,7 +118,15 @@ export default async function CategoryPage({
           </Link>
         ))}
       </div>
-      {products && <ProductsList products={products} />}
+      {products && (
+        <ProductsListWithFilter
+          products={products}
+          filterItems={[
+            subcategoriesFilterItem(category.slug),
+            priceRangeFilterItem,
+          ]}
+        />
+      )}
     </Shell>
   );
 }

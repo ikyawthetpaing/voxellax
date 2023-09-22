@@ -6,7 +6,7 @@ export const siteConfig: SiteConfig = {
   name: "Voxellax",
   title: "Voxellax: Exceptional Graphics, Fonts, Books, and Design Templates",
   description:
-    "Elevate your creative endeavors with an array of millions distinctive fonts, graphics, themes, images, and templates crafted by talented independent creators worldwide.",
+    "Elevate your creative endeavors with millions distinctive fonts, graphics, themes, images, and templates crafted by talented independent creators worldwide.",
   url: env.NEXT_PUBLIC_APP_URL,
   ogImage: `${env.NEXT_PUBLIC_APP_URL}/og.png`,
   links: {

@@ -2,8 +2,8 @@
 
 import { HTMLAttributes, useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FilterItem, Option, QueryParam } from "@/types";
 
-import { getCategories } from "@/config/category";
 import { useCreateQueryString } from "@/hooks/create-query-string";
 import {
   Accordion,
@@ -11,231 +11,131 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  filterItems: FilterItem[];
+}
 
-interface Props extends HTMLAttributes<HTMLDivElement> {}
-
-export function ProductFilterForm({ ...props }: Props) {
-  const categories = getCategories();
-  const priceRanges = [
-    { min: 2, max: 19 },
-    { min: 20, max: 39 },
-    { min: 40, max: 59 },
-    { min: 60, max: 79 },
-    { gte: 80 },
-  ];
-
+export function ProductFilterForm({ filterItems, ...props }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
-
-  // Search params
-  const page = searchParams?.get("page") ?? "1";
-  const per_page = searchParams?.get("per_page") ?? "8";
-  const sort = searchParams?.get("sort") ?? "createdAt.desc";
-  const categories_param = searchParams?.get("categories") ?? "all";
-  const price_range_param = searchParams?.get("price_range") ?? null;
-
-  // Create query string
+  const [, startTransition] = useTransition();
   const { createQueryString } = useCreateQueryString();
 
-  // Category filter
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedPriceRangeIndexes, setSelectedPriceRangeIndexes] = useState<
-    number[]
-  >([]);
-  const [updateCategoriesParam, setUpdateCategoriesParam] = useState(false);
-  const [updatePriceRangeParam, setUpdatePriceRangesParam] = useState(false);
+  const [params, setParams] = useState<QueryParam[]>([]);
 
-  function arraysAreEqual(
-    arr1: string[] | number[],
-    arr2: string[] | number[]
-  ): boolean {
-    if (arr1.length !== arr2.length) {
-      return false;
-    }
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false;
+  useEffect(() => {
+    const newParams: QueryParam[] = filterItems.map((item) => {
+      return {
+        key: item.key,
+        value: searchParams.get(item.key),
+      };
+    });
+    setParams(newParams);
+  }, [filterItems, searchParams]);
+
+  useEffect(() => console.log(params), [params]);
+
+  const updateParams = ({
+    key,
+    value,
+    checkedState,
+    paramValues,
+    type,
+  }: {
+    key: FilterItem["key"];
+    type: FilterItem["type"];
+    value: string;
+    checkedState: boolean;
+    paramValues: string[];
+  }) => {
+    if (checkedState) {
+      if (type === "multiple") {
+        paramValues.push(value);
+      } else {
+        paramValues = [value];
+      }
+    } else {
+      const optionIndex = paramValues.indexOf(value);
+      if (optionIndex !== -1) {
+        paramValues.splice(optionIndex, 1);
       }
     }
-    return true;
-  }
 
-  useEffect(() => {
-    let newSelectedCategories = categories_param.split(".") || [];
-    if (newSelectedCategories.includes("all")) {
-      newSelectedCategories = categories.map((category) => category.value);
-    }
+    const newValue = paramValues.join(".");
+    const newParams = params.filter((_param) => _param.key !== key);
+    newParams.push({ key, value: newValue });
+    setParams(newParams);
 
-    // Only update selectedCategories if it has changed
-    if (!arraysAreEqual(selectedCategories, newSelectedCategories)) {
-      setSelectedCategories(newSelectedCategories);
-      setUpdateCategoriesParam(true);
-    }
-  }, [categories_param, categories, selectedCategories]);
+    startTransition(() => {
+      const queryStringParams = {
+        [key]: newValue ? newValue : null,
+      };
+      const queryString = createQueryString(queryStringParams);
 
-  useEffect(() => {
-    if (updateCategoriesParam) {
-      startTransition(() => {
-        router.push(
-          `${pathname}?${createQueryString({
-            categories: selectedCategories?.length
-              ? selectedCategories.map((c) => c).join(".")
-              : null,
-          })}`,
-          {
-            scroll: false,
-          }
-        );
+      router.push(`${pathname}?${queryString}`, {
+        scroll: false,
       });
-      setUpdateCategoriesParam(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateCategoriesParam]);
-
-  useEffect(() => {
-    if (price_range_param) {
-      const newSelectedPriceRangeIndexes = price_range_param
-        .split(".")
-        .map(Number)
-        .filter(
-          (value) =>
-            !isNaN(value) &&
-            isFinite(value) &&
-            value >= 0 &&
-            value <= priceRanges.length - 1
-        );
-
-      // Only update selectedCategories if it has changed
-      if (
-        !arraysAreEqual(selectedPriceRangeIndexes, newSelectedPriceRangeIndexes)
-      ) {
-        setSelectedPriceRangeIndexes(newSelectedPriceRangeIndexes);
-        setUpdatePriceRangesParam(true);
-      }
-    }
-  }, [priceRanges.length, price_range_param, selectedPriceRangeIndexes]);
-
-  useEffect(
-    () => {
-      if (updatePriceRangeParam) {
-        startTransition(() => {
-          router.push(
-            `${pathname}?${createQueryString({
-              price_range: selectedPriceRangeIndexes.length
-                ? selectedPriceRangeIndexes.join(".")
-                : null,
-            })}`,
-            {
-              scroll: false,
-            }
-          );
-        });
-        setUpdatePriceRangesParam(false);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [updatePriceRangeParam]
-  );
+    });
+  };
 
   return (
     <div {...props}>
       <Accordion
         type="multiple"
-        defaultValue={["categories", "price_range"]}
+        defaultValue={filterItems.map((item) => item.key)}
         className="grid w-full gap-2"
       >
-        <AccordionItem value="categories" className="border-0">
-          <AccordionTrigger className="rounded-lg bg-accent/75 px-4 py-2 hover:bg-accent hover:no-underline">
-            Categories
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="grid gap-6 px-4 py-6">
-              {categories.map((category, index) => {
-                const id = `category_${index}`;
-                return (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={id}
-                      checked={selectedCategories.includes(category.value)}
-                      onCheckedChange={(value) => {
-                        if (value) {
-                          setSelectedCategories([
-                            ...selectedCategories,
-                            category.value,
-                          ]);
-                        } else {
-                          setSelectedCategories(
-                            selectedCategories.filter(
-                              (_categoryValue) =>
-                                _categoryValue !== category.value
-                            )
-                          );
+        {filterItems.map((item, i) => (
+          <AccordionItem
+            key={`${item.key}_${i}`}
+            value={item.key}
+            className="border-0"
+          >
+            <AccordionTrigger className="rounded-lg bg-accent/75 px-4 py-2 hover:bg-accent hover:no-underline">
+              {item.title}
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid gap-6 px-4 py-6">
+                {item.options.map((option, j) => {
+                  const id = `${item.key}-${i}_${option.value}-${j}`;
+                  const paramValues =
+                    params
+                      .find((param) => param.key === item.key)
+                      ?.value?.split(".") || [];
+                  const isChecked = paramValues.includes(option.value);
+
+                  return (
+                    <div key={j} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={id}
+                        checked={isChecked}
+                        onCheckedChange={(value) =>
+                          updateParams({
+                            key: item.key,
+                            type: item.type,
+                            value: option.value,
+                            checkedState: !!value,
+                            paramValues,
+                          })
                         }
-                        setUpdateCategoriesParam(true);
-                      }}
-                    />
-                    <Label
-                      htmlFor={id}
-                      className="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {category.label}
-                    </Label>
-                  </div>
-                );
-              })}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="price_range" className="border-0">
-          <AccordionTrigger className="rounded-lg bg-accent/75 px-4 py-2 hover:bg-accent hover:no-underline">
-            Price Range
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="grid gap-6 px-4 py-6">
-              {priceRanges.map((priceRange, index) => {
-                const id = priceRange.gte
-                  ? `price_range_${index}`
-                  : `price_range_${index}`;
-                return (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={id}
-                      checked={selectedPriceRangeIndexes.includes(index)}
-                      onCheckedChange={(value) => {
-                        if (value) {
-                          setSelectedPriceRangeIndexes([
-                            ...selectedPriceRangeIndexes,
-                            index,
-                          ]);
-                        } else {
-                          setSelectedPriceRangeIndexes(
-                            selectedPriceRangeIndexes.filter(
-                              (priceRangeIndex) => priceRangeIndex !== index
-                            )
-                          );
-                        }
-                        setUpdatePriceRangesParam(true);
-                      }}
-                    />
-                    <Label
-                      htmlFor={id}
-                      className="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {priceRange.gte
-                        ? `$${priceRange.gte}+`
-                        : `$${priceRange.min} - $${priceRange.max}`}
-                    </Label>
-                  </div>
-                );
-              })}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+                      />
+                      <Label
+                        htmlFor={id}
+                        className="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  );
+                })}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
       </Accordion>
     </div>
   );
