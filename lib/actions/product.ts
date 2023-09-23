@@ -3,7 +3,7 @@
 import { db } from "@/db";
 import { Product, products } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
-import { and, asc, desc, eq, gte, inArray, lte } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, like, lte } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
 import { getSession } from "@/lib/session";
@@ -27,11 +27,12 @@ export async function getProducts(input: GetProductsSchema) {
       keyof Product | undefined,
       "asc" | "desc" | undefined,
     ]) ?? [];
-  const [minPrice, maxPrice] = input.price_range?.split("-") ?? [];
+  const [minPrice, maxPrice] = input.price_range?.split("-").map(Number) ?? [];
   const categories =
     (input.categories?.split(".") as Product["category"][]) ?? [];
   const subcategories = input.subcategories?.split(".") ?? [];
-  const storeIds = input.store_ids?.split(".").map(String) ?? [];
+  const storeIds = input.store_ids?.split(".") ?? [];
+  const queries = input.query ? `%${input.query}%` : undefined;
 
   const items = await db.transaction(async (tx) => {
     return await tx
@@ -47,9 +48,10 @@ export async function getProducts(input: GetProductsSchema) {
           subcategories.length
             ? inArray(products.subcategory, subcategories)
             : undefined,
-          minPrice ? gte(products.price, Number(minPrice)) : undefined,
-          maxPrice ? lte(products.price, Number(maxPrice)) : undefined,
-          storeIds.length ? inArray(products.storeId, storeIds) : undefined
+          minPrice ? gte(products.price, minPrice) : undefined,
+          maxPrice ? lte(products.price, maxPrice) : undefined,
+          storeIds.length ? inArray(products.storeId, storeIds) : undefined,
+          queries ? like(products.name, queries) : undefined
         )
       )
       .orderBy(

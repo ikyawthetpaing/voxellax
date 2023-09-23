@@ -11,10 +11,6 @@ import { Icons } from "@/components/icons";
 
 import { ProductActionButtons } from "../product-action-buttons";
 
-// import { File } from "@prisma/client";
-// import { siteConfig } from "@/config/site";
-// import { ProductActionButtons } from "../product-action-buttons";
-
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
   images: ProductImageUploadedFile[] | null;
   productId: string;
@@ -96,7 +92,7 @@ export function ImageGallery({
             <div
               key={index}
               className={cn(
-                "flex w-20 shrink-0 overflow-hidden rounded-lg border border-background md:w-24",
+                "flex w-20 shrink-0  border border-background p-[1px] md:w-24",
                 { "border-primary": index === currentImageIndex }
               )}
               onMouseOver={() => setCurrentImageIndex(index)}

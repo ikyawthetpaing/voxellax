@@ -28,7 +28,10 @@ export function ProductFilterFormSheet({ filterItems }: Props) {
           Filter
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex w-full flex-col gap-0 p-0 sm:max-w-lg">
+      <SheetContent
+        className="flex w-full flex-col gap-0 p-0 sm:max-w-lg"
+        side="left"
+      >
         <SheetHeader className="border-b p-6">
           <SheetTitle>Filter</SheetTitle>
         </SheetHeader>

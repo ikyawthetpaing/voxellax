@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { productSortOptions } from "@/config/product";
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/select";
 
 export function ProductSortForm() {
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -26,33 +25,27 @@ export function ProductSortForm() {
   const sortParam = searchParams.get("sort");
 
   useEffect(() => {
-    if (
-      sortParam &&
-      productSortOptions.find((option) => option.value === sortParam)
-    ) {
+    if (sortParam) {
       setSortValue(sortParam);
     }
-  }, [sortParam]);
-
-  useEffect(() => {
-    startTransition(() => {
-      router.push(
-        `${pathname}?${createQueryString({
-          sort: sortValue || null,
-        })}`,
-        {
-          scroll: false,
-        }
-      );
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortValue]);
+  }, []);
+
+  const updateSortParam = (value: string) => {
+    setSortValue(value);
+    const queryString = createQueryString({
+      sort: value ? value : null,
+    });
+
+    router.push(`${pathname}?${queryString}`, {
+      scroll: false,
+    });
+  };
 
   return (
     <Select
       value={sortValue || undefined}
-      onValueChange={(value) => setSortValue(value)}
-      disabled={isPending}
+      onValueChange={(value) => updateSortParam(value)}
     >
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Sort by" />

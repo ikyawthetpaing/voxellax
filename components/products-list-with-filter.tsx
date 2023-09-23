@@ -20,7 +20,7 @@ export async function ProductsListWithFilter({ products, filterItems }: Props) {
         <ProductFilterForm className="w-64" filterItems={filterItems} />
       </div>
       <div className="flex-1 space-y-4">
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex gap-4 sm:grid sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
           <div className="hidden max-md:block">
             <ProductFilterFormSheet filterItems={filterItems} />
           </div>

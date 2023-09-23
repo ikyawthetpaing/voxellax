@@ -128,6 +128,10 @@ export function slugify(str: string) {
     .replace(/--+/g, "-");
 }
 
+export function getUniqueString() {
+  return cuid.slug();
+}
+
 /**
  * Generates a unique identifier based on the provided name.
  *
@@ -136,7 +140,7 @@ export function slugify(str: string) {
  */
 export function generatedId(name: string): string {
   let slug = slugify(name);
-  const uniqueSlug = cuid.slug();
+  const uniqueSlug = getUniqueString();
   const separator = "-";
 
   // max characters limit 255

@@ -51,5 +51,10 @@ export const getProductsSchema = z.object({
     .regex(/^\d+.\d+$/)
     .optional()
     .nullable(),
+  query: z
+    .string()
+    .regex(/^\d+.\d+$/)
+    .optional()
+    .nullable(),
 });
 export type GetProductsSchema = z.infer<typeof getProductsSchema>;

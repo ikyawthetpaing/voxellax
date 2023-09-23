@@ -34,6 +34,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     categories: typeof categories === "string" ? categories : null,
     subcategories: typeof subcategories === "string" ? subcategories : null,
     price_range: typeof price_range === "string" ? price_range : null,
+    query: queryParam,
   });
 
   return (
