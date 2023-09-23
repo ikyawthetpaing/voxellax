@@ -27,7 +27,6 @@ export function ProductFilterForm({ filterItems, ...props }: Props) {
 
   const [params, setParams] = useState<QueryParam[]>([]);
 
-  // only initalize when component mount
   useEffect(() => {
     const newParams: QueryParam[] = filterItems.map((item) => {
       return {
@@ -36,8 +35,7 @@ export function ProductFilterForm({ filterItems, ...props }: Props) {
       };
     });
     setParams(newParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filterItems, searchParams]);
 
   useEffect(() => console.log(params), [params]);
 
