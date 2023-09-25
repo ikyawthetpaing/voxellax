@@ -1,3 +1,4 @@
+import { Product } from "@/db/schema";
 import { FileWithPath } from "react-dropzone";
 
 import { type Icons } from "@/components/icons";
@@ -17,10 +18,12 @@ export type SiteConfig = {
   keywords: string[];
 };
 
+export type Icon = keyof typeof Icons;
+
 export type NavItem = {
   title: string;
   href: string;
-  icon?: keyof typeof Icons;
+  icon?: Icon;
   disabled?: boolean;
 };
 
@@ -96,3 +99,11 @@ export type QueryParam = {
   key: string;
   value: string | null;
 };
+
+export type Invoice = {
+  productId: string;
+  cost: number;
+  purchasedAt: Date;
+};
+
+export type InvoiceProduct = Product & Invoice;

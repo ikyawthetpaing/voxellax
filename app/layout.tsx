@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 
 import { Inter as FontSans } from "next/font/google";
-import { UserCollectionsProvdier } from "@/context/user-collections";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -61,7 +60,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <UserCollectionsProvdier>{children}</UserCollectionsProvdier>
+          {children}
           <Analytics />
           <Toaster />
         </ThemeProvider>

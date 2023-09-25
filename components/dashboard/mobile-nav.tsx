@@ -1,6 +1,7 @@
 "use client";
 
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Store } from "@/db/schema";
 import { SidebarNavItem } from "@/types";
 
@@ -21,6 +22,9 @@ export function DashboardMobileNav({
   ...props
 }: DashboardMobileNavProps) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
     <div className={className} {...props}>

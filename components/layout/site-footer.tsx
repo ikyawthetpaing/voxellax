@@ -15,16 +15,16 @@ export function SiteFooter() {
             Accelerate your projects with millions of ready-to-use products.
           </p>
           <div className="flex gap-6">
-            <a href="/">
+            <a href="https://www.facebook.com/voxellax">
               <Icons.facebook className="h-5 w-5" />
             </a>
-            <a href="/">
+            <a href="https://www.instagram.com/voxellax">
               <Icons.instagram className="h-5 w-5" />
             </a>
-            <a href="/">
+            <a href="https://www.twitter.com/voxellax">
               <Icons.twitter className="h-5 w-5" />
             </a>
-            <a href="/">
+            <a href="https://www.youtube.com/voxellax">
               <Icons.youtube className="h-5 w-5" />
             </a>
           </div>

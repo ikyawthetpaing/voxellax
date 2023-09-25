@@ -1,15 +1,17 @@
 "use client";
 
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { CartItemsContext } from "@/context/cart-items-context";
+import Link from "next/link";
+import { useCartItems } from "@/context/cart-items-context";
 import { Product } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
 
+import { getCalculatedFees } from "@/config/checkout";
 import { getProduct } from "@/lib/actions/product";
-import { formatPrice, getProductThumbnailImage } from "@/lib/utils";
+import { cn, formatPrice, getProductThumbnailImage } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -23,48 +25,44 @@ import {
 import { UpdateCart } from "@/components/cart/update-cart";
 import { Icons } from "@/components/icons";
 
-export function CartSheet() {
-  const cartItemsContext = useContext(CartItemsContext);
-  const cartItems = useMemo(
-    () => cartItemsContext?.data || [],
-    [cartItemsContext?.data]
-  );
+import { CheckoutDetails } from "../checkout-details";
+import { CheckoutDialog } from "../dialogs/checkout-dialog";
 
-  const [filteredCartProducts, setFilteredCartProducts] = useState<Product[]>(
-    []
-  );
+export function CartSheet() {
+  const { data: cartItems } = useCartItems();
+
+  const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [itemCount, setItemCount] = useState(0);
-  const [cartTotalPrice, setCartTotalPrice] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
 
   useEffect(() => {
     if (cartItems) {
       const fetchCartProducts = async () => {
-        const cartProducts = await Promise.all(
-          cartItems.map(async ({ productId }) => await getProduct(productId))
+        const _cartProducts: Product[] = [];
+
+        await Promise.all(
+          cartItems.map(async ({ productId }) => {
+            const product = await getProduct(productId);
+            if (product) {
+              _cartProducts.push(product);
+            }
+          })
         );
 
-        // Filter out undefined values
-        const resolvedCartProducts: Product[] = [];
-        cartProducts.map((product) => {
-          if (!!product) {
-            resolvedCartProducts.push(product);
-          }
-        });
-
-        setFilteredCartProducts(resolvedCartProducts);
-        setItemCount(resolvedCartProducts.length);
-
-        // Calculate total price based on resolvedCartProducts
-        const totalPrice = resolvedCartProducts.reduce(
+        const totalPrice = _cartProducts.reduce(
           (total, product) => total + product.price,
           0
         );
-        setCartTotalPrice(totalPrice);
+        setSubTotal(totalPrice);
+        setCartProducts(_cartProducts);
+        setItemCount(_cartProducts.length);
       };
 
       fetchCartProducts();
     }
   }, [cartItems]);
+
+  const fees = getCalculatedFees({ itemCount, subTotal });
 
   return (
     <Sheet>
@@ -90,59 +88,70 @@ export function CartSheet() {
         <SheetHeader className="border-b p-6">
           <SheetTitle>Cart {itemCount > 0 && `(${itemCount})`}</SheetTitle>
         </SheetHeader>
-
-        <ScrollArea className="h-full px-6">
-          <div className="flex flex-1 flex-col gap-4 overflow-hidden py-6">
-            {filteredCartProducts.map(
-              ({ id, name, category, images, price }, index) => (
-                <div key={id} className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <CartItemThumbnail images={images} />
-                    <div className="flex flex-1 flex-col gap-1 self-start text-sm">
-                      <span className="line-clamp-1">{name}</span>
-                      <span className="line-clamp-1 text-muted-foreground">
-                        {formatPrice(price, 2)}
-                      </span>
-                      <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                        {`${category}`}
-                      </span>
+        {itemCount > 0 ? (
+          <ScrollArea className="h-full px-6">
+            <div className="flex flex-1 flex-col gap-4 overflow-hidden py-6">
+              {cartProducts.map(
+                ({ id, name, category, images, price }, index) => (
+                  <div key={id} className="space-y-4">
+                    <div className="flex items-center space-x-4">
+                      <CartItemThumbnail images={images} />
+                      <div className="flex flex-1 flex-col gap-1 self-start text-sm">
+                        <span className="line-clamp-1">{name}</span>
+                        <span className="line-clamp-1 text-muted-foreground">
+                          {formatPrice(price, 2)}
+                        </span>
+                        <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
+                          {`${category}`}
+                        </span>
+                      </div>
+                      <UpdateCart productId={id} />
                     </div>
-                    <UpdateCart productId={id} />
+                    <Separator />
                   </div>
-                  {index !== cartItems.length - 1 && <Separator />}
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
+          </ScrollArea>
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center space-y-1">
+            <Icons.cart
+              className="mb-4 h-16 w-16 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <div className="text-xl font-medium text-muted-foreground">
+              Your cart is empty
+            </div>
+            <SheetTrigger asChild>
+              <Link
+                aria-label="Add items to your cart to checkout"
+                href="/search"
+                className={cn(
+                  buttonVariants({
+                    variant: "link",
+                    size: "sm",
+                    className: "text-sm text-muted-foreground",
+                  })
+                )}
+              >
+                Add items to your cart to checkout
+              </Link>
+            </SheetTrigger>
           </div>
-        </ScrollArea>
-        <SheetFooter className="bottom-0 grid w-full grid-cols-1 gap-1.5 border-t p-6">
-          <div className="flex">
-            <span className="flex-1">Subtotal</span>
-            <span>{formatPrice(cartTotalPrice, 2)}</span>
-          </div>
-          <div className="flex">
-            <span className="flex-1">Shipping</span>
-            <span>Free</span>
-          </div>
-          <div className="flex">
-            <span className="flex-1">Taxes</span>
-            <span>Calculated at checkout</span>
-          </div>
-          <Separator className="mt-1.5" />
-          <div className="flex">
-            <span className="flex-1">Total</span>
-            <span>{formatPrice(cartTotalPrice, 2)}</span>
-          </div>
+        )}
+        <div className="bottom-0 grid w-full gap-1.5 border-t p-6">
+          <CheckoutDetails itemCount={itemCount} subTotal={subTotal} />
           <div className="mt-1.5">
-            <Button
-              aria-label="Proceed to checkout"
-              size="sm"
-              className="w-full"
-            >
-              Proceed to Checkout
-            </Button>
+            <CheckoutDialog
+              products={cartProducts}
+              trigger={
+                <Button size="sm" className="w-full">
+                  Proceed to Checkout
+                </Button>
+              }
+            />
           </div>
-        </SheetFooter>
+        </div>
       </SheetContent>
     </Sheet>
   );

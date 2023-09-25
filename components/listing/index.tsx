@@ -30,16 +30,7 @@ export async function Listing({ product }: { product: Product }) {
           )} */}
         </div>
         <div className="flex flex-col gap-8">
-          <DetailsCard
-            className="lg:w-96"
-            title={product.name}
-            category={product.category}
-            subCategory={product.subcategory}
-            price={product.price}
-            totalReviews={5}
-            averageRates={4}
-            productId={product.id}
-          />
+          <DetailsCard className="lg:w-96" product={product} />
           <Infos
             className="lg:w-96"
             description={product.description || ""}

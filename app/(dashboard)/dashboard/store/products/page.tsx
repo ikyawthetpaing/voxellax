@@ -118,31 +118,6 @@ export default async function StoreProductsPage({
 
   return (
     <Shell layout="dashboard">
-      {/* {storeProducts.length > 0 ? (
-
-      ) : (
-        <div className="absolute left-1/2 top-1/2 flex h-max w-full -translate-x-1/2 -translate-y-1/2 items-center justify-center p-8 sm:w-max">
-          <div className="text-center">
-            <h1 className="text-xl">Create your first product</h1>
-            <div className="mt-4">
-              <p className="text-sm text-muted-foreground">
-                Creating your first product is easy peasy.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Create products in minutes and start making sales.
-              </p>
-            </div>
-            <AddProductFormSheet
-              storeId={store.id}
-              trigger={
-                <Button size="sm" className="mt-6 w-full">
-                  Create Product
-                </Button>
-              }
-            />
-          </div>
-        </div>
-      )} */}
       <ProductsTable
         data={storeProducts}
         pageCount={pageCount}

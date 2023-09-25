@@ -1,9 +1,9 @@
 "use client";
 
-import { useContext, useEffect, useState, useTransition } from "react";
-import { CartItemsContext } from "@/context/cart-items-context";
+import { useEffect, useState, useTransition } from "react";
+import { useCartItems } from "@/context/cart-items-context";
 
-import { isUserAddedCartItem, toggleCartItem } from "@/lib/actions/cart";
+import { toggleCartItem } from "@/lib/actions/cart";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -22,20 +22,18 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
   const [isAdded, setIsAdded] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const cartItemsContext = useContext(CartItemsContext);
+  const { data, setRefresh } = useCartItems();
 
   useEffect(() => {
-    const item = cartItemsContext?.data.find(
-      (item) => item.productId === productId
-    );
+    const item = data.find((item) => item.productId === productId);
     setIsAdded(!!item);
-  }, [cartItemsContext?.data, productId]);
+  }, [data, productId]);
 
   async function handleOnClick() {
     startTransition(async () => {
       try {
         await toggleCartItem(productId);
-        cartItemsContext?.setRefresh(true);
+        setRefresh(true);
       } catch (err) {
         console.error(err);
         toast({

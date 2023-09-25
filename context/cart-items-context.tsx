@@ -4,6 +4,7 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
   useTransition,
@@ -12,15 +13,24 @@ import { CartItem } from "@/db/schema";
 
 import { getCurrentUserCartItems } from "@/lib/actions/cart";
 
-export const CartItemsContext = createContext<
-  | {
-      data: CartItem[];
-      refresh: boolean;
-      setRefresh: Dispatch<SetStateAction<boolean>>;
-      loading: boolean;
-    }
-  | undefined
->(undefined);
+type CartItemsContextType = {
+  data: CartItem[];
+  refresh: boolean;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
+};
+
+const CartItemsContext = createContext<CartItemsContextType | undefined>(
+  undefined
+);
+
+export function useCartItems() {
+  const context = useContext(CartItemsContext);
+  if (!context) {
+    throw Error("useCartItems must be used within CartItemsProvdier.");
+  }
+  return context;
+}
 
 export function CartItemsProvdier({ children }: { children: React.ReactNode }) {
   const [isPending, startTransition] = useTransition();

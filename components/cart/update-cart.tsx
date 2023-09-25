@@ -1,21 +1,19 @@
 "use client";
 
-import { useContext, useTransition } from "react";
-import { CartItemsContext } from "@/context/cart-items-context";
+import { useTransition } from "react";
+import { useCartItems } from "@/context/cart-items-context";
 
 import { toggleCartItem } from "@/lib/actions/cart";
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 
 import { toast } from "../ui/use-toast";
 
 export function UpdateCart({ productId }: { productId: string }) {
   const [isPending, startTransition] = useTransition();
-  const cartItemsContext = useContext(CartItemsContext);
+  const { setRefresh } = useCartItems();
 
   return (
-    // <div className="flex items-center space-x-1">
     <Button
       variant="outline"
       size="icon"
@@ -24,7 +22,7 @@ export function UpdateCart({ productId }: { productId: string }) {
         startTransition(async () => {
           try {
             await toggleCartItem(productId);
-            cartItemsContext?.setRefresh(true);
+            setRefresh(true);
           } catch (error) {
             error instanceof Error
               ? toast({ description: error.message, variant: "destructive" })
@@ -40,6 +38,5 @@ export function UpdateCart({ productId }: { productId: string }) {
       <Icons.trash className="h-3 w-3" aria-hidden="true" />
       <span className="sr-only">Delete item</span>
     </Button>
-    // </div>
   );
 }

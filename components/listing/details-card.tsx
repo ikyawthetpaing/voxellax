@@ -2,6 +2,7 @@
 
 import { HTMLAttributes } from "react";
 import Link from "next/link";
+import { Product } from "@/db/schema";
 
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -16,27 +17,21 @@ import {
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { RenderStars } from "@/components/listing/render-stars";
 
+import { CheckoutDialog } from "../dialogs/checkout-dialog";
+
 interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
-  title: string;
-  price: number;
-  totalReviews: number;
-  averageRates: number;
-  category: string;
-  subCategory: string | null;
-  productId: string;
+  product: Product;
 }
 
 export function DetailsCard({
-  price,
-  category,
-  subCategory,
-  totalReviews,
-  title,
-  averageRates,
-  productId,
+  product,
   className,
   ...props
 }: DetailsCardProps) {
+  // just for dev
+  let totalReviews = 13;
+  const averageRates = 4.5;
+
   return (
     <div className={className} {...props}>
       <Card className="w-full">
@@ -44,13 +39,13 @@ export function DetailsCard({
           <CardTitle className="flex justify-between">
             <div>Price</div>
             <div className="flex items-center">
-              <span>{formatPrice(price, 2)}</span>
+              <span>{formatPrice(product.price, 2)}</span>
             </div>
           </CardTitle>
           <CardDescription>VAT Included</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6">
-          <div>{title}</div>
+          <div>{product.name}</div>
           {totalReviews !== 0 && (
             <div className="flex justify-between">
               <h1 className="text-sm font-semibold">Reviews</h1>
@@ -65,17 +60,33 @@ export function DetailsCard({
           <div className="flex min-w-0 items-center justify-between gap-3">
             <h1 className="text-sm font-semibold">Category</h1>
             <div className="truncate text-xs capitalize">
-              <Link href={`/category/${category}`}>{category}</Link>
-              <span> / </span>
-              <Link href={`/category/${category}/${subCategory}`}>
-                {subCategory}
+              <Link href={`/category/${product.category}`}>
+                {product.category}
               </Link>
+
+              {product.subcategory && (
+                <>
+                  <span>{" / "}</span>
+                  <Link
+                    href={`/category/${product.category}/${product.subcategory}`}
+                  >
+                    {product.subcategory}
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </CardContent>
         <CardFooter className="grid gap-3">
-          <AddToCartButton productId={productId} />
-          {!price ? <Button>Download now</Button> : <Button>Buy now</Button>}
+          <AddToCartButton productId={product.id} />
+          {!product.price ? (
+            <Button>Download now</Button>
+          ) : (
+            <CheckoutDialog
+              products={[product]}
+              trigger={<Button>Buy now</Button>}
+            />
+          )}
         </CardFooter>
       </Card>
     </div>

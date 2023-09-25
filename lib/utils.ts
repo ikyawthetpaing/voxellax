@@ -152,7 +152,7 @@ export function generatedId(name: string): string {
 }
 
 export function getProductThumbnailImage(images: ProductImageUploadedFile[]) {
-  return images.find((image) => image.isThumbnail) || images[0] || null;
+  return images.find((image) => image.isThumbnail);
 }
 
 export function catchError(err: unknown) {
