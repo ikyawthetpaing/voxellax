@@ -199,7 +199,7 @@ export async function getProductThumbnail(productId: string) {
   const product = await getProduct(productId);
   let thumbnail: ProductImageUploadedFile | null = null;
   if (product && product.images) {
-    thumbnail = getProductThumbnailImage(product.images);
+    thumbnail = getProductThumbnailImage(product.images) || null;
   }
   return thumbnail;
 }
