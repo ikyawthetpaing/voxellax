@@ -82,10 +82,12 @@ export default async function SubcategoryPage({
   const { page, per_page, sort, price_range } = searchParams;
 
   // Products transaction
+  const _page = typeof page === "string" ? page : "1";
+
   const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
   const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
 
-  const products = await getProducts({
+  const { count: productCount, items: products } = await getProducts({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,
@@ -93,6 +95,8 @@ export default async function SubcategoryPage({
     subcategories: params.subcategorySlug,
     price_range: typeof price_range === "string" ? price_range : null,
   });
+
+  const pageCount = Math.ceil(productCount / limit);
 
   return (
     <Shell>
@@ -110,6 +114,8 @@ export default async function SubcategoryPage({
         <ProductsListWithFilter
           products={products}
           filterItems={[priceRangeFilterItem]}
+          page={_page}
+          pageCount={pageCount}
         />
       )}
     </Shell>

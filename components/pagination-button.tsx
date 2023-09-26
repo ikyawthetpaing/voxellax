@@ -1,8 +1,13 @@
-import { Dispatch, SetStateAction, useMemo } from "react";
+"use client";
+
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import { useCreateQueryString } from "@/hooks/create-query-string";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
+
+import { Icons } from "./icons";
 
 interface PaginationButtonProps
   extends React.DetailedHTMLProps<
@@ -10,37 +15,47 @@ interface PaginationButtonProps
     HTMLDivElement
   > {
   pageCount: number;
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-  isPending: boolean;
+  page: string;
+  per_page?: string;
   siblingCount?: number;
 }
 
 export function PaginationButton({
   pageCount,
-  currentPage,
-  setCurrentPage,
-  isPending,
+  page,
+  per_page,
   siblingCount = 1,
   className,
   ...props
 }: PaginationButtonProps) {
+  const { createQueryString } = useCreateQueryString();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [sortValue, setSortValue] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const sortParam = searchParams.get("sort");
+
+  useEffect(() => setSortValue(sortParam), [sortParam]);
+
+  // Memoize pagination range to avoid unnecessary re-renders
   const paginationRange = useMemo(() => {
-    const delta = siblingCount;
+    const delta = siblingCount + 2;
 
     const range = [];
     for (
-      let i = Math.max(2, currentPage - delta);
-      i <= Math.min(pageCount - 1, currentPage + delta);
+      let i = Math.max(2, Number(page) - delta);
+      i <= Math.min(pageCount - 1, Number(page) + delta);
       i++
     ) {
       range.push(i);
     }
 
-    if (currentPage - delta > 2) {
+    if (Number(page) - delta > 2) {
       range.unshift("...");
     }
-    if (currentPage + delta < pageCount - 1) {
+    if (Number(page) + delta < pageCount - 1) {
       range.push("...");
     }
 
@@ -50,7 +65,7 @@ export function PaginationButton({
     }
 
     return range;
-  }, [pageCount, currentPage, siblingCount]);
+  }, [pageCount, page, siblingCount]);
 
   return (
     <div
@@ -61,19 +76,44 @@ export function PaginationButton({
       {...props}
     >
       <Button
+        aria-label="Go to first page"
         variant="outline"
-        size="sm"
-        className="h-8 w-8 px-0"
-        onClick={() =>
-          setCurrentPage(() => {
-            const n = currentPage - 1;
-            return n;
-          })
-        }
-        disabled={currentPage === 1 || isPending}
+        size="icon"
+        className="hidden h-8 w-8 lg:flex"
+        onClick={() => {
+          startTransition(() => {
+            router.push(
+              `${pathname}?${createQueryString({
+                page: 1,
+                per_page: per_page ?? null,
+                sort: sortValue,
+              })}`
+            );
+          });
+        }}
+        disabled={Number(page) === 1 || isPending}
       >
-        <Icons.chevronLeft className="h-5 w-5" aria-hidden="true" />
-        <span className="sr-only">Previous page</span>
+        <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" />
+      </Button>
+      <Button
+        aria-label="Go to previous page"
+        variant="outline"
+        size="icon"
+        className="h-8 w-8"
+        onClick={() => {
+          startTransition(() => {
+            router.push(
+              `${pathname}?${createQueryString({
+                page: Number(page) - 1,
+                per_page: per_page ?? null,
+                sort: sortValue,
+              })}`
+            );
+          });
+        }}
+        disabled={Number(page) === 1 || isPending}
+      >
+        <Icons.chevronLeft className="h-4 w-4" aria-hidden="true" />
       </Button>
       {paginationRange.map((pageNumber, i) =>
         pageNumber === "..." ? (
@@ -81,8 +121,8 @@ export function PaginationButton({
             aria-label="Page separator"
             key={i}
             variant="outline"
-            size="sm"
-            className="h-8 w-8 px-0"
+            size="icon"
+            className="h-8 w-8"
             disabled
           >
             ...
@@ -91,10 +131,20 @@ export function PaginationButton({
           <Button
             aria-label={`Page ${pageNumber}`}
             key={i}
-            variant={currentPage === pageNumber ? "default" : "outline"}
-            size="sm"
-            className="h-8 w-8 px-0"
-            onClick={() => setCurrentPage(Number(pageNumber))}
+            variant={Number(page) === pageNumber ? "default" : "outline"}
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => {
+              startTransition(() => {
+                router.push(
+                  `${pathname}?${createQueryString({
+                    page: pageNumber,
+                    per_page: per_page ?? null,
+                    sort: sortValue,
+                  })}`
+                );
+              });
+            }}
             disabled={isPending}
           >
             {pageNumber}
@@ -102,19 +152,42 @@ export function PaginationButton({
         )
       )}
       <Button
+        aria-label="Go to next page"
         variant="outline"
-        size="sm"
-        className="h-8 w-8 px-0"
-        onClick={() =>
-          setCurrentPage(() => {
-            const n = currentPage + 1;
-            return n;
-          })
-        }
-        disabled={currentPage === (pageCount ?? 10) || isPending}
+        size="icon"
+        className="h-8 w-8"
+        onClick={() => {
+          startTransition(() => {
+            router.push(
+              `${pathname}?${createQueryString({
+                page: Number(page) + 1,
+                per_page: per_page ?? null,
+                sort: sortValue,
+              })}`
+            );
+          });
+        }}
+        disabled={Number(page) === (pageCount ?? 10) || isPending}
       >
-        <Icons.chevronRight className="h-5 w-5" aria-hidden="true" />
-        <span className="sr-only">Next page</span>
+        <Icons.chevronRight className="h-4 w-4" aria-hidden="true" />
+      </Button>
+      <Button
+        aria-label="Go to last page"
+        variant="outline"
+        size="icon"
+        className="hidden h-8 w-8 lg:flex"
+        onClick={() => {
+          router.push(
+            `${pathname}?${createQueryString({
+              page: pageCount ?? 10,
+              per_page: per_page ?? null,
+              sort: sortValue,
+            })}`
+          );
+        }}
+        disabled={Number(page) === (pageCount ?? 10) || isPending}
+      >
+        <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
       </Button>
     </div>
   );

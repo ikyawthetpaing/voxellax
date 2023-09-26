@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { priceRangeFilterItem } from "@/config/filter";
 import { siteConfig } from "@/config/site";
 import { getProducts } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
@@ -8,21 +9,16 @@ import { getUserAction } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Grid } from "@/components/layout/grid";
-import { ProductsList } from "@/components/products-list";
+import { ProductsListWithFilter } from "@/components/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
 interface StorePageProps {
   params: {
     storeId: string;
+  };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
   };
 }
 
@@ -77,28 +73,44 @@ export async function generateMetadata({
   };
 }
 
-export default async function StorePage({ params }: StorePageProps) {
+export default async function StorePage({
+  params,
+  searchParams,
+}: StorePageProps) {
   const store = await getStore(params.storeId);
 
   if (!store) {
     notFound();
   }
 
-  const storeProducts = await getProducts({
-    limit: 8,
-    offset: 0,
+  const { page, per_page, sort, price_range } = searchParams;
+
+  // Products transaction
+  const _page = typeof page === "string" ? page : "1";
+
+  const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
+  const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
+
+  const { count: productCount, items: products } = await getProducts({
+    limit,
+    offset,
+    sort: typeof sort === "string" ? sort : null,
+    price_range: typeof price_range === "string" ? price_range : null,
     store_ids: store.id,
   });
 
+  const pageCount = Math.ceil(productCount / limit);
+
   return (
     <Shell>
-      <Grid>
-        <Input placeholder="Seach something in this store..." />
-        <div className="hidden lg:block"></div>
-        <div className="hidden md:block"></div>
-        <Button variant="outline">Sort</Button>
-      </Grid>
-      <ProductsList products={storeProducts} />
+      {products && (
+        <ProductsListWithFilter
+          products={products}
+          filterItems={[priceRangeFilterItem]}
+          page={_page}
+          pageCount={pageCount}
+        />
+      )}
     </Shell>
   );
 }

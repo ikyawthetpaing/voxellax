@@ -23,11 +23,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   } = searchParams;
 
   // Products transaction
-  const queryParam = typeof query === "string" ? query : null;
+  const _page = typeof page === "string" ? page : "1";
+
   const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
   const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
+  const queryParam = typeof query === "string" ? query : null;
 
-  const products = await getProducts({
+  const { count: productCount, items: products } = await getProducts({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,
@@ -36,6 +38,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     price_range: typeof price_range === "string" ? price_range : null,
     query: queryParam,
   });
+
+  const pageCount = Math.ceil(productCount / limit);
 
   return (
     <Shell>
@@ -58,6 +62,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <ProductsListWithFilter
         products={products}
         filterItems={[categoriesFilterItem, priceRangeFilterItem]}
+        page={_page}
+        pageCount={pageCount}
       />
     </Shell>
   );

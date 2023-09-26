@@ -51,7 +51,7 @@ export default async function IndexPage() {
         </div>
 
         {baseConfig.featuredCategories.map(async (categoryValue) => {
-          const products = await getProducts({
+          const { items: products } = await getProducts({
             limit: 4,
             offset: 0,
             categories: categoryValue,

@@ -14,7 +14,7 @@ export async function Listing({ product }: { product: Product }) {
   const store = await getStore(product.storeId);
   const seller = await getUserAction(store?.userId || "");
 
-  const products = await getProducts({
+  const { items: products } = await getProducts({
     limit: 4,
     offset: 0,
     store_ids: product.storeId,

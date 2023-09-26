@@ -8,13 +8,23 @@ import { ProductCard } from "@/components/product-card";
 import { ProductFilterFormSheet } from "@/components/sheets/product-filter-form-sheet";
 
 import { Icons } from "./icons";
+import { PaginationButton } from "./pagination-button";
 
 interface Props {
   products: Product[];
   filterItems: FilterItem[];
+  pageCount: number;
+  page: string;
+  per_page?: string;
 }
 
-export async function ProductsListWithFilter({ products, filterItems }: Props) {
+export async function ProductsListWithFilter({
+  products,
+  filterItems,
+  page,
+  pageCount,
+  per_page = "6",
+}: Props) {
   return (
     <div className="flex gap-8 md:mt-8">
       <div className="space-y-4 max-md:hidden">
@@ -49,6 +59,13 @@ export async function ProductsListWithFilter({ products, filterItems }: Props) {
             </div>
           </div>
         )}
+        {products.length > 0 ? (
+          <PaginationButton
+            pageCount={pageCount}
+            page={page}
+            per_page={per_page}
+          />
+        ) : null}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
 import { db } from "@/db";
 import { Product, products } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
-import { and, asc, desc, eq, gte, inArray, like, lte } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, like, lte, sql } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
 import { getSession } from "@/lib/session";
@@ -34,26 +34,25 @@ export async function getProducts(input: GetProductsSchema) {
   const storeIds = input.store_ids?.split(".") ?? [];
   const queries = input.query ? `%${input.query}%` : undefined;
 
-  const items = await db.transaction(async (tx) => {
-    return await tx
+  const filter = and(
+    categories.length ? inArray(products.category, categories) : undefined,
+    subcategories.length
+      ? inArray(products.subcategory, subcategories)
+      : undefined,
+    minPrice ? gte(products.price, minPrice) : undefined,
+    maxPrice ? lte(products.price, maxPrice) : undefined,
+    storeIds.length ? inArray(products.storeId, storeIds) : undefined,
+    queries ? like(products.name, queries) : undefined
+  );
+
+  const { items, count } = await db.transaction(async (tx) => {
+    const items = await tx
       .select()
       .from(products)
       .limit(input.limit)
       .offset(input.offset)
-      .where(
-        and(
-          categories.length
-            ? inArray(products.category, categories)
-            : undefined,
-          subcategories.length
-            ? inArray(products.subcategory, subcategories)
-            : undefined,
-          minPrice ? gte(products.price, minPrice) : undefined,
-          maxPrice ? lte(products.price, maxPrice) : undefined,
-          storeIds.length ? inArray(products.storeId, storeIds) : undefined,
-          queries ? like(products.name, queries) : undefined
-        )
-      )
+      .where(filter)
+      .groupBy(products.id)
       .orderBy(
         column && column in products
           ? order === "asc"
@@ -61,9 +60,26 @@ export async function getProducts(input: GetProductsSchema) {
             : desc(products[column])
           : desc(products.createdAt)
       );
+
+    const count = await tx
+      .select({
+        count: sql<number>`count(*)`,
+      })
+      .from(products)
+      .where(and(filter))
+      .execute()
+      .then((res) => res[0]?.count ?? 0);
+
+    return {
+      items,
+      count,
+    };
   });
 
-  return items;
+  return {
+    items,
+    count,
+  };
 }
 
 export async function addProduct(data: AddProductSchema, storeId: string) {
