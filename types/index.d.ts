@@ -73,13 +73,13 @@ export interface ProductImageUploadedFile extends UploadedFile {
 }
 
 export type Category = {
-  title: string;
+  label: string;
+  value: string;
   description: string;
-  slug: string;
   subcategories: {
-    title: string;
+    label: string;
     description?: string;
-    slug: string;
+    value: string;
   }[];
 };
 

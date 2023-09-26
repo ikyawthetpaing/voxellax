@@ -7,7 +7,7 @@ export function SiteFooter() {
   return (
     <footer>
       <div className="container py-10 text-sm">
-        <div className="flex max-w-[300px] flex-col gap-6 py-20">
+        <div className="flex max-w-[300px] flex-col gap-6 pb-20">
           <Link href="/">
             <Icons.voxellax className="w-28" />
           </Link>

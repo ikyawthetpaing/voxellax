@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { getTrendingCategories } from "@/config/category";
+import { baseConfig } from "@/config/base";
+import { categories, getTrendingCategories } from "@/config/category";
 import { productTags } from "@/config/product";
 import { getProducts } from "@/lib/actions/product";
 import { CategoryBox } from "@/components/category-box";
@@ -11,10 +12,6 @@ import { Search } from "@/components/search";
 import { Shell } from "@/components/shell";
 
 export default async function IndexPage() {
-  const products = await getProducts({
-    limit: 4,
-    offset: 0,
-  });
   const trendingCategories = getTrendingCategories();
   return (
     <Shell>
@@ -53,10 +50,33 @@ export default async function IndexPage() {
           </div>
         </div>
 
-        <div className="space-y-4">
-          <Heading>Latest products</Heading>
-          <ProductsList products={products} />
-        </div>
+        {baseConfig.featuredCategories.map(async (categoryValue) => {
+          const products = await getProducts({
+            limit: 4,
+            offset: 0,
+            categories: categoryValue,
+          });
+
+          if (!products) {
+            return null;
+          }
+
+          return (
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <Heading>Latest {categoryValue}</Heading>
+                <Link
+                  href={`/category/${categoryValue}`}
+                  className="flex items-center gap-2 text-sky-500"
+                >
+                  <span className="capitalize">Explore {categoryValue}</span>
+                  <Icons.chevronRight className="h-5 w-5" />
+                </Link>
+              </div>
+              <ProductsList products={products} />
+            </div>
+          );
+        })}
       </section>
     </Shell>
   );

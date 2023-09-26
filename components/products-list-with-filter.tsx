@@ -7,6 +7,8 @@ import { Heading } from "@/components/heading";
 import { ProductCard } from "@/components/product-card";
 import { ProductFilterFormSheet } from "@/components/sheets/product-filter-form-sheet";
 
+import { Icons } from "./icons";
+
 interface Props {
   products: Product[];
   filterItems: FilterItem[];
@@ -28,11 +30,25 @@ export async function ProductsListWithFilter({ products, filterItems }: Props) {
           <span className="hidden sm:block" />
           <ProductSortForm />
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product, index) => (
-            <ProductCard product={product} key={index} />
-          ))}
-        </div>
+        {products.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((product, index) => (
+              <ProductCard product={product} key={index} />
+            ))}
+          </div>
+        ) : (
+          <div>
+            <div className="mt-14 flex flex-col items-center">
+              <Icons.packageSearch
+                className="mb-4 h-16 w-16 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <div className="text-xl font-medium text-muted-foreground">
+                No product found
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

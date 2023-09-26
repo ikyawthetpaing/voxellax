@@ -33,31 +33,31 @@ export async function generateMetadata({
   const url = process.env.NEXT_PUBLIC_APP_URL;
 
   const ogUrl = new URL(`${url}/api/og`);
-  ogUrl.searchParams.set("heading", category.title);
+  ogUrl.searchParams.set("heading", category.label);
   ogUrl.searchParams.set("type", "Listing Post");
   ogUrl.searchParams.set("mode", "dark");
 
   return {
-    title: category.title,
+    title: category.label,
     description: category.description,
     authors: [{ name: siteConfig.name, url: url }, ...siteConfig.authors],
     openGraph: {
-      title: category.title,
+      title: category.label,
       description: category.description,
       type: "website",
-      url: absoluteUrl(`/category/${category.slug}`),
+      url: absoluteUrl(`/category/${category.value}`),
       images: [
         {
           url: ogUrl.toString(),
           width: 1200,
           height: 900,
-          alt: category.title,
+          alt: category.label,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: category.title,
+      title: category.label,
       description: category.description,
       images: [ogUrl.toString()],
     },
@@ -84,7 +84,7 @@ export default async function CategoryPage({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,
-    categories: category.slug,
+    categories: category.value,
     subcategories: typeof subcategories === "string" ? subcategories : null,
     price_range: typeof price_range === "string" ? price_range : null,
   });
@@ -93,7 +93,7 @@ export default async function CategoryPage({
     <Shell>
       <div className="grid gap-6">
         <Heading size="xl" className="text-center">
-          {category.title}
+          {category.label}
         </Heading>
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm text-foreground/75">{category.description}</p>
@@ -102,8 +102,8 @@ export default async function CategoryPage({
       <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center">
         {category.subcategories.map((subCategory) => (
           <Link
-            key={subCategory.slug}
-            href={`/category/${category.slug}/${subCategory.slug}`}
+            key={subCategory.value}
+            href={`/category/${category.value}/${subCategory.value}`}
           >
             <div className="rounded-lg border hover:bg-accent sm:w-48">
               <AspectRatio ratio={4 / 3}>
@@ -111,7 +111,7 @@ export default async function CategoryPage({
                   size="sm"
                   className="flex h-full w-full items-center justify-center text-center font-medium text-muted-foreground"
                 >
-                  {subCategory.title}
+                  {subCategory.label}
                 </Heading>
               </AspectRatio>
             </div>
@@ -122,7 +122,7 @@ export default async function CategoryPage({
         <ProductsListWithFilter
           products={products}
           filterItems={[
-            subcategoriesFilterItem(category.slug),
+            subcategoriesFilterItem(category.value),
             priceRangeFilterItem,
           ]}
         />

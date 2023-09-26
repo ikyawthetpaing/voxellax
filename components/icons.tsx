@@ -33,6 +33,7 @@ import {
   Minus,
   MoreHorizontal,
   MoveRight,
+  PackageSearch,
   Plus,
   PlusCircle,
   Search,
@@ -100,6 +101,7 @@ export const Icons = {
   spinner: Loader2,
   atSign: AtSign,
   bookmark: Bookmark,
+  packageSearch: PackageSearch,
   voxellax: ({ ...props }: LucideProps) => {
     const id1 = generateRandomString();
     const id2 = generateRandomString();

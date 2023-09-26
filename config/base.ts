@@ -77,4 +77,5 @@ export const baseConfig = {
     ];
     return { navItems };
   },
+  featuredCategories: ["graphics", "e-books", "digital-art"],
 };

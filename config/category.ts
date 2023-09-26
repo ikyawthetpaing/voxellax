@@ -1,19 +1,24 @@
 import { Category, Option } from "@/types";
 
-export function getCategory(categorySlug: string) {
-  const category = categories.find(({ slug }) => slug === categorySlug);
+export function getCategory(categoryValue: string) {
+  const category = categories.find(({ value }) => value === categoryValue);
   return category;
 }
 
-export function getSubcategory(categorySlug: string, subcategorySlug: string) {
+export function getSubcategory(
+  categoryValue: string,
+  subcategoryValue: string
+) {
   const subcategory = categories
-    .find((category) => category.slug === categorySlug)
-    ?.subcategories.find((subcategory) => subcategory.slug === subcategorySlug);
+    .find((category) => category.value === categoryValue)
+    ?.subcategories.find(
+      (subcategory) => subcategory.value === subcategoryValue
+    );
   return subcategory;
 }
 
 export function getCategories(): Option[] {
-  return categories.map(({ title, slug }) => ({
+  return categories.map(({ label: title, value: slug }) => ({
     label: title,
     value: slug,
   }));
@@ -22,10 +27,10 @@ export function getCategories(): Option[] {
 export function getSubcategories(category: string): Option[] {
   const subcategories =
     categories
-      .find((c) => c.slug === category)
+      .find((c) => c.value === category)
       ?.subcategories.map((s) => ({
-        label: s.title,
-        value: s.slug,
+        label: s.label,
+        value: s.value,
       })) ?? [];
 
   return subcategories;
@@ -46,8 +51,8 @@ export function getTrendingCategories() {
       }
 
       trendingCategories.push({
-        title: subcategory.title,
-        href: `/category/${category.slug}/${subcategory.slug}`,
+        title: subcategory.label,
+        href: `/category/${category.value}/${subcategory.value}`,
       });
     }
   }
@@ -67,354 +72,354 @@ function shuffleArray(array: Category[]) {
 
 export const categories: Category[] = [
   {
-    title: "Graphics",
+    label: "Graphics",
     description:
       "Explore more than 530,000 graphics to use for social media, e-commerce, cards, and webpages. These graphics sets feature apparel mockups, logos, icons, and themed graphic elements for web and print projects of all kinds.",
-    slug: "graphics",
+    value: "graphics",
     subcategories: [
       {
-        title: "Objects",
+        label: "Objects",
         description: "The board itself.",
-        slug: "objects",
+        value: "objects",
       },
       {
-        title: "Textures",
+        label: "Textures",
         description: "The wheels that go on the board.",
-        slug: "textures",
+        value: "textures",
       },
       {
-        title: "Patterns",
+        label: "Patterns",
         description: "The trucks that go on the board.",
-        slug: "patterns",
+        value: "patterns",
       },
       {
-        title: "Wallpapers",
+        label: "Wallpapers",
         description: "The bearings that go in the wheels.",
-        slug: "wallpapers",
+        value: "wallpapers",
       },
       {
-        title: "Backgrounds",
+        label: "Backgrounds",
         description: "The griptape that goes on the board.",
-        slug: "backgrounds",
+        value: "backgrounds",
       },
     ],
   },
   {
-    title: "E-Books",
+    label: "E-Books",
     description: "The board itself.",
-    slug: "e-books",
+    value: "e-books",
     subcategories: [
       {
-        title: "Fiction",
+        label: "Fiction",
         description: "Cool and comfy tees for effortless style.",
-        slug: "fiction",
+        value: "fiction",
       },
       {
-        title: "Non-Fiction",
+        label: "Non-Fiction",
         description: "Cozy up in trendy hoodies.",
-        slug: "non-fiction",
+        value: "non-fiction",
       },
       {
-        title: "Self-Help",
+        label: "Self-Help",
         description: "Relaxed and stylish pants for everyday wear.",
-        slug: "self-help",
+        value: "self-help",
       },
       {
-        title: "Textbooks",
+        label: "Textbooks",
         description: "Stay cool with casual and comfortable shorts.",
-        slug: "textbooks",
+        value: "textbooks",
       },
       {
-        title: "Lifestyle",
+        label: "Lifestyle",
         description: "Top off your look with stylish and laid-back hats.",
-        slug: "lifestyle",
+        value: "lifestyle",
       },
       {
-        title: "History",
+        label: "History",
         description: "Top off your look with stylish and laid-back hats.",
-        slug: "history",
+        value: "history",
       },
       {
-        title: "Arts and Photography",
+        label: "Arts and Photography",
         description: "Top off your look with stylish and laid-back hats.",
-        slug: "arts-and-photography",
+        value: "arts-and-photography",
       },
       {
-        title: "Travel",
+        label: "Travel",
         description: "Top off your look with stylish and laid-back hats.",
-        slug: "travel",
+        value: "travel",
       },
     ],
   },
   {
-    title: "Digital Art",
+    label: "Digital Art",
     description: "The board itself.",
-    slug: "digital-art",
+    value: "digital-art",
     subcategories: [
       {
-        title: "Stock Photos",
+        label: "Stock Photos",
         description: "Rad low tops shoes for a stylish low-profile look.",
-        slug: "stock-photos",
+        value: "stock-photos",
       },
       {
-        title: "Illustrations",
+        label: "Illustrations",
         description: "Elevate your style with rad high top shoes.",
-        slug: "illustrations",
+        value: "illustrations",
       },
       {
-        title: "Digital Paintings",
+        label: "Digital Paintings",
         description: "Effortless style with rad slip-on shoes.",
-        slug: "digital-paintings",
+        value: "digital-paintings",
       },
       {
-        title: "Vector Graphics",
+        label: "Vector Graphics",
         description: "Performance-driven rad shoes for the pros.",
-        slug: "vector-graphics",
+        value: "vector-graphics",
       },
       {
-        title: "Icon Packs",
+        label: "Icon Packs",
         description: "Effortless style with rad slip-on shoes.",
-        slug: "icon-packs",
+        value: "icon-packs",
       },
       {
-        title: "Concept Art",
+        label: "Concept Art",
         description: "Conceptual artwork for various projects.",
-        slug: "concept-art",
+        value: "concept-art",
       },
       {
-        title: "Character Design",
+        label: "Character Design",
         description: "Digital designs of characters and creatures.",
-        slug: "character-design",
+        value: "character-design",
       },
     ],
   },
   {
-    title: "Fonts",
+    label: "Fonts",
     description: "The board itself.",
-    slug: "fonts",
+    value: "fonts",
     subcategories: [
       {
-        title: "Serif",
+        label: "Serif",
         description: "Fonts with serifs.",
-        slug: "serif",
+        value: "serif",
       },
       {
-        title: "Sans-serif",
+        label: "Sans-serif",
         description: "Fonts without serifs.",
-        slug: "sans-serif",
+        value: "sans-serif",
       },
       {
-        title: "Script",
+        label: "Script",
         description: "Cursive and script-style fonts.",
-        slug: "script",
+        value: "script",
       },
       {
-        title: "Display",
+        label: "Display",
         description: "Decorative and display fonts.",
-        slug: "display",
+        value: "display",
       },
       {
-        title: "Handwritten",
+        label: "Handwritten",
         description: "Fonts with a handwritten style.",
-        slug: "handwritten",
+        value: "handwritten",
       },
       {
-        title: "Gothic",
+        label: "Gothic",
         description: "Fonts with a gothic and medieval style.",
-        slug: "gothic",
+        value: "gothic",
       },
       {
-        title: "Graffiti",
+        label: "Graffiti",
         description: "Fonts inspired by street graffiti.",
-        slug: "graffiti",
+        value: "graffiti",
       },
       {
-        title: "Retro",
+        label: "Retro",
         description: "Fonts with a vintage and retro feel.",
-        slug: "retro",
+        value: "retro",
       },
     ],
   },
   {
-    title: "Templates",
+    label: "Templates",
     description: "The board itself.",
-    slug: "templates",
+    value: "templates",
     subcategories: [
       {
-        title: "Canva Templates",
+        label: "Canva Templates",
         description: "Reusable React components for web development.",
-        slug: "canva-templates",
+        value: "canva-templates",
       },
       {
-        title: "HTML Templates",
+        label: "HTML Templates",
         description: "Pre-designed HTML website templates.",
-        slug: "html-templates",
+        value: "html-templates",
       },
       {
-        title: "WordPress Themes",
+        label: "WordPress Themes",
         description: "Themes for WordPress-powered websites.",
-        slug: "wordpress-themes",
+        value: "wordpress-themes",
       },
       {
-        title: "React Components",
+        label: "React Components",
         description: "Reusable React components for web development.",
-        slug: "react-components",
+        value: "react-components",
       },
     ],
   },
   {
-    title: "Photography",
+    label: "Photography",
     description: "The board itself.",
-    slug: "photography",
+    value: "photography",
     subcategories: [
       {
-        title: "Landscape",
+        label: "Landscape",
         description: "Stunning landscapes from around the world.",
-        slug: "landscape",
+        value: "landscape",
       },
       {
-        title: "Portraits",
+        label: "Portraits",
         description: "Captivating portraits of people.",
-        slug: "portraits",
+        value: "portraits",
       },
       {
-        title: "Nature",
+        label: "Nature",
         description: "Beautiful photos of flora and fauna.",
-        slug: "nature",
+        value: "nature",
       },
       {
-        title: "Abstract",
+        label: "Abstract",
         description: "Artistic and abstract photography.",
-        slug: "abstract",
+        value: "abstract",
       },
     ],
   },
   {
-    title: "Audio",
+    label: "Audio",
     description: "The board itself.",
-    slug: "audio",
+    value: "audio",
     subcategories: [
       {
-        title: "Music Tracks",
+        label: "Music Tracks",
         description: "Original music tracks for various projects.",
-        slug: "music-tracks",
+        value: "music-tracks",
       },
       {
-        title: "Sound Effects",
+        label: "Sound Effects",
         description: "High-quality sound effects for multimedia.",
-        slug: "sound-effects",
+        value: "sound-effects",
       },
       {
-        title: "Loops",
+        label: "Loops",
         description: "Loopable audio clips for seamless playback.",
-        slug: "loops",
+        value: "loops",
       },
     ],
   },
   {
-    title: "Video",
+    label: "Video",
     description: "The board itself.",
-    slug: "video",
+    value: "video",
     subcategories: [
       {
-        title: "Stock Footage",
+        label: "Stock Footage",
         description: "High-quality video clips for various projects.",
-        slug: "stock-footage",
+        value: "stock-footage",
       },
       {
-        title: "Motion Graphics",
+        label: "Motion Graphics",
         description: "Animated graphics and visual effects.",
-        slug: "motion-graphics",
+        value: "motion-graphics",
       },
       {
-        title: "After Effects Templates",
+        label: "After Effects Templates",
         description: "Pre-made templates for After Effects.",
-        slug: "after-effects-templates",
+        value: "after-effects-templates",
       },
     ],
   },
   {
-    title: "3D Assets",
+    label: "3D Assets",
     description: "The board itself.",
-    slug: "3d-assets",
+    value: "3d-assets",
     subcategories: [
       {
-        title: "3D Models",
+        label: "3D Models",
         description: "High-quality 3D models for various projects.",
-        slug: "3d-models",
+        value: "3d-models",
       },
       {
-        title: "Textures",
+        label: "Textures",
         description: "Textures and materials for 3D rendering.",
-        slug: "3d-textures",
+        value: "3d-textures",
       },
       {
-        title: "Animations",
+        label: "Animations",
         description: "Animated 3D sequences and character animations.",
-        slug: "3d-animations",
+        value: "3d-animations",
       },
     ],
   },
   {
-    title: "Online Courses",
+    label: "Online Courses",
     description: "The board itself.",
-    slug: "online-courses",
+    value: "online-courses",
     subcategories: [
       {
-        title: "Entrepreneurship",
+        label: "Entrepreneurship",
         description:
           "Essential tools for maintaining your skateboard, all rad.",
-        slug: "entrepreneurship",
+        value: "entrepreneurship",
       },
       {
-        title: "Marketing",
+        label: "Marketing",
         description: "Upgrade your ride with our rad selection of bushings.",
-        slug: "marketing",
+        value: "marketing",
       },
       {
-        title: "Programming",
+        label: "Programming",
         description:
           "Enhance your skateboard's performance with rad shock and riser pads.",
-        slug: "programming",
+        value: "programming",
       },
       {
-        title: "Design",
+        label: "Design",
         description:
           "Add creativity and style to your tricks with our rad skate rails.",
-        slug: "design",
+        value: "design",
       },
       {
-        title: "Photography",
+        label: "Photography",
         description: "Keep your board gliding smoothly with our rad skate wax.",
-        slug: "photography",
+        value: "photography",
       },
       {
-        title: "Music",
+        label: "Music",
         description: "Keep your feet comfy and stylish with our rad socks.",
-        slug: "music",
+        value: "music",
       },
       {
-        title: "Language Learning",
+        label: "Language Learning",
         description: "Carry your gear in style with our rad backpacks.",
-        slug: "language-learning",
+        value: "language-learning",
       },
 
       {
-        title: "Personal Development",
+        label: "Personal Development",
         description:
           "Enhance your skateboard's performance with rad shock and riser pads.",
-        slug: "personal-development",
+        value: "personal-development",
       },
       {
-        title: "Cooking",
+        label: "Cooking",
         description:
           "Add creativity and style to your tricks with our rad skate rails.",
-        slug: "cooking",
+        value: "cooking",
       },
       {
-        title: "Fitness",
+        label: "Fitness",
         description: "Keep your board gliding smoothly with our rad skate wax.",
-        slug: "fitness",
+        value: "fitness",
       },
     ],
   },

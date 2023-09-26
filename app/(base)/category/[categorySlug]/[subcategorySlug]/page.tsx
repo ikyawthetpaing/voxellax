@@ -35,31 +35,31 @@ export async function generateMetadata({
   const url = process.env.NEXT_PUBLIC_APP_URL;
 
   const ogUrl = new URL(`${url}/api/og`);
-  ogUrl.searchParams.set("heading", subcategory.title);
+  ogUrl.searchParams.set("heading", subcategory.label);
   ogUrl.searchParams.set("type", "Listing Post");
   ogUrl.searchParams.set("mode", "dark");
 
   return {
-    title: subcategory.title,
+    title: subcategory.label,
     description: subcategory.description,
     authors: [{ name: siteConfig.name, url: url }, ...siteConfig.authors],
     openGraph: {
-      title: subcategory.title,
+      title: subcategory.label,
       description: subcategory.description,
       type: "website",
-      url: absoluteUrl(`/category/${params.categorySlug}/${subcategory.slug}`),
+      url: absoluteUrl(`/category/${params.categorySlug}/${subcategory.value}`),
       images: [
         {
           url: ogUrl.toString(),
           width: 1200,
           height: 900,
-          alt: subcategory.title,
+          alt: subcategory.label,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: subcategory.title,
+      title: subcategory.label,
       description: subcategory.description,
       images: [ogUrl.toString()],
     },
@@ -98,7 +98,7 @@ export default async function SubcategoryPage({
     <Shell>
       <div className="grid gap-6">
         <Heading size="xl" className="text-center">
-          {subcategory.title}
+          {subcategory.label}
         </Heading>
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm text-foreground/75">
