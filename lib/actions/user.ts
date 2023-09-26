@@ -1,9 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { users } from "@/db/schema";
 import { Invoice, InvoiceProduct } from "@/types";
 import { eq } from "drizzle-orm";
+
+import { users } from "@/db/schema";
 
 import { getProduct } from "@/lib/actions/product";
 import { getSession } from "@/lib/session";

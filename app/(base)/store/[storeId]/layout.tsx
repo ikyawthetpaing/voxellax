@@ -1,13 +1,67 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { baseConfig } from "@/config/base";
+import { siteConfig } from "@/config/site";
+
 import { getStore } from "@/lib/actions/store";
-import { formatDate } from "@/lib/utils";
+import { getUserAction } from "@/lib/actions/user";
+import { absoluteUrl, formatDate } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/heading";
 import { Tabs } from "@/components/tabs";
+
+export async function generateMetadata({
+  params,
+}: StoreLayoutPageProps): Promise<Metadata> {
+  const store = await getStore(params.storeId);
+
+  if (!store) {
+    return {};
+  }
+
+  const user = await getUserAction(store.userId);
+  const sanitizedAuthors = user
+    ? [{ name: user.name ?? "Unknown", url: absoluteUrl(`/user/${user.id}`) }]
+    : [];
+
+  const ogUrl = new URL(store.avatar ? store.avatar.url : siteConfig.ogImage);
+  ogUrl.searchParams.set("heading", store.name);
+  ogUrl.searchParams.set("type", "Listing Post");
+  ogUrl.searchParams.set("mode", "dark");
+
+  const description = store.description
+    ? store.description
+    : `Check out ${store.name} on ${siteConfig.name}`;
+
+  return {
+    title: store.name,
+    description: description,
+    authors: sanitizedAuthors,
+    openGraph: {
+      title: store.name,
+      description: description,
+      type: "profile",
+      url: absoluteUrl(`/store/${store.id}`),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1080,
+          height: 1080,
+          alt: store.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: store.name,
+      description: description,
+      images: [ogUrl.toString()],
+    },
+  };
+}
 
 interface StoreLayoutPageProps {
   params: {

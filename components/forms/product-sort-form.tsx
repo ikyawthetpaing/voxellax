@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { productSortOptions } from "@/config/product";
+
 import { useCreateQueryString } from "@/hooks/create-query-string";
 import {
   Select,

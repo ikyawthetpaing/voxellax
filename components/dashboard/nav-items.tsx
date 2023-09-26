@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Store } from "@/db/schema";
 import { SidebarNavItem } from "@/types";
 import {
   CreditCard,
@@ -16,6 +15,8 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
+
+import { Store } from "@/db/schema";
 
 import { cn } from "@/lib/utils";
 import {

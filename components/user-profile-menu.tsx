@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "@/db/schema";
 import { signOut } from "next-auth/react";
 
+import { User } from "@/db/schema";
+
 import { baseConfig } from "@/config/base";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,

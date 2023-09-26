@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Store } from "@/db/schema";
 import { FileWithPreview, UploadedFile } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Store } from "@/db/schema";
 
 import { deleteStore, updateStore } from "@/lib/actions/store";
-import { cn } from "@/lib/utils";
+import { catchError, cn } from "@/lib/utils";
 import {
   StoreSchema,
   storeSchema,
@@ -25,9 +27,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { StoreForm } from "@/components/forms/store-form";
-
-import { Icons } from "../icons";
-import { toast } from "../ui/use-toast";
+import { Icons } from "@/components/icons";
 
 interface UpdateStoreFormProps {
   store: Store;
@@ -111,17 +111,11 @@ export function UpdateStoreForm({ store }: UpdateStoreFormProps) {
 
       await updateStore(updateData, store.id);
 
-      toast({
-        description: "Store updated successfully.",
-      });
+      toast("Store updated successfully.");
 
       router.refresh();
     } catch (err) {
-      console.error(err);
-      toast({
-        description: "Your store was not updated. Please try again.",
-        variant: "destructive",
-      });
+      catchError(err);
     }
     setIsUpdating(false);
   }
@@ -130,9 +124,9 @@ export function UpdateStoreForm({ store }: UpdateStoreFormProps) {
     setIsDeleting(true);
     try {
       await deleteStore(store.id);
-      toast({ description: "Store deleted sucessfully." });
+      toast("Store deleted sucessfully.");
     } catch (err) {
-      toast({ description: "Something went wrong.", variant: "destructive" });
+      catchError(err);
     }
     setIsDeleting(false);
   }

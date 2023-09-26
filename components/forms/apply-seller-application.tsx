@@ -8,7 +8,9 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { getCategories } from "@/config/category";
+
 import { approveSellerAction } from "@/lib/actions/user";
+import { catchError } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -36,7 +38,6 @@ import {
 } from "@/components/ui/select";
 
 import { LoadingButton } from "../loading-button";
-import { toast } from "../ui/use-toast";
 
 const stepOneSchema = z.object({
   firstName: z.string().min(3).max(50),
@@ -120,12 +121,8 @@ export function ApplySellerApplicationForm({
       try {
         await approveSellerAction(user.id);
         router.refresh();
-      } catch (error) {
-        console.error(error);
-        toast({
-          description: "Something went wrong. Try again.",
-          variant: "destructive",
-        });
+      } catch (err) {
+        catchError(err);
       }
     });
   }

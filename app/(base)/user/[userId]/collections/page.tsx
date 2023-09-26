@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import { Collection } from "@/db/schema";
 
 import { getUserCollections } from "@/lib/actions/collections";
@@ -6,7 +7,7 @@ import { CollectionsList } from "@/components/collections-list";
 
 export const metadata: Metadata = {
   title: "Collections",
-  description: "View and share your collections with your friends and family.",
+  description: "View and share the collections with your friends and family.",
 };
 
 interface UserCollectionsPageProps {

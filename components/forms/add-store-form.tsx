@@ -4,9 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { addStore } from "@/lib/actions/store";
-import { cn } from "@/lib/utils";
+import { catchError, cn } from "@/lib/utils";
 import {
   AddStoreSchema,
   StoreSchema,
@@ -14,7 +15,6 @@ import {
 } from "@/lib/validations/store";
 import { useUploadThing } from "@/hooks/uploadthing";
 import { buttonVariants } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { StoreForm } from "@/components/forms/store-form";
 import { Icons } from "@/components/icons";
 
@@ -59,17 +59,11 @@ export function AddStoreForm() {
 
         await addStore(postData);
 
-        toast({
-          description: "Store created successfully.",
-        });
+        router.refresh();
 
-        router.refresh(); // automatically redirect to /dashboard
-      } catch (error) {
-        console.error(error);
-        toast({
-          description: "Your store was not created. Please try again.",
-          variant: "destructive",
-        });
+        toast.success("Store created successfully.");
+      } catch (err) {
+        catchError(err);
       }
     });
   }

@@ -2,8 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { likes } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
+
+import { likes } from "@/db/schema";
 
 import { getSession } from "@/lib/session";
 

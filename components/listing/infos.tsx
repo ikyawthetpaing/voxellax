@@ -1,8 +1,10 @@
 import { HTMLAttributes } from "react";
 import Link from "next/link";
+
 import { Store, User } from "@/db/schema";
 
 import { siteConfig } from "@/config/site";
+
 import {
   Accordion,
   AccordionContent,

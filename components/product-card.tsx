@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { Product } from "@/db/schema";
 
 import { getStore } from "@/lib/actions/store";

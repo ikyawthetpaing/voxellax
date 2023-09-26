@@ -1,10 +1,11 @@
 "use server";
 
 import { db } from "@/db";
-import { Product, products } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
 import { and, asc, desc, eq, gte, inArray, like, lte, sql } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
+
+import { Product, products } from "@/db/schema";
 
 import { getSession } from "@/lib/session";
 import { generatedId, getProductThumbnailImage } from "@/lib/utils";

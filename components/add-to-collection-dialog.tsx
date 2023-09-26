@@ -3,15 +3,17 @@
 import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useUserCollections } from "@/context/user-collections";
-import { Collection } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
+
+import { Collection } from "@/db/schema";
 
 import {
   getCollectionProduct,
   getCollectionThumbnails,
   toggleCollectionProduct,
 } from "@/lib/actions/collections";
+import { catchError } from "@/lib/utils";
+import { useUserCollections } from "@/context/user-collections";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +26,6 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "@/components/ui/use-toast";
 import { CreateCollectionForm } from "@/components/forms/create-collection-form";
 import { Icons } from "@/components/icons";
 
@@ -154,12 +155,8 @@ function CollectionCard({ collection, productId }: CollectionCardProps) {
     setIsAdding(true);
     try {
       await toggleCollectionProduct(collection.id, productId);
-    } catch (error) {
-      return toast({
-        title: "Something went wrong.",
-        description: "Your collection was not added. Please try again.",
-        variant: "destructive",
-      });
+    } catch (err) {
+      catchError(err);
     } finally {
       setIsAdding(false);
       setRefresh(true);

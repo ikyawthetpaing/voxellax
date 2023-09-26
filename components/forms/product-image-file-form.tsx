@@ -21,6 +21,7 @@ import {
   type FileRejection,
   type FileWithPath,
 } from "react-dropzone";
+import { toast } from "sonner";
 
 import { cn, formatBytes } from "@/lib/utils";
 import { useMounted } from "@/hooks/mounted";
@@ -32,7 +33,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 
 interface ProductImageFileFormProps extends HTMLAttributes<HTMLDivElement> {
@@ -63,9 +63,7 @@ export function ProductImageFileForm({
       const totalFilesCount = files.length;
 
       if (files.length >= maxFiles) {
-        toast({
-          description: `You can only upload up to ${maxFiles} file(s).`,
-        });
+        toast(`You can only upload up to ${maxFiles} file(s).`);
         return;
       }
       const remainingSlots = maxFiles - totalFilesCount;
@@ -86,15 +84,10 @@ export function ProductImageFileForm({
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
           if (errors[0]?.code === "file-too-large" && maxSize) {
-            toast({
-              description: `File is too large. Max size is ${formatBytes(
-                maxSize
-              )}`,
-            });
+            toast(`File is too large. Max size is ${formatBytes(maxSize)}`);
             return;
           }
-          errors[0]?.message &&
-            toast({ description: errors[0].message, variant: "destructive" });
+          errors[0]?.message && toast(errors[0].message);
         });
       }
     },

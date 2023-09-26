@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { NavItem } from "@/types";
 
 import { getCategories, getSubcategories } from "@/config/category";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";

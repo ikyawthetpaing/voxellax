@@ -78,4 +78,38 @@ export const baseConfig = {
     return { navItems };
   },
   featuredCategories: ["graphics", "e-books", "digital-art"],
+  footerLinkGroups: [
+    {
+      label: "Resources",
+      links: [
+        { label: "Blog", value: "/about" },
+        { label: "Collections", value: "/brands" },
+        { label: "Help Center", value: "/careers" },
+      ],
+    },
+    {
+      label: "Earn",
+      links: [
+        { label: "Affiliate Partner Benefits", value: "/about" },
+        { label: "Shop Benefits", value: "/brands" },
+        { label: "Become an Ambassador", value: "/careers" },
+      ],
+    },
+    {
+      label: "The Goods",
+      links: [
+        { label: "Branding eBook", value: "/about" },
+        { label: "Free Drops", value: "/brands" },
+        { label: "Gift Cards", value: "/careers" },
+      ],
+    },
+    {
+      label: "Company",
+      links: [
+        { label: "About", value: "/about" },
+        { label: "Brands", value: "/brands" },
+        { label: "Careers", value: "/careers" },
+      ],
+    },
+  ],
 };

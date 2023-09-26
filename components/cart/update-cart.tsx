@@ -1,13 +1,12 @@
 "use client";
 
 import { useTransition } from "react";
-import { useCartItems } from "@/context/cart-items-context";
 
 import { toggleCartItem } from "@/lib/actions/cart";
+import { catchError } from "@/lib/utils";
+import { useCartItems } from "@/context/cart-items-context";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-
-import { toast } from "../ui/use-toast";
 
 export function UpdateCart({ productId }: { productId: string }) {
   const [isPending, startTransition] = useTransition();
@@ -23,13 +22,8 @@ export function UpdateCart({ productId }: { productId: string }) {
           try {
             await toggleCartItem(productId);
             setRefresh(true);
-          } catch (error) {
-            error instanceof Error
-              ? toast({ description: error.message, variant: "destructive" })
-              : toast({
-                  description: "Something went wrong.",
-                  variant: "destructive",
-                });
+          } catch (err) {
+            catchError(err);
           }
         });
       }}

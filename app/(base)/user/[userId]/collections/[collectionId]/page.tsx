@@ -1,9 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import { Product } from "@/db/schema";
 
 import { siteConfig } from "@/config/site";
+
 import {
   getCollection,
   getCollectionProducts,
@@ -31,9 +33,13 @@ export async function generateMetadata({
   }
 
   const user = await getUserAction(collection?.userId);
+  if (!user) {
+    return {};
+  }
 
-  const title = `${user?.name}'s ${collection.name} collection`;
-  const description = `Check out ${collection.name} collection by ${user?.name}.`;
+  const userName = user.name ?? "Unknown";
+  const title = `${user.name}'s ${collection.name} collection`;
+  const description = `Check out ${collection.name} collection by ${user.name}.`;
 
   const thumbnails = await getCollectionThumbnails(collection.id, 1);
   const ogImage = thumbnails.length ? thumbnails[0].url : siteConfig.ogImage;
@@ -46,14 +52,12 @@ export async function generateMetadata({
   return {
     title: title,
     description: description,
-    authors: [
-      { name: user?.name ?? "Unknown", url: absoluteUrl(`/user/${user?.id}`) },
-    ],
+    authors: [{ name: userName, url: absoluteUrl(`/user/${user.id}`) }],
     openGraph: {
       title: title,
       description: description,
       type: "website",
-      url: absoluteUrl(`user/${user?.id}/collections/${collection.id}`),
+      url: absoluteUrl(`user/${user.id}/collections/${collection.id}`),
       images: [
         {
           url: ogUrl.toString(),

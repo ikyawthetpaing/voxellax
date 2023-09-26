@@ -3,9 +3,8 @@
 import { useEffect, useState, useTransition } from "react";
 
 import { isUserLiked, toggleLike } from "@/lib/actions/like";
-import { cn } from "@/lib/utils";
+import { catchError, cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 
 interface ProductLikeButtonProps extends ButtonProps {
@@ -33,11 +32,7 @@ export function ProductLikeButton({
       try {
         setIsLiked(await toggleLike(productId));
       } catch (err) {
-        console.error(err);
-        toast({
-          description: "Something went wrong, please try again.",
-          variant: "destructive",
-        });
+        catchError(err);
       }
     });
   }

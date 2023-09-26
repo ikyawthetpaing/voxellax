@@ -2,8 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { cartItems } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
+
+import { cartItems } from "@/db/schema";
 
 import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";

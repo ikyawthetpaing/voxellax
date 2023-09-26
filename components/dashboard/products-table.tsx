@@ -3,11 +3,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Product } from "@/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
+import { Product } from "@/db/schema";
+
 import { getCategories } from "@/config/category";
+
 import { deleteProduct } from "@/lib/actions/product";
 import { catchError, formatDate, formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -135,18 +137,12 @@ export function ProductsTable({
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem
                 onClick={() => {
-                  // now you got a read/write object
                   const current = new URLSearchParams(
                     Array.from(searchParams.entries())
-                  ); // -> has to use this form
-
+                  );
                   current.set("edit", row.original.id);
-
-                  // cast to string
                   const search = current.toString();
-                  // or const query = `${'?'.repeat(search.length && 1)}${search}`;
                   const query = search ? `?${search}` : "";
-
                   router.push(`${pathname}${query}`);
                 }}
               >

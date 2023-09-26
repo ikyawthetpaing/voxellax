@@ -2,6 +2,7 @@
 
 import { HTMLAttributes } from "react";
 import Link from "next/link";
+
 import { Product } from "@/db/schema";
 
 import { formatPrice } from "@/lib/utils";

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getSubcategory } from "@/config/category";
 import { priceRangeFilterItem } from "@/config/filter";
 import { siteConfig } from "@/config/site";
+
 import { getProducts } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { Heading } from "@/components/heading";
@@ -32,9 +33,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const url = process.env.NEXT_PUBLIC_APP_URL;
-
-  const ogUrl = new URL(`${url}/api/og`);
+  const ogUrl = new URL(siteConfig.ogImage);
   ogUrl.searchParams.set("heading", subcategory.label);
   ogUrl.searchParams.set("type", "Listing Post");
   ogUrl.searchParams.set("mode", "dark");
@@ -42,7 +41,10 @@ export async function generateMetadata({
   return {
     title: subcategory.label,
     description: subcategory.description,
-    authors: [{ name: siteConfig.name, url: url }, ...siteConfig.authors],
+    authors: [
+      { name: siteConfig.name, url: siteConfig.url },
+      ...siteConfig.authors,
+    ],
     openGraph: {
       title: subcategory.label,
       description: subcategory.description,
@@ -81,10 +83,9 @@ export default async function SubcategoryPage({
 
   const { page, per_page, sort, price_range } = searchParams;
 
-  // Products transaction
   const _page = typeof page === "string" ? page : "1";
 
-  const limit = typeof per_page === "string" ? parseInt(per_page) : 8;
+  const limit = typeof per_page === "string" ? parseInt(per_page) : 6;
   const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
 
   const { count: productCount, items: products } = await getProducts({

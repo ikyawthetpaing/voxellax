@@ -1,6 +1,7 @@
 import { HTMLAttributes } from "react";
-import { Store } from "@/db/schema";
 import { SidebarNavItem } from "@/types";
+
+import { Store } from "@/db/schema";
 
 import { cn } from "@/lib/utils";
 

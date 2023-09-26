@@ -1,3 +1,5 @@
+import { createUploadthing, type FileRouter } from "uploadthing/next";
+
 import {
   PRODUCT_DIGITAL_FILE_MAX_SIZE,
   PRODUCT_IMAGE_FILE_MAX_SIZE,
@@ -6,7 +8,6 @@ import {
   STORE_AVATAR_IMAGE_FILE_MAX_SIZE,
   STORE_COVER_IMAGE_FILE_MAX_SIZE,
 } from "@/constants/store";
-import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 import { getSession } from "@/lib/session";
 

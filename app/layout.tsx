@@ -1,8 +1,10 @@
 import "@/styles/globals.css";
 
+import { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 
 import { siteConfig } from "@/config/site";
+
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@/components/analytics";
@@ -10,14 +12,14 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: siteConfig.title,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
-  authors: [siteConfig.authors],
+  authors: [...siteConfig.authors],
   creator: siteConfig.creator,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },

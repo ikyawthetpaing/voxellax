@@ -3,13 +3,15 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCartItems } from "@/context/cart-items-context";
-import { Product } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
 
+import { Product } from "@/db/schema";
+
 import { getCalculatedFees } from "@/config/checkout";
+
 import { getProduct } from "@/lib/actions/product";
 import { cn, formatPrice, getProductThumbnailImage } from "@/lib/utils";
+import { useCartItems } from "@/context/cart-items-context";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";

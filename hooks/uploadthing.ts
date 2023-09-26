@@ -1,6 +1,6 @@
 import { generateReactHelpers } from "@uploadthing/react/hooks";
 
-import { toast } from "@/components/ui/use-toast";
+import { catchError } from "@/lib/utils";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
 
 const { useUploadThing: _useUploadThing } =
@@ -14,12 +14,8 @@ export function useUploadThing(
     | "avatarImageUploader"
 ) {
   const { isUploading, startUpload } = _useUploadThing(uploader, {
-    onUploadError: (error) => {
-      console.error(error);
-      toast({
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+    onUploadError: (err) => {
+      catchError(err);
     },
   });
 

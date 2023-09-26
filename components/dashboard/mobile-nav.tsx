@@ -2,8 +2,9 @@
 
 import { HTMLAttributes, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Store } from "@/db/schema";
 import { SidebarNavItem } from "@/types";
+
+import { Store } from "@/db/schema";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";

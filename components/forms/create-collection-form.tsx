@@ -1,16 +1,19 @@
 "use client";
 
 import { Dispatch, SetStateAction, useState } from "react";
-import { useUserCollections } from "@/context/user-collections";
-import { collections } from "@/db/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { collections } from "@/db/schema";
 
 import { createCollection } from "@/lib/actions/collections";
+import { catchError } from "@/lib/utils";
 import {
   collectionPostSchema,
   CollectionSchema,
 } from "@/lib/validations/collection";
+import { useUserCollections } from "@/context/user-collections";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -29,7 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 
 interface CreateCollectionFormProps {
@@ -57,13 +59,9 @@ export function CreateCollectionForm({
     setIsLoading(true);
     try {
       await createCollection(data);
-    } catch (error) {
-      console.error(error);
-      return toast({
-        title: "Something went wrong.",
-        description: "Your collection was not created. Please try again.",
-        variant: "destructive",
-      });
+      toast.success("Collection created successfully.");
+    } catch (err) {
+      catchError(err);
     } finally {
       setIsLoading(false);
       setCreating(false);

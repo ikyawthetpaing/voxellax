@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { getCategories } from "@/config/category";
+
 import { useCreateQueryString } from "@/hooks/create-query-string";
 import {
   Select,
@@ -26,7 +27,9 @@ export function Search({
   hideCategorySeletor = false,
 }: SearchProps) {
   const categories = getCategories();
-  const allCategories = categories.map((category) => category.value).join(".");
+  const allCategories: string = categories
+    .map((category) => category.value)
+    .join(".");
 
   const [query, setQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] =
@@ -92,7 +95,9 @@ export function Search({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value={allCategories}>All</SelectItem>
+                    <SelectItem value={allCategories}>
+                      All Categories
+                    </SelectItem>
                     {categories.map(({ label, value }) => (
                       <SelectItem value={value} key={value}>
                         {label}

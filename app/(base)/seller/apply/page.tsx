@@ -30,7 +30,7 @@ export default async function ApplySellerPage() {
           {isUserHaveStore ? (
             <>
               <Heading size="2xl">
-                You currently possess an existing store.
+                You currently have an existing store.
               </Heading>
               <Link href="/dashboard" className={cn(buttonVariants())}>
                 Go to Dashboard

@@ -2,14 +2,16 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { PRODUCT_DEFAULT_PRICE } from "@/constants/product";
 import { ProductFileWithPath, ProductImageWithPreview } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
+import { PRODUCT_DEFAULT_PRICE } from "@/constants/product";
+
 import { addProduct } from "@/lib/actions/product";
-import { cn } from "@/lib/utils";
+import { catchError, cn } from "@/lib/utils";
 import {
   AddProductSchema,
   ProductSchema,
@@ -25,7 +27,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { toast } from "@/components/ui/use-toast";
 import { ProductForm } from "@/components/forms/product-form";
 import { Icons } from "@/components/icons";
 
@@ -99,14 +100,10 @@ export function AddProductFormSheet({
         setFiles([]);
         setIsOpen(false);
         router.refresh();
-        toast({ description: "Product created sucessfully." });
-      } catch (error) {
-        console.error(error);
-        toast({
-          title: "Product was not creatd.",
-          description: "Something went wrong. Try again",
-          variant: "destructive",
-        });
+
+        toast.success("Product added successfully.");
+      } catch (err) {
+        catchError(err);
       }
     });
   }

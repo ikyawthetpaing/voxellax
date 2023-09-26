@@ -1,5 +1,6 @@
-import { collections } from "@/db/schema";
 import * as z from "zod";
+
+import { collections } from "@/db/schema";
 
 export const collectionPostSchema = z.object({
   name: z.string().min(3).max(50),

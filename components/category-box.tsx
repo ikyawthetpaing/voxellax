@@ -12,7 +12,7 @@ interface Props {
 export function CategoryBox({ herf, title }: Props) {
   return (
     <Link href={herf}>
-      <div className="rounded-lg border hover:bg-accent">
+      <div className="rounded-lg border p-2 hover:bg-accent">
         <AspectRatio ratio={4 / 3}>
           <Heading
             size="sm"

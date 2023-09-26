@@ -13,16 +13,17 @@ import { UserAuthForm } from "@/components/forms/user-auth-form";
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Login to your account to make purchases and for more features",
+  title: "Sign In",
+  description:
+    "Sign In to your account to make purchases and for more features",
 };
 
-export default function LoginPage() {
+export default function SignInPage() {
   return (
-    <Shell layout="auth">
+    <Shell layout="auth" className="max-sm:p-0">
       <Card>
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Sign In</CardTitle>
           <CardDescription>
             Choose your preferred sign in method
           </CardDescription>

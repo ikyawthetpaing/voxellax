@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCartItems } from "@/context/cart-items-context";
+
 import { Product, Store } from "@/db/schema";
 
 import { getProduct } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
 import { formatPrice, getProductThumbnailImage } from "@/lib/utils";
+import { useCartItems } from "@/context/cart-items-context";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

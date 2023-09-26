@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { useCartItems } from "@/context/cart-items-context";
 
 import { toggleCartItem } from "@/lib/actions/cart";
-import { cn } from "@/lib/utils";
+import { catchError, cn } from "@/lib/utils";
+import { useCartItems } from "@/context/cart-items-context";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 
 interface AddToCartButtonProps extends ButtonProps {
@@ -35,11 +34,7 @@ export function AddToCartButton({
         await toggleCartItem(productId);
         setRefresh(true);
       } catch (err) {
-        console.error(err);
-        toast({
-          description: "Something went wrong, please try again.",
-          variant: "destructive",
-        });
+        catchError(err);
       }
     });
   }

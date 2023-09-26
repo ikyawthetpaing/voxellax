@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { baseConfig } from "@/config/base";
 import { siteConfig } from "@/config/site";
+
 import { getUserAction } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

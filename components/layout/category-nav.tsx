@@ -6,6 +6,7 @@ import { Option } from "@/types";
 import { ChevronDown } from "lucide-react";
 
 import { getCategories, getSubcategories } from "@/config/category";
+
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 

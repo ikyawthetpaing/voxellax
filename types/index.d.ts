@@ -1,5 +1,7 @@
-import { Product } from "@/db/schema";
+import { Author } from "next/dist/lib/metadata/types/metadata-types";
 import { FileWithPath } from "react-dropzone";
+
+import { Product } from "@/db/schema";
 
 import { type Icons } from "@/components/icons";
 
@@ -13,7 +15,7 @@ export type SiteConfig = {
     twitter: string;
     github: string;
   };
-  authors: { name: string; url: string }[];
+  authors: Author[];
   creator: string;
   keywords: string[];
 };

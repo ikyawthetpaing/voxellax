@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { User } from "@/db/schema";
 import { NavItem } from "@/types";
+
+import { User } from "@/db/schema";
 
 import { CartSheet } from "@/components/cart/cart-sheet";
 import { Icons } from "@/components/icons";

@@ -7,11 +7,11 @@ import {
   type FileRejection,
   type FileWithPath,
 } from "react-dropzone";
+import { toast } from "sonner";
 
 import { cn, formatBytes } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 
 interface ProductFileFormProps extends HTMLAttributes<HTMLDivElement> {
@@ -41,9 +41,7 @@ export function ProductFileForm({
       acceptedFiles.map((file) => (addedFilesSize += file.size));
 
       if (addedFilesSize > totalSize) {
-        toast({
-          description: `Total limit is${formatBytes(totalSize)}.`,
-        });
+        toast(`Total limit is${formatBytes(totalSize)}.`);
       } else {
         const filesToAdd = acceptedFiles.map((file, i) => {
           return Object.assign(file);
@@ -54,8 +52,7 @@ export function ProductFileForm({
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
-          errors[0]?.message &&
-            toast({ description: errors[0].message, variant: "destructive" });
+          errors[0]?.message && toast(errors[0].message);
         });
       }
     },

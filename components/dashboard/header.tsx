@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Store } from "@/db/schema";
 import { SidebarNavItem } from "@/types";
+
+import { Store } from "@/db/schema";
 
 import { Button } from "@/components/ui/button";
 import { AddProductFormSheet } from "@/components/dashboard/add-product-form-sheet";

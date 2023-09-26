@@ -1,9 +1,12 @@
 import Link from "next/link";
 
 import { baseConfig } from "@/config/base";
-import { categories, getTrendingCategories } from "@/config/category";
+import { getTrendingCategories } from "@/config/category";
 import { productTags } from "@/config/product";
+import { siteConfig } from "@/config/site";
+
 import { getProducts } from "@/lib/actions/product";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { CategoryBox } from "@/components/category-box";
 import { Heading } from "@/components/heading";
 import { Icons } from "@/components/icons";
@@ -18,12 +21,12 @@ export default async function IndexPage() {
       <section className="grid gap-8 pt-8 md:gap-12 md:pt-12 lg:gap-20 lg:pt-20">
         <div className="flex flex-col items-center gap-8">
           <div className="flex flex-col items-center gap-4 text-center">
-            <h1 className="text-3xl font-bold text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-              Elevate your digital lifestyle today.
+            <h1 className="max-w-[68rem] bg-gradient-to-r from-foreground to-gray-500 bg-clip-text text-4xl font-bold text-transparent sm:text-6xl md:text-7xl lg:text-8xl">
+              Transform your digital dreams into reality.
             </h1>
-            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-              Shop with Voxellax and experience the future at your fingertips!
-              🌐💫
+            <p className="max-w-[600px] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+              Our digital products are meticulously crafted to elevate your
+              efficiency and simplify your online experience.
             </p>
           </div>
           <div className="w-full sm:w-[600px]">
@@ -43,7 +46,7 @@ export default async function IndexPage() {
 
         <div className="space-y-4">
           <Heading>Browse Trending Categories</Heading>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-3 gap-4 max-[600px]:grid-cols-2 lg:grid-cols-6">
             {trendingCategories.map(({ title, href }) => (
               <CategoryBox title={title} herf={href} />
             ))}
@@ -77,6 +80,24 @@ export default async function IndexPage() {
             </div>
           );
         })}
+
+        <div className="grid sm:grid-cols-2">
+          <div className="flex flex-col gap-4">
+            <Heading>Begin Your Profit Journey with {siteConfig.name}</Heading>
+            <p className="leading-normal text-muted-foreground">
+              Monetize your designs by reaching a vast audience of buyers or
+              support fellow artists on {siteConfig.name} to boost your
+              earnings!
+            </p>
+            <div className="flex gap-4">
+              <Link href="/seller" className={buttonVariants()}>
+                Open a shop
+              </Link>
+              <Button variant="outline">Become an Affiliate</Button>
+            </div>
+          </div>
+          <div></div>
+        </div>
       </section>
     </Shell>
   );

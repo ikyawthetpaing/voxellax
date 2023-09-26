@@ -1,9 +1,10 @@
 import { db } from "@/db";
-import { users } from "@/db/schema";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { eq } from "drizzle-orm";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+
+import { users } from "@/db/schema";
 
 import { env } from "@/env.mjs";
 

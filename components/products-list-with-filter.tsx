@@ -1,14 +1,14 @@
-import { Product } from "@/db/schema";
 import { FilterItem } from "@/types";
+
+import { Product } from "@/db/schema";
 
 import { ProductFilterForm } from "@/components/forms/product-filter-form";
 import { ProductSortForm } from "@/components/forms/product-sort-form";
 import { Heading } from "@/components/heading";
+import { Icons } from "@/components/icons";
+import { PaginationButton } from "@/components/pagination-button";
 import { ProductCard } from "@/components/product-card";
 import { ProductFilterFormSheet } from "@/components/sheets/product-filter-form-sheet";
-
-import { Icons } from "./icons";
-import { PaginationButton } from "./pagination-button";
 
 interface Props {
   products: Product[];

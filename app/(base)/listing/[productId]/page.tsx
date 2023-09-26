@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
+
 import { getProduct } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
 import { absoluteUrl } from "@/lib/utils";

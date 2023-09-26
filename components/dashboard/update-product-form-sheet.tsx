@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Product } from "@/db/schema";
 import {
   ProductFileWithPath,
   ProductImageUploadedFile,
@@ -11,10 +10,13 @@ import {
 } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
+import { Product } from "@/db/schema";
+
 import { updateProduct } from "@/lib/actions/product";
-import { cn } from "@/lib/utils";
+import { catchError, cn } from "@/lib/utils";
 import {
   ProductSchema,
   productSchema,
@@ -30,7 +32,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { toast } from "@/components/ui/use-toast";
 import { ProductForm } from "@/components/forms/product-form";
 import { Icons } from "@/components/icons";
 
@@ -201,14 +202,10 @@ export function UpdateProductFormSheet({
         await updateProduct(updateData, product.id);
         setIsOpen(false);
         router.refresh();
-        toast({ description: "Product updated sucessfully." });
-      } catch (error) {
-        console.error(error);
-        toast({
-          title: "Product was not updated.",
-          description: "Something went wrong, please try again",
-          variant: "destructive",
-        });
+
+        toast.success("Product updated sucessfully.");
+      } catch (err) {
+        catchError(err);
       }
     });
   }

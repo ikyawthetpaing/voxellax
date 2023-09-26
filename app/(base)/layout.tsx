@@ -1,8 +1,8 @@
+import { baseConfig } from "@/config/base";
+
+import { getCurrentUserAction } from "@/lib/actions/user";
 import { CartItemsProvdier } from "@/context/cart-items-context";
 import { UserCollectionsProvdier } from "@/context/user-collections";
-
-import { baseConfig } from "@/config/base";
-import { getCurrentUserAction } from "@/lib/actions/user";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { dashboardConfig } from "@/config/dashboard";
+
 import { getCurrentUserStore } from "@/lib/actions/store";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { Sidebar } from "@/components/dashboard/sidebar";

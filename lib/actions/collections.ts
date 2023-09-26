@@ -2,9 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { collectionProducts, collections, Product } from "@/db/schema";
 import { ProductImageUploadedFile } from "@/types";
 import { and, eq } from "drizzle-orm";
+
+import { collectionProducts, collections, Product } from "@/db/schema";
 
 import { authOptions } from "../auth";
 import { getSession } from "../session";

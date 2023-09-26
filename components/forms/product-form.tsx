@@ -1,16 +1,17 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
+import { ProductFileWithPath, ProductImageWithPreview } from "@/types";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
+
+import { getCategories, getSubcategories } from "@/config/category";
 import {
   PRODUCT_DIGITAL_FILE_MAX_COUNT,
   PRODUCT_DIGITAL_FILE_MAX_SIZE_BYTES,
   PRODUCT_IMAGE_FILE_MAX_COUNT,
   PRODUCT_IMAGE_FILE_MAX_SIZE_BYTES,
 } from "@/constants/product";
-import { ProductFileWithPath, ProductImageWithPreview } from "@/types";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
 
-import { getCategories, getSubcategories } from "@/config/category";
 import { ProductSchema } from "@/lib/validations/product";
 import {
   Accordion,
