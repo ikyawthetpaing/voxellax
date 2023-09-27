@@ -5,7 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 
 import { siteConfig } from "@/config/site";
 
-import { cn } from "@/lib/utils";
+import { absoluteUrl, cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@/components/analytics";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
-  authors: [...siteConfig.authors],
+  authors: siteConfig.authors,
   creator: siteConfig.creator,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
-    title: siteConfig.name,
+    title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.name,
+    title: siteConfig.title,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
     creator: siteConfig.creator,
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  manifest: `${siteConfig.url}/site.webmanifest`,
+  manifest: absoluteUrl("/site.webmanifest"),
 };
 
 export default function RootLayout({

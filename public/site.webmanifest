@@ -1,5 +1,5 @@
 {
-  "name": "Voxellax: Exceptional Graphics, Fonts, Books, and Design Templates",
+  "name": "Voxellax: Graphics, Fonts, Books, and Design Templates",
   "short_name": "Voxellax",
   "description": "Elevate your creative endeavors with millions distinctive fonts, graphics, themes, images, and templates crafted by talented independent creators worldwide.",
   "icons": [
@@ -56,6 +56,8 @@
     "e-commerce",
     "e-books",
     "graphics",
+    "books",
+    "digital-art",
     "templates"
   ],
   "lang": "en-US"

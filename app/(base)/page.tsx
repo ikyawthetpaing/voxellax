@@ -89,11 +89,10 @@ export default async function IndexPage() {
               support fellow artists on {siteConfig.name} to boost your
               earnings!
             </p>
-            <div className="flex gap-4">
+            <div>
               <Link href="/seller" className={buttonVariants()}>
                 Open a shop
               </Link>
-              <Button variant="outline">Become an Affiliate</Button>
             </div>
           </div>
           <div></div>

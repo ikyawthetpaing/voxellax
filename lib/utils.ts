@@ -99,9 +99,12 @@ export function generateRandomString(length: number = 8): string {
   return result;
 }
 
-export function absoluteUrl(path: string) {
+export function absoluteUrl(path?: string) {
   const appUrl = env.NEXT_PUBLIC_APP_URL;
-  const formattedPath = path.replace(/^\//, ""); // Remove leading slash if present
+  if (!path) {
+    return appUrl;
+  }
+  const formattedPath = path.replace(/^\//, "");
   return `${appUrl}/${formattedPath}`;
 }
 
