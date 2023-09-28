@@ -109,7 +109,7 @@ export function AddProductFormSheet({
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={() => setIsOpen(true)}>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         className="flex w-full flex-col gap-0 p-0 sm:max-w-lg"

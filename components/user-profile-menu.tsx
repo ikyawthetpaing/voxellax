@@ -85,11 +85,9 @@ export function UserProfileMenu({ user }: UserProfileMenuProps) {
           </>
         )}
         <DropdownMenuSeparator />
-        {/* <Link href="/logout"> */}
         <DropdownMenuItem onClick={() => signOut()}>
           <span>Log out</span>
         </DropdownMenuItem>
-        {/* </Link> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

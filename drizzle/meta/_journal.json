@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1695262975815,
-      "tag": "0000_worried_tigra",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1695263065314,
-      "tag": "0001_fine_unicorn",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1695263117372,
-      "tag": "0002_gorgeous_masked_marvel",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1695263144248,
-      "tag": "0003_flat_pet_avengers",
+      "when": 1695908891326,
+      "tag": "0000_medical_viper",
       "breakpoints": true
     }
   ]

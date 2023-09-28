@@ -2,6 +2,12 @@
 
 Voxellax is a comprehensive e-commerce platform built specifically for digital products. With a sleek and user-friendly interface, Voxellax allows users to discover, purchase, and manage a wide range of digital products conveniently.
 
+<p align="center">
+  <a href="https://voxellax.vercel.app">
+    <img alt="Voxellax: Graphics, Fonts, Books, and Design Templates" src="https://voxellax.vercel.app/og.png">
+  </a>
+</p>
+
 ## Technologies Used
 
 Voxellax is built using the following technologies:
@@ -10,9 +16,9 @@ Voxellax is built using the following technologies:
 - [Typescript](https://www.typescriptlang.org/): A statically-typed superset of JavaScript that helps catch errors at compile-time.
 - [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom user interfaces.
 - [NextAuth](https://next-auth.js.org/): An authentication library for Next.js applications.
-- [Prisma](https://www.prisma.io/): A modern database toolkit that simplifies database access and management.
-- [Radix UI](https://radix-ui.com/): A set of high-quality, accessible UI components for building modern web applications.
+- [Drizzle ORM](https://orm.drizzle.team/): A modern database toolkit that simplifies database access and management.
 - [Uploadthing](https://uploadthing.com/): Utilized for uploading, managing, downloading, and searching media files.
+- [shadcn/ui](https://ui.shadcn.com/): A set of high-quality, accessible UI components for building modern web applications.
 
 ## Features
 

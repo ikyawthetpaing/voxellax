@@ -46,7 +46,6 @@ export function DetailsCard({
           <CardDescription>VAT Included</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6">
-          <div>{product.name}</div>
           {totalReviews !== 0 && (
             <div className="flex justify-between">
               <h1 className="text-sm font-semibold">Reviews</h1>

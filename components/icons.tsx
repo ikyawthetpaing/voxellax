@@ -1,9 +1,11 @@
+import cuid from "cuid";
 import {
   Activity,
   AppWindow,
   ArrowDown,
   ArrowUp,
   AtSign,
+  BadgeCheck,
   Bell,
   Bookmark,
   Calendar,
@@ -49,10 +51,6 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-
-import { generateRandomString } from "@/lib/utils";
-
-export type Icon = LucideIcon;
 
 export const Icons = {
   facebook: Facebook,
@@ -102,9 +100,10 @@ export const Icons = {
   atSign: AtSign,
   bookmark: Bookmark,
   packageSearch: PackageSearch,
+  verified: BadgeCheck,
   voxellax: ({ ...props }: LucideProps) => {
-    const id1 = generateRandomString();
-    const id2 = generateRandomString();
+    const id1 = cuid.slug();
+    const id2 = cuid.slug();
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"

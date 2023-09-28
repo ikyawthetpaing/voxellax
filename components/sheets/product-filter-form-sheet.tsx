@@ -21,6 +21,8 @@ interface Props {
 
 export function ProductFilterFormSheet({ filterItems }: Props) {
   const [open, setOpen] = useState(false);
+  const [clearParams, setClearParams] = useState<boolean>(false);
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -38,11 +40,17 @@ export function ProductFilterFormSheet({ filterItems }: Props) {
 
         <ScrollArea className="h-full px-6">
           <div className="flex flex-1 flex-col gap-4 overflow-hidden py-6">
-            <ProductFilterForm filterItems={filterItems} />
+            <ProductFilterForm
+              filterItems={filterItems}
+              clearParams={clearParams}
+              setClearParams={setClearParams}
+            />
           </div>
         </ScrollArea>
         <SheetFooter className="bottom-0 grid w-full grid-cols-2 gap-4 border-t p-6">
-          <Button variant="outline">Clear</Button>
+          <Button variant="outline" onClick={() => setClearParams(true)}>
+            Clear
+          </Button>
           <Button onClick={() => setOpen(false)}>Apply</Button>
         </SheetFooter>
       </SheetContent>

@@ -12,15 +12,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/**
- * Format a price value to a human-readable format with optional fractional digits.
- * If the price is equal to 0, "Free" is returned.
- * If the price is in the thousands range, it's displayed as "$X.XXK".
- * If the price is in the millions range, it's displayed as "$X.XXM".
- * @param price - The price value to be formatted.
- * @param fractionDigits - The number of fractional digits to display (default is 1).
- * @returns The formatted price as a string.
- */
 export function formatPrice(price: number, fractionDigits: number = 0): string {
   if (typeof price !== "number" || isNaN(price)) {
     throw new Error("Invalid price value. Expected a number.");
@@ -46,13 +37,6 @@ export function formatPrice(price: number, fractionDigits: number = 0): string {
   }
 }
 
-/**
- * Format a byte value to a human-readable format with optional decimal places.
- * @param bytes - The byte value to be formatted.
- * @param decimals - The number of decimal places to display (default is 0).
- * @param sizeType - The type of size to display ("accurate" or "normal", default is "normal").
- * @returns The formatted byte value as a string.
- */
 export function formatBytes(
   bytes: number,
   decimals: number = 0,
@@ -79,24 +63,6 @@ export function formatBytes(
     sizeType === "accurate" ? accurateSizes[i] ?? "Bytes" : sizes[i] ?? "Bytes";
 
   return `${formattedValue} ${sizeUnit}`;
-}
-
-/**
- * Generates a random string of the specified length using characters.
- *
- * @param length - The length of the random string to be generated (default is 8)
- * @returns The random string.
- */
-export function generateRandomString(length: number = 8): string {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let result = "";
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters[randomIndex];
-  }
-
-  return result;
 }
 
 export function absoluteUrl(path?: string) {
@@ -135,12 +101,6 @@ export function getUniqueString() {
   return cuid.slug();
 }
 
-/**
- * Generates a unique identifier based on the provided name.
- *
- * @param name The name to be used for generating the identifier.
- * @returns A unique identifier string.
- */
 export function generatedId(name: string): string {
   let slug = slugify(name);
   const uniqueSlug = getUniqueString();
@@ -154,8 +114,13 @@ export function generatedId(name: string): string {
   return id;
 }
 
-export function getProductThumbnailImage(images: ProductImageUploadedFile[]) {
-  return images.find((image) => image.isThumbnail);
+export function getProductThumbnailImage(
+  images: ProductImageUploadedFile[] | null
+) {
+  if (!images) {
+    return null;
+  }
+  return images.find((image) => image.isThumbnail) || null;
 }
 
 export function catchError(err: unknown) {

@@ -23,7 +23,7 @@ export function CollectionsList({ collections }: CollectionsListProps) {
 export function CollectionsListSkeleton() {
   return (
     <Grid>
-      {Array.from({ length: 8 }, (_, i) => i).map((index) => (
+      {Array.from({ length: 4 }, (_, i) => i).map((index) => (
         <CollectionCardSkeleton key={index} />
       ))}
     </Grid>

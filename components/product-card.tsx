@@ -1,10 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Product } from "@/db/schema";
 
 import { getStore } from "@/lib/actions/store";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getProductThumbnailImage } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Card,
@@ -13,9 +12,8 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Icons } from "@/components/icons";
-
-import { ProductActionButtons } from "./product-action-buttons";
+import { ProductActionButtons } from "@/components/product-action-buttons";
+import { ProductImage } from "@/components/product-image";
 
 interface ProductCardProps {
   product: Product;
@@ -23,33 +21,17 @@ interface ProductCardProps {
 
 export async function ProductCard({ product }: ProductCardProps) {
   const store = await getStore(product.storeId);
-  const thumbnail =
-    product.images?.find((image) => image.isThumbnail) ??
-    product.images?.[0] ??
-    null;
+  const thumbnail = getProductThumbnailImage(product.images);
+
   return (
     <Card className="group relative overflow-hidden rounded-lg">
       <CardHeader className="border-b p-0">
-        <AspectRatio ratio={4 / 3}>
-          <Link
-            aria-label={`View ${product.name} details`}
-            href={`/listing/${product.id}`}
-          >
-            {thumbnail ? (
-              <Image
-                src={thumbnail.url}
-                alt={thumbnail.name}
-                fill
-                className="object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                <Icons.image className="h-16 w-16" />
-              </div>
-            )}
-          </Link>
-        </AspectRatio>
+        <Link
+          aria-label={`View ${product.name} details`}
+          href={`/listing/${product.id}`}
+        >
+          <ProductImage image={thumbnail} />
+        </Link>
       </CardHeader>
       <CardContent className="p-2 pb-0">
         <div className="flex justify-between gap-2">

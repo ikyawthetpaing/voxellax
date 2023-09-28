@@ -1,12 +1,6 @@
 import { NavItem } from "@/types";
 
 export const baseConfig = {
-  mainNavItems: [
-    {
-      title: "Free Assets",
-      href: "/free-assets",
-    },
-  ],
   profileMenu: {
     user: (userId: string) => {
       const navItems: NavItem[] = [
@@ -65,14 +59,17 @@ export const baseConfig = {
       {
         title: "About",
         href: `/store/${storeId}/about`,
+        disabled: true,
       },
       {
         title: "Announcements",
         href: `/store/${storeId}/announcements`,
+        disabled: true,
       },
       {
         title: "Reviews",
         href: `/store/${storeId}/reviews`,
+        disabled: true,
       },
     ];
     return { navItems };

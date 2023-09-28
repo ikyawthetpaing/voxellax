@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getCategory } from "@/config/category";
@@ -8,7 +7,7 @@ import { siteConfig } from "@/config/site";
 
 import { getProducts } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { CategoryBox } from "@/components/category-box";
 import { Heading } from "@/components/heading";
 import { ProductsListWithFilter } from "@/components/products-list-with-filter";
 import { Shell } from "@/components/shell";
@@ -107,21 +106,10 @@ export default async function CategoryPage({
       </div>
       <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center">
         {category.subcategories.map((subCategory) => (
-          <Link
-            key={subCategory.value}
-            href={`/category/${category.value}/${subCategory.value}`}
-          >
-            <div className="rounded-lg border hover:bg-accent sm:w-48">
-              <AspectRatio ratio={4 / 3}>
-                <Heading
-                  size="sm"
-                  className="flex h-full w-full items-center justify-center text-center font-medium text-muted-foreground"
-                >
-                  {subCategory.label}
-                </Heading>
-              </AspectRatio>
-            </div>
-          </Link>
+          <CategoryBox
+            herf={`/category/${category.value}/${subCategory.value}`}
+            title={subCategory.label}
+          />
         ))}
       </div>
       {products && (

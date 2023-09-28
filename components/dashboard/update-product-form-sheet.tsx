@@ -68,7 +68,7 @@ export function UpdateProductFormSheet({
     if (product.images) {
       const uploadedImages: ProductImageWithPreview[] = [];
       product.images.map((image) => {
-        const fileContent = new Blob([], { type: "image/*" }); // <- empty blob file
+        const fileContent = new Blob([], { type: "image/*" });
 
         const fileWithPreview: ProductImageWithPreview = Object.assign(
           new File([fileContent], image.name, {
@@ -95,7 +95,7 @@ export function UpdateProductFormSheet({
     if (product.files) {
       const uploadedFiles: ProductFileWithPath[] = [];
       product.files.map((image) => {
-        const fileContent = new Blob([], { type: "image/*" }); // <- empty blob file
+        const fileContent = new Blob([], { type: "image/*" });
 
         const fileWithPreview: ProductFileWithPath = Object.assign(
           new File([fileContent], image.name, {
@@ -120,16 +120,10 @@ export function UpdateProductFormSheet({
 
   useEffect(() => {
     if (!isOpen) {
-      // now you got a read/write object
-      const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
-
+      const current = new URLSearchParams(Array.from(searchParams.entries()));
       current.delete("edit");
-
-      // cast to string
       const search = current.toString();
-      // or const query = `${'?'.repeat(search.length && 1)}${search}`;
       const query = search ? `?${search}` : "";
-
       router.push(`${pathname}${query}`);
     }
   }, [isOpen, pathname, router, searchParams]);
@@ -211,7 +205,7 @@ export function UpdateProductFormSheet({
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={() => setIsOpen(true)}>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         className="flex w-full flex-col gap-0 p-0 sm:max-w-lg"

@@ -1,6 +1,12 @@
 "use client";
 
-import { HTMLAttributes, useEffect, useState } from "react";
+import {
+  Dispatch,
+  HTMLAttributes,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterItem, QueryParam } from "@/types";
 
@@ -17,15 +23,23 @@ import { Label } from "@/components/ui/label";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   filterItems: FilterItem[];
+  clearParams?: boolean;
+  setClearParams?: Dispatch<SetStateAction<boolean>>;
 }
 
-export function ProductFilterForm({ filterItems, ...props }: Props) {
+export function ProductFilterForm({
+  filterItems,
+  clearParams,
+  setClearParams,
+  ...props
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { createQueryString } = useCreateQueryString();
-
   const [params, setParams] = useState<QueryParam[]>([]);
+
+  const keys = filterItems.map((item) => item.key);
 
   useEffect(() => {
     const newParams: QueryParam[] = filterItems.map((item) => {
@@ -37,7 +51,27 @@ export function ProductFilterForm({ filterItems, ...props }: Props) {
     setParams(newParams);
   }, [filterItems, searchParams]);
 
-  useEffect(() => console.log(params), [params]);
+  useEffect(() => {
+    if (clearParams && setClearParams) {
+      let newParams = [...params];
+
+      const current = new URLSearchParams(Array.from(searchParams.entries()));
+      keys.map((key) => {
+        current.delete(key);
+        newParams = newParams.filter((param) => param.key !== key);
+        newParams.push({ key, value: null });
+      });
+      const search = current.toString();
+      const query = search ? `?${search}` : "";
+
+      setParams(newParams);
+      router.push(`${pathname}${query}`);
+      setClearParams(false);
+
+      console.log("clear filters");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clearParams]);
 
   const updateParams = ({
     key,
@@ -90,14 +124,14 @@ export function ProductFilterForm({ filterItems, ...props }: Props) {
         defaultValue={filterItems.map((item) => item.key)}
         className="grid w-full gap-2"
       >
-        {filterItems.map((item, index) => (
-          <AccordionItem key={index} value={item.key} className="border-0">
+        {filterItems.map((item) => (
+          <AccordionItem key={item.key} value={item.key} className="border-0">
             <AccordionTrigger className="rounded-lg bg-accent/75 px-4 py-2 hover:bg-accent hover:no-underline">
               {item.title}
             </AccordionTrigger>
             <AccordionContent>
               <div className="grid gap-6 px-4 py-6">
-                {item.options.map((option) => {
+                {item.options.map((option, index) => {
                   const id = getUniqueString();
                   const paramValues =
                     params
@@ -106,7 +140,7 @@ export function ProductFilterForm({ filterItems, ...props }: Props) {
                   const isChecked = paramValues.includes(option.value);
 
                   return (
-                    <div key={id} className="flex items-center space-x-2">
+                    <div key={index} className="flex items-center space-x-2">
                       <Checkbox
                         id={id}
                         checked={isChecked}

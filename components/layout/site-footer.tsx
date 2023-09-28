@@ -4,12 +4,13 @@ import { baseConfig } from "@/config/base";
 import { siteConfig } from "@/config/site";
 
 import { Icons } from "@/components/icons";
+import { Shell } from "@/components/shell";
 
 export function SiteFooter() {
   return (
     <footer>
-      <div className="container py-10 text-sm">
-        <div className="flex justify-between gap-8 pb-20 max-lg:flex-col">
+      <div className="container py-8 text-sm">
+        <div className="flex justify-between gap-8 pb-16 max-lg:flex-col">
           <div className="flex max-w-[300px] flex-col gap-6">
             <Link href="/">
               <Icons.voxellax className="w-28" />
@@ -33,12 +34,12 @@ export function SiteFooter() {
             </div>
           </div>
           <div className="flex flex-wrap gap-8 lg:gap-12">
-            {baseConfig.footerLinkGroups.map((linkGroup) => (
-              <div className="flex flex-col gap-4">
+            {baseConfig.footerLinkGroups.map((linkGroup, index) => (
+              <div className="flex flex-col gap-4" key={index}>
                 <h3 className="font-semibold">{linkGroup.label}</h3>
                 <ul className="flex flex-col gap-4 font-light">
-                  {linkGroup.links.map((link) => (
-                    <li>
+                  {linkGroup.links.map((link, index) => (
+                    <li key={index}>
                       <Link
                         href={link.value}
                         className="underline-offset-4 hover:underline"

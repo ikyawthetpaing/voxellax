@@ -1,7 +1,6 @@
 "use server";
 
 import { db } from "@/db";
-import { ProductImageUploadedFile } from "@/types";
 import { and, asc, desc, eq, gte, inArray, like, lte, sql } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
@@ -214,9 +213,8 @@ export async function deleteProduct(productId: string) {
 
 export async function getProductThumbnail(productId: string) {
   const product = await getProduct(productId);
-  let thumbnail: ProductImageUploadedFile | null = null;
-  if (product && product.images) {
-    thumbnail = getProductThumbnailImage(product.images) || null;
+  if (!product) {
+    return null;
   }
-  return thumbnail;
+  return getProductThumbnailImage(product.images);
 }

@@ -20,13 +20,10 @@ import {
 } from "../ui/accordion";
 import { ScrollArea } from "../ui/scroll-area";
 
-interface MobileNavProps {
-  navItems?: NavItem[];
-}
-
-export function MobileNav({ navItems }: MobileNavProps) {
+export function MobileNav() {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
+  const categories = getCategories();
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -40,7 +37,7 @@ export function MobileNav({ navItems }: MobileNavProps) {
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
             <Accordion type="single" collapsible className="w-full">
-              {getCategories().map((category, index) => (
+              {categories.map((category, index) => (
                 <AccordionItem value={category.value} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
                     {category.label}

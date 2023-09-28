@@ -6,8 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useCreateQueryString } from "@/hooks/create-query-string";
 import { Button } from "@/components/ui/button";
-
-import { Icons } from "./icons";
+import { Icons } from "@/components/icons";
 
 interface PaginationButtonProps
   extends React.DetailedHTMLProps<

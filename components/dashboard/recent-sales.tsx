@@ -1,32 +1,40 @@
 import { formatPrice } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const sales = [
-  {
-    name: "Olivia Martin",
-    email: "olivia.martin@email.com",
-    price: 1999,
-  },
-  {
-    name: "Jackson Lee",
-    email: "jackson.lee@email.com",
-    price: 39.0,
-  },
-  {
-    name: "Isabella Nguyen",
-    email: "isabella.nguyen@email.com",
-    price: 299.0,
-  },
-  {
-    name: "William Kim",
-    email: "will@email.com",
-    price: 99.0,
-  },
-  {
-    name: "Sofia Davis",
-    email: "sofia.davis@email.com",
-    price: 39.0,
-  },
+import { Heading } from "../heading";
+
+type Sale = {
+  name: string;
+  email: string;
+  price: number;
+};
+
+const sales: Sale[] = [
+  // {
+  //   name: "Olivia Martin",
+  //   email: "olivia.martin@email.com",
+  //   price: 1999,
+  // },
+  // {
+  //   name: "Jackson Lee",
+  //   email: "jackson.lee@email.com",
+  //   price: 39.0,
+  // },
+  // {
+  //   name: "Isabella Nguyen",
+  //   email: "isabella.nguyen@email.com",
+  //   price: 299.0,
+  // },
+  // {
+  //   name: "William Kim",
+  //   email: "will@email.com",
+  //   price: 99.0,
+  // },
+  // {
+  //   name: "Sofia Davis",
+  //   email: "sofia.davis@email.com",
+  //   price: 39.0,
+  // },
 ];
 
 export function RecentSales() {
@@ -52,7 +60,11 @@ export function RecentSales() {
             </div>
           ))}
         </div>
-      ) : null}
+      ) : (
+        <Heading className="text-center text-muted-foreground">
+          no recent sales
+        </Heading>
+      )}
     </div>
   );
 }

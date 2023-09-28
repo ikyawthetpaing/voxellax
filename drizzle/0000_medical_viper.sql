@@ -20,6 +20,20 @@ CREATE TABLE `cartItem` (
 	CONSTRAINT `cartItem_productId_userId` PRIMARY KEY(`productId`,`userId`)
 );
 --> statement-breakpoint
+CREATE TABLE `collection-product` (
+	`collectionId` varchar(255) NOT NULL,
+	`productId` varchar(255) NOT NULL,
+	`createdAt` timestamp DEFAULT (now())
+);
+--> statement-breakpoint
+CREATE TABLE `collection` (
+	`id` varchar(255) NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`privacy` enum('public','private','unlisted') NOT NULL DEFAULT 'private',
+	`createdAt` timestamp DEFAULT (now()),
+	`userId` varchar(255) NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `like` (
 	`userId` varchar(255) NOT NULL,
 	`productId` varchar(255) NOT NULL,
@@ -55,6 +69,7 @@ CREATE TABLE `store` (
 	`avatar` json DEFAULT ('null'),
 	`cover` json DEFAULT ('null'),
 	`contactEmail` varchar(255) NOT NULL,
+	`verified` boolean NOT NULL DEFAULT false,
 	`createdAt` timestamp DEFAULT (now()),
 	`userId` varchar(255) NOT NULL,
 	CONSTRAINT `store_id` PRIMARY KEY(`id`)

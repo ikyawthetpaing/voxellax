@@ -154,7 +154,9 @@ export function NavItems({ store, navItems }: NavItemsProps) {
                 <AvatarImage src={store?.avatar?.url} alt={store?.name} />
                 <AvatarFallback>{store?.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              <h1 className="text-sm font-medium">{store?.name}</h1>
+              <h1 className="line-clamp-1 text-sm font-medium">
+                {store?.name}
+              </h1>
             </div>
             <Icons.moreHorizontal className="h-4 w-4" />
           </div>

@@ -30,9 +30,9 @@ export default function DashboardOverviewPage() {
               <Icons.dollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
+              <div className="text-2xl font-bold">$0.00</div>
               <p className="text-xs text-muted-foreground">
-                +20.1% from last month
+                +0% from last month
               </p>
             </CardContent>
           </Card>
@@ -44,9 +44,9 @@ export default function DashboardOverviewPage() {
               <Icons.users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
+              <div className="text-2xl font-bold">+0</div>
               <p className="text-xs text-muted-foreground">
-                +180.1% from last month
+                +0% from last month
               </p>
             </CardContent>
           </Card>
@@ -56,9 +56,9 @@ export default function DashboardOverviewPage() {
               <Icons.creditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
+              <div className="text-2xl font-bold">+0</div>
               <p className="text-xs text-muted-foreground">
-                +19% from last month
+                +0% from last month
               </p>
             </CardContent>
           </Card>
@@ -68,9 +68,9 @@ export default function DashboardOverviewPage() {
               <Icons.activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+573</div>
+              <div className="text-2xl font-bold">+0</div>
               <p className="text-xs text-muted-foreground">
-                +201 since last hour
+                +0 since last hour
               </p>
             </CardContent>
           </Card>
@@ -87,7 +87,7 @@ export default function DashboardOverviewPage() {
           <Card className="lg:col-span-3">
             <CardHeader>
               <CardTitle>Recent Sales</CardTitle>
-              <CardDescription>You made 265 sales this month.</CardDescription>
+              <CardDescription>You made 0 sale(s) this month.</CardDescription>
             </CardHeader>
             <CardContent>
               <RecentSales />

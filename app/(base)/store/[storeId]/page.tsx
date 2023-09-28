@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { priceRangeFilterItem } from "@/config/filter";
+import { categoriesFilterItem, priceRangeFilterItem } from "@/config/filter";
 
 import { getProducts } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
@@ -26,7 +26,7 @@ export default async function StorePage({
     notFound();
   }
 
-  const { page, per_page, sort, price_range } = searchParams;
+  const { page, per_page, sort, price_range, categories } = searchParams;
 
   // Products transaction
   const _page = typeof page === "string" ? page : "1";
@@ -39,6 +39,7 @@ export default async function StorePage({
     offset,
     sort: typeof sort === "string" ? sort : null,
     price_range: typeof price_range === "string" ? price_range : null,
+    categories: typeof categories === "string" ? categories : null,
     store_ids: store.id,
   });
 
@@ -49,7 +50,7 @@ export default async function StorePage({
       {products && (
         <ProductsListWithFilter
           products={products}
-          filterItems={[priceRangeFilterItem]}
+          filterItems={[priceRangeFilterItem, categoriesFilterItem]}
           page={_page}
           pageCount={pageCount}
         />

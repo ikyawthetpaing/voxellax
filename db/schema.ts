@@ -2,6 +2,7 @@ import { ProductImageUploadedFile, UploadedFile } from "@/types";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { InferSelectModel, relations } from "drizzle-orm";
 import {
+  boolean,
   double,
   int,
   json,
@@ -105,6 +106,7 @@ export const stores = mysqlTable("store", {
   avatar: json("avatar").$type<UploadedFile | null>().default(null),
   cover: json("cover").$type<UploadedFile | null>().default(null),
   contactEmail: varchar("contactEmail", { length: 255 }).notNull(),
+  verified: boolean("verified").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
   userId: varchar("userId", { length: 255 }).notNull(),
 });

@@ -94,13 +94,6 @@ const sidebarNavItems: SidebarNavItem[] = [
   },
   {
     navItem: {
-      title: "Design",
-      href: "/dashboard/design",
-      icon: "appWindow",
-    },
-  },
-  {
-    navItem: {
       title: "Settings",
       href: "/dashboard/settings",
       icon: "settings",

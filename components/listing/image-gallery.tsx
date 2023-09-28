@@ -1,15 +1,13 @@
 "use client";
 
 import { HTMLAttributes, useState } from "react";
-import Image from "next/image";
 import { ProductImageUploadedFile } from "@/types";
-import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-
-import { ProductActionButtons } from "../product-action-buttons";
+import { ProductActionButtons } from "@/components/product-action-buttons";
+import { ProductImage } from "@/components/product-image";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
   images: ProductImageUploadedFile[] | null;
@@ -23,27 +21,12 @@ export function ImageGallery({
   ...props
 }: ImageGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
+  const currentImage =
+    images && images.length ? images[currentImageIndex] : null;
   return (
     <div className={cn("grid gap-3", className)} {...props}>
-      <AspectRatio
-        ratio={4 / 3}
-        className="group relative overflow-hidden rounded-lg border"
-      >
-        {images && images.length > 0 ? (
-          <Image
-            src={images[currentImageIndex].url}
-            alt={images[currentImageIndex].name}
-            fill
-            className="object-cover"
-            loading="lazy"
-            quality={100}
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-            <Icons.image className="h-16 w-16" />
-          </div>
-        )}
+      <div className="group relative overflow-hidden rounded-lg border">
+        <ProductImage image={currentImage} />
         <ProductActionButtons
           layout="listing"
           productId={productId}
@@ -85,28 +68,19 @@ export function ImageGallery({
             </Button>
           </div>
         )}
-      </AspectRatio>
+      </div>
       {images && (
         <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
           {images.map((image, index) => (
-            <div
+            <ProductImage
+              image={image}
               key={index}
               className={cn(
                 "flex w-20 shrink-0  border border-background p-[1px] md:w-24",
                 { "border-primary": index === currentImageIndex }
               )}
               onMouseOver={() => setCurrentImageIndex(index)}
-            >
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src={image.url}
-                  alt={image.name}
-                  fill
-                  className="object-cover"
-                  loading="lazy"
-                />
-              </AspectRatio>
-            </div>
+            />
           ))}
         </div>
       )}
