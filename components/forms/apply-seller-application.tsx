@@ -9,7 +9,7 @@ import * as z from "zod";
 
 import { getCategories } from "@/config/category";
 
-import { approveSellerAction } from "@/lib/actions/user";
+import { approveSeller } from "@/lib/actions/user";
 import { catchError } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -119,7 +119,7 @@ export function ApplySellerApplicationForm({
     console.log(values);
     startTransition(async () => {
       try {
-        await approveSellerAction(user.id);
+        await approveSeller(user.id);
         router.refresh();
       } catch (err) {
         catchError(err);

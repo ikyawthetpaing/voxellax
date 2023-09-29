@@ -8,7 +8,7 @@ import { siteConfig } from "@/config/site";
 import { getProducts } from "@/lib/actions/product";
 import { absoluteUrl } from "@/lib/utils";
 import { Heading } from "@/components/heading";
-import { ProductsListWithFilter } from "@/components/products-list-with-filter";
+import { ProductsListWithFilter } from "@/components/product/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
 interface SubcategoryPageProps {

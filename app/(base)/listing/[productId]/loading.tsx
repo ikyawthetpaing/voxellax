@@ -16,13 +16,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ProductsListSkeleton } from "@/components/products-list";
+import { ProductsListSkeleton } from "@/components/product/products-list";
 import { Shell } from "@/components/shell";
 
 export default function ListingLoadingPage() {
   return (
     <Shell>
       <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-5 w-3/4 sm:w-1/2" />
+          <Skeleton className="h-5 w-28 sm:w-48" />
+        </div>
         <div className="grid gap-8 lg:flex">
           <div className="flex flex-1 flex-col gap-8">
             <ImageGallerySkeleton />
@@ -56,7 +60,7 @@ function ImageGallerySkeleton() {
       >
         <Skeleton className="h-full w-full" />
       </AspectRatio>
-      <div className="flex w-full gap-3 overflow-x-scroll">
+      <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
         {Array.from({ length: 10 }, (_, i) => i).map((index) => (
           <div
             key={index}

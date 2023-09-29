@@ -10,7 +10,7 @@ import { env } from "@/env.mjs";
 import { getProduct } from "@/lib/actions/product";
 import { getCurrentUserStore } from "@/lib/actions/store";
 import { ProductsTable } from "@/components/dashboard/products-table";
-import { UpdateProductFormSheet } from "@/components/dashboard/update-product-form-sheet";
+import { UpdateProductFormSheet } from "@/components/sheets/update-product-form-sheet";
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {

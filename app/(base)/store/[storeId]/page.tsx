@@ -4,7 +4,7 @@ import { categoriesFilterItem, priceRangeFilterItem } from "@/config/filter";
 
 import { getProducts } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
-import { ProductsListWithFilter } from "@/components/products-list-with-filter";
+import { ProductsListWithFilter } from "@/components/product/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
 interface StorePageProps {

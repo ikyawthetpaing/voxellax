@@ -12,11 +12,11 @@ import {
   getCollectionThumbnails,
 } from "@/lib/actions/collections";
 import { getProduct } from "@/lib/actions/product";
-import { getUserAction } from "@/lib/actions/user";
+import { getUse } from "@/lib/actions/user";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { ProductsList } from "@/components/products-list";
+import { ProductsList } from "@/components/product/products-list";
 
 interface UserCollectionPageProps {
   params: {
@@ -32,7 +32,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const user = await getUserAction(collection?.userId);
+  const user = await getUse(collection?.userId);
   if (!user) {
     return {};
   }

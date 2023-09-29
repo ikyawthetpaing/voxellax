@@ -6,7 +6,7 @@ import { baseConfig } from "@/config/base";
 import { siteConfig } from "@/config/site";
 
 import { getStore } from "@/lib/actions/store";
-import { getUserAction } from "@/lib/actions/user";
+import { getUse } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const user = await getUserAction(store.userId);
+  const user = await getUse(store.userId);
   const sanitizedAuthors = user
     ? [{ name: user.name ?? "Unknown", url: absoluteUrl(`/user/${user.id}`) }]
     : [];

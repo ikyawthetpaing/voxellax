@@ -1,17 +1,16 @@
 import { HTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
-
-import { Icons } from "../icons";
+import { Icons } from "@/components/icons";
 
 interface RenderStarsProps extends HTMLAttributes<HTMLDivElement> {
   size: number;
-  averageRates: number;
+  averageRate: number;
 }
 
 export function RenderStars({
   size,
-  averageRates,
+  averageRate,
   className,
   ...props
 }: RenderStarsProps) {
@@ -23,7 +22,7 @@ export function RenderStars({
         <Icons.star
           key={i}
           className={cn(`w-${size} h-${size}`, {
-            "text-blue-500": i < averageRates,
+            "text-blue-500": i < averageRate,
           })}
         />
       ))}

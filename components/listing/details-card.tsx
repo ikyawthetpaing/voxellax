@@ -15,24 +15,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AddToCartButton } from "@/components/add-to-cart-button";
 import { RenderStars } from "@/components/listing/render-stars";
+import { AddToCartButton } from "@/components/product/add-to-cart-button";
 
 import { CheckoutDialog } from "../dialogs/checkout-dialog";
 
 interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
+  totalReviews: number;
+  averageRate: number;
   product: Product;
 }
 
 export function DetailsCard({
+  averageRate,
+  totalReviews,
   product,
   className,
   ...props
 }: DetailsCardProps) {
-  // just for dev
-  let totalReviews = 13;
-  const averageRates = 4.5;
-
   return (
     <div className={className} {...props}>
       <Card className="w-full">
@@ -50,7 +50,7 @@ export function DetailsCard({
             <div className="flex justify-between">
               <h1 className="text-sm font-semibold">Reviews</h1>
               <div className="flex items-center gap-2">
-                <RenderStars size={3} averageRates={averageRates} />
+                <RenderStars size={3} averageRate={averageRate} />
                 <div className="text-xs">
                   {totalReviews} {totalReviews > 1 ? "Reviews" : "Review"}
                 </div>

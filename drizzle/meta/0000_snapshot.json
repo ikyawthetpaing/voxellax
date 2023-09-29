@@ -90,10 +90,7 @@
       "compositePrimaryKeys": {
         "account_provider_providerAccountId": {
           "name": "account_provider_providerAccountId",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ]
+          "columns": ["provider", "providerAccountId"]
         }
       },
       "uniqueConstraints": {}
@@ -129,10 +126,7 @@
       "compositePrimaryKeys": {
         "cartItem_productId_userId": {
           "name": "cartItem_productId_userId",
-          "columns": [
-            "productId",
-            "userId"
-          ]
+          "columns": ["productId", "userId"]
         }
       },
       "uniqueConstraints": {}
@@ -245,10 +239,7 @@
       "compositePrimaryKeys": {
         "like_productId_userId": {
           "name": "like_productId_userId",
-          "columns": [
-            "productId",
-            "userId"
-          ]
+          "columns": ["productId", "userId"]
         }
       },
       "uniqueConstraints": {}
@@ -336,9 +327,7 @@
       "compositePrimaryKeys": {
         "product_id": {
           "name": "product_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -373,9 +362,7 @@
       "compositePrimaryKeys": {
         "session_sessionToken": {
           "name": "session_sessionToken",
-          "columns": [
-            "sessionToken"
-          ]
+          "columns": ["sessionToken"]
         }
       },
       "uniqueConstraints": {}
@@ -456,9 +443,7 @@
       "compositePrimaryKeys": {
         "store_id": {
           "name": "store_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -524,9 +509,7 @@
       "compositePrimaryKeys": {
         "user_id": {
           "name": "user_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -561,10 +544,7 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token": {
           "name": "verificationToken_identifier_token",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {}

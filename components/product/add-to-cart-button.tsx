@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 
 import { toggleCartItem } from "@/lib/actions/cart";
 import { catchError, cn } from "@/lib/utils";
-import { useCartItems } from "@/context/cart-items-context";
+import { useUserCartItems } from "@/context/user-cart-items";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
@@ -21,7 +21,7 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
   const [isAdded, setIsAdded] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const { data, setRefresh } = useCartItems();
+  const { data, setRefresh } = useUserCartItems();
 
   useEffect(() => {
     const item = data.find((item) => item.productId === productId);
@@ -43,7 +43,7 @@ export function AddToCartButton({
     <Button
       variant={isAdded ? "default" : "secondary"}
       size={layout === "icon" ? "icon" : "default"}
-      className={cn("gap-2", className)}
+      className={cn("gap-2", className, { "rounded-full": layout === "icon" })}
       aria-label="Add to cart"
       onClick={handleOnClick}
       disabled={isPending}

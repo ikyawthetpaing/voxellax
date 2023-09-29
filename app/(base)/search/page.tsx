@@ -4,7 +4,7 @@ import { categoriesFilterItem, priceRangeFilterItem } from "@/config/filter";
 
 import { getProducts } from "@/lib/actions/product";
 import { Heading } from "@/components/heading";
-import { ProductsListWithFilter } from "@/components/products-list-with-filter";
+import { ProductsListWithFilter } from "@/components/product/products-list-with-filter";
 import { Search } from "@/components/search";
 import { Shell } from "@/components/shell";
 

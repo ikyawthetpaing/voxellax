@@ -7,7 +7,7 @@ import { Product } from "@/db/schema";
 
 import { getProduct } from "@/lib/actions/product";
 import { cn, formatPrice, getProductThumbnailImage } from "@/lib/utils";
-import { useCartItems } from "@/context/cart-items-context";
+import { useUserCartItems } from "@/context/user-cart-items";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,14 +19,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { UpdateCart } from "@/components/cart/update-cart";
 import { CheckoutDetails } from "@/components/checkout-details";
 import { CheckoutDialog } from "@/components/dialogs/checkout-dialog";
 import { Icons } from "@/components/icons";
-import { ProductImage } from "@/components/product-image";
+import { UpdateCart } from "@/components/update-cart";
+
+import { ProductImage } from "../product/product-image";
 
 export function CartSheet() {
-  const { data: cartItems } = useCartItems();
+  const { data: cartItems } = useUserCartItems();
 
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [itemCount, setItemCount] = useState(0);

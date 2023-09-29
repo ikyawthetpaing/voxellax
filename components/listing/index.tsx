@@ -4,19 +4,61 @@ import { Product } from "@/db/schema";
 
 import { getProducts } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
-import { getUserAction } from "@/lib/actions/user";
+import { getUse } from "@/lib/actions/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heading } from "@/components/heading";
-import { ProductsList } from "@/components/products-list";
+import { Icons } from "@/components/icons";
+import { ProductsList } from "@/components/product/products-list";
 
-import { Icons } from "../icons";
 import { DetailsCard } from "./details-card";
 import { ImageGallery } from "./image-gallery";
 import { Infos } from "./infos";
+import { Reviews } from "./reviews";
+
+// still in development hardcoded
+export type Review = {
+  message: string;
+  rate: 1 | 2 | 3 | 4 | 5;
+  name: string;
+  createdAt: Date;
+};
+
+const reviews: Review[] = [
+  {
+    message: "Great product!",
+    rate: 5,
+    name: "John Doe",
+    createdAt: new Date("2023-09-29T10:00:00Z"),
+  },
+  {
+    message: "Good quality.",
+    rate: 4,
+    name: "Jane Smith",
+    createdAt: new Date("2023-09-29T09:30:00Z"),
+  },
+  {
+    message: "Could be better.",
+    rate: 3,
+    name: "Alice Johnson",
+    createdAt: new Date("2023-09-28T15:45:00Z"),
+  },
+  {
+    message: "Not satisfied.",
+    rate: 2,
+    name: "Bob Brown",
+    createdAt: new Date("2023-09-28T14:20:00Z"),
+  },
+  {
+    message: "Terrible experience!",
+    rate: 1,
+    name: "Eve Wilson",
+    createdAt: new Date("2023-09-27T20:15:00Z"),
+  },
+];
 
 export async function Listing({ product }: { product: Product }) {
   const store = await getStore(product.storeId);
-  const seller = await getUserAction(store?.userId || "");
+  const seller = await getUse(store?.userId || "");
 
   const { items: products } = await getProducts({
     limit: 4,
@@ -27,6 +69,10 @@ export async function Listing({ product }: { product: Product }) {
   if (!store || !seller) {
     return null;
   }
+
+  // dev
+  const totalRates = reviews.reduce((sum, review) => sum + review.rate, 0);
+  const averageRate = totalRates / reviews.length;
 
   return (
     <div className="flex flex-col gap-8">
@@ -49,20 +95,23 @@ export async function Listing({ product }: { product: Product }) {
       </div>
       <div className="grid gap-8 lg:flex">
         <div className="flex flex-1 flex-col gap-8">
-          <ImageGallery images={product.images} productId={product.id} />
-          {/* {reviews.length > 0 && (
-            <Reviews reviews={reviews} className="hidden lg:grid" />
-          )} */}
+          <ImageGallery product={product} />
+          <Reviews reviews={reviews} className="hidden lg:grid" />
         </div>
         <div className="flex flex-col gap-8">
-          <DetailsCard className="lg:w-96" product={product} />
+          <DetailsCard
+            className="lg:w-96"
+            product={product}
+            averageRate={averageRate}
+            totalReviews={reviews.length}
+          />
           <Infos
             className="lg:w-96"
             description={product.description || ""}
             store={store}
             seller={seller}
           />
-          {/* {product.reviews && <Reviews reviews={product.reviews} className="lg:hidden"/>} */}
+          <Reviews reviews={reviews} className="lg:hidden" />
         </div>
       </div>
       <div className="space-y-4">

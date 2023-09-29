@@ -3,12 +3,12 @@ import { NavItem } from "@/types";
 
 import { User } from "@/db/schema";
 
-import { CartSheet } from "@/components/cart/cart-sheet";
 import { Icons } from "@/components/icons";
 import { CategoryNav } from "@/components/layout/category-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { LoginButton } from "@/components/login-button";
 import { Search } from "@/components/search";
+import { CartSheet } from "@/components/sheets/cart-sheet";
 import { UserProfileMenu } from "@/components/user-profile-menu";
 
 interface SiteHeaderProps {

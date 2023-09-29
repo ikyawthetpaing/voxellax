@@ -1,25 +1,26 @@
 "use client";
 
 import { HTMLAttributes, useState } from "react";
-import { ProductImageUploadedFile } from "@/types";
+
+import { Product } from "@/db/schema";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { ProductActionButtons } from "@/components/product-action-buttons";
-import { ProductImage } from "@/components/product-image";
+import { ProductActionButtons } from "@/components/product/product-action-buttons";
+
+import { ProductImage } from "../product/product-image";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
-  images: ProductImageUploadedFile[] | null;
-  productId: string;
+  product: Product;
 }
 
 export function ImageGallery({
-  images,
-  productId,
+  product,
   className,
   ...props
 }: ImageGalleryProps) {
+  const { images } = product;
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const currentImage =
     images && images.length ? images[currentImageIndex] : null;
@@ -29,7 +30,7 @@ export function ImageGallery({
         <ProductImage image={currentImage} />
         <ProductActionButtons
           layout="listing"
-          productId={productId}
+          product={product}
           className="absolute right-2 top-2 sm:right-4 sm:top-4 sm:opacity-0 sm:group-hover:opacity-100"
         />
         {images && (

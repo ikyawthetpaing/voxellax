@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Heading } from "@/components/heading";
-import { ProductImage } from "@/components/product-image";
+import { ProductImage } from "@/components/product/product-image";
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {

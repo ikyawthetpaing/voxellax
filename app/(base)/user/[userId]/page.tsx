@@ -2,7 +2,7 @@ import { Product } from "@/db/schema";
 
 import { getUserLikes } from "@/lib/actions/like";
 import { getProduct } from "@/lib/actions/product";
-import { ProductsList } from "@/components/products-list";
+import { ProductsList } from "@/components/product/products-list";
 
 interface UserLikesPageProps {
   params: {

@@ -1,7 +1,10 @@
 import { Product } from "@/db/schema";
 
 import { Grid } from "@/components/layout/grid";
-import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
+import {
+  ProductCard,
+  ProductCardSkeleton,
+} from "@/components/product/product-card";
 
 interface ProductsListProps {
   products: Product[];

@@ -6,11 +6,11 @@ import { productTags } from "@/config/product";
 import { siteConfig } from "@/config/site";
 
 import { getProducts } from "@/lib/actions/product";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { CategoryBox } from "@/components/category-box";
 import { Heading } from "@/components/heading";
 import { Icons } from "@/components/icons";
-import { ProductsList } from "@/components/products-list";
+import { ProductsList } from "@/components/product/products-list";
 import { Search } from "@/components/search";
 import { Shell } from "@/components/shell";
 

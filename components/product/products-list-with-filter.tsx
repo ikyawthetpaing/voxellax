@@ -7,8 +7,8 @@ import { ProductSortForm } from "@/components/forms/product-sort-form";
 import { Heading } from "@/components/heading";
 import { Icons } from "@/components/icons";
 import { PaginationButton } from "@/components/pagination-button";
-import { ProductCard } from "@/components/product-card";
-import { ProductFilterFormSheet } from "@/components/sheets/product-filter-form-sheet";
+import { ProductCard } from "@/components/product/product-card";
+import { ProductFilterFormSheet } from "@/components/sheets/product-filter-sheet";
 
 interface Props {
   products: Product[];

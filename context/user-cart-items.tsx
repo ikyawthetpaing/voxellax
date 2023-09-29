@@ -14,26 +14,30 @@ import { CartItem } from "@/db/schema";
 
 import { getCurrentUserCartItems } from "@/lib/actions/cart";
 
-type CartItemsContextType = {
+type UserCartItemsContextType = {
   data: CartItem[];
   refresh: boolean;
   setRefresh: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
 };
 
-const CartItemsContext = createContext<CartItemsContextType | undefined>(
-  undefined
-);
+const UserCartItemsContext = createContext<
+  UserCartItemsContextType | undefined
+>(undefined);
 
-export function useCartItems() {
-  const context = useContext(CartItemsContext);
+export function useUserCartItems() {
+  const context = useContext(UserCartItemsContext);
   if (!context) {
-    throw Error("useCartItems must be used within CartItemsProvdier.");
+    throw Error("useUserCartItems must be used within UserCartItemsProvdier.");
   }
   return context;
 }
 
-export function CartItemsProvdier({ children }: { children: React.ReactNode }) {
+export function UserCartItemsProvdier({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isPending, startTransition] = useTransition();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [refresh, setRefresh] = useState(true);
@@ -49,7 +53,7 @@ export function CartItemsProvdier({ children }: { children: React.ReactNode }) {
   }, [refresh]);
 
   return (
-    <CartItemsContext.Provider
+    <UserCartItemsContext.Provider
       value={{
         data: cartItems,
         refresh: refresh,
@@ -58,6 +62,6 @@ export function CartItemsProvdier({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </CartItemsContext.Provider>
+    </UserCartItemsContext.Provider>
   );
 }

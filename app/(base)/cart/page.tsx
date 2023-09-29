@@ -9,19 +9,19 @@ import { Product, Store } from "@/db/schema";
 import { getProduct } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
 import { formatPrice, getProductThumbnailImage } from "@/lib/utils";
-import { useCartItems } from "@/context/cart-items-context";
+import { useUserCartItems } from "@/context/user-cart-items";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { UpdateCart } from "@/components/cart/update-cart";
 import { CheckoutForm } from "@/components/forms/checkout-form";
 import { Heading } from "@/components/heading";
 import { Icons } from "@/components/icons";
 import { Shell } from "@/components/shell";
+import { UpdateCart } from "@/components/update-cart";
 
 export default function CheckoutPage() {
-  const { data: cartItems } = useCartItems();
+  const { data: cartItems } = useUserCartItems();
 
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [itemCount, setItemCount] = useState(0);

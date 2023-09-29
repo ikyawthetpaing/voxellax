@@ -12,8 +12,8 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ProductActionButtons } from "@/components/product-action-buttons";
-import { ProductImage } from "@/components/product-image";
+import { ProductActionButtons } from "@/components/product/product-action-buttons";
+import { ProductImage } from "@/components/product/product-image";
 
 interface ProductCardProps {
   product: Product;
@@ -55,7 +55,7 @@ export async function ProductCard({ product }: ProductCardProps) {
       )}
       <ProductActionButtons
         layout="card"
-        productId={product.id}
+        product={product}
         className="absolute right-2 top-2 sm:top-0 sm:opacity-0 sm:group-hover:top-2 sm:group-hover:opacity-100"
       />
     </Card>

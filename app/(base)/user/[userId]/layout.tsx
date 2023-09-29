@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { baseConfig } from "@/config/base";
 import { siteConfig } from "@/config/site";
 
-import { getUserAction } from "@/lib/actions/user";
+import { getUse } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Shell } from "@/components/shell";
@@ -20,7 +20,7 @@ interface UserProfileLayoutProps {
 export async function generateMetadata({
   params,
 }: UserProfileLayoutProps): Promise<Metadata> {
-  const user = await getUserAction(params.userId);
+  const user = await getUse(params.userId);
 
   if (!user) {
     return {};
@@ -68,7 +68,7 @@ export default async function UserProfileLayout({
   children,
   params,
 }: UserProfileLayoutProps) {
-  const user = await getUserAction(params.userId);
+  const user = await getUse(params.userId);
 
   if (!user) {
     notFound();

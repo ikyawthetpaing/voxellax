@@ -9,14 +9,14 @@ import { users } from "@/db/schema";
 import { getProduct } from "@/lib/actions/product";
 import { getSession } from "@/lib/session";
 
-export async function getUserAction(userId: string) {
+export async function getUse(userId: string) {
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
   });
   return user;
 }
 
-export async function getCurrentUserAction() {
+export async function getCurrentUser() {
   const session = await getSession();
   const user = await db.query.users.findFirst({
     where: eq(users.id, session?.user.id || ""),
@@ -24,10 +24,11 @@ export async function getCurrentUserAction() {
   return user;
 }
 
-export async function approveSellerAction(userId: string) {
+export async function approveSeller(userId: string) {
   await db.update(users).set({ role: "seller" }).where(eq(users.id, userId));
 }
 
+// still in dev
 export async function getUserInvoiceProducts() {
   const devInvoices: Invoice[] = [
     {

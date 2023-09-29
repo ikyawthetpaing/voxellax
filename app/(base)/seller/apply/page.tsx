@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { isCurrentUserHaveStore } from "@/lib/actions/store";
-import { getCurrentUserAction } from "@/lib/actions/user";
+import { getCurrentUser } from "@/lib/actions/user";
 import { authOptions } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Heading } from "@/components/heading";
 import { Shell } from "@/components/shell";
 
 export default async function ApplySellerPage() {
-  const user = await getCurrentUserAction();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions.pages?.signIn || "/login");

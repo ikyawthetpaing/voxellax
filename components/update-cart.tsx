@@ -4,13 +4,13 @@ import { useTransition } from "react";
 
 import { toggleCartItem } from "@/lib/actions/cart";
 import { catchError } from "@/lib/utils";
-import { useCartItems } from "@/context/cart-items-context";
+import { useUserCartItems } from "@/context/user-cart-items";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
 export function UpdateCart({ productId }: { productId: string }) {
   const [isPending, startTransition] = useTransition();
-  const { setRefresh } = useCartItems();
+  const { setRefresh } = useUserCartItems();
 
   return (
     <Button

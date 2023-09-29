@@ -3,19 +3,16 @@
 import { useEffect, useState, useTransition } from "react";
 
 import { isUserLiked, toggleLike } from "@/lib/actions/like";
-import { catchError, cn } from "@/lib/utils";
-import { Button, ButtonProps } from "@/components/ui/button";
+import { catchError } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
-interface ProductLikeButtonProps extends ButtonProps {
+interface ProductLikeButtonProps {
   productId: string;
-  layout?: "icon" | "default";
 }
 
 export function ProductLikeButton({
   productId,
-  layout = "default",
-  className,
   ...props
 }: ProductLikeButtonProps) {
   const [isLiked, setIsLiked] = useState(false);
@@ -30,7 +27,8 @@ export function ProductLikeButton({
   async function handleOnClick() {
     startTransition(async () => {
       try {
-        setIsLiked(await toggleLike(productId));
+        const _isLiked = await toggleLike(productId);
+        setIsLiked(_isLiked);
       } catch (err) {
         catchError(err);
       }
@@ -40,8 +38,8 @@ export function ProductLikeButton({
   return (
     <Button
       variant={isLiked ? "default" : "secondary"}
-      size={layout === "icon" ? "icon" : "sm"}
-      className={cn("gap-2", className)}
+      size="icon"
+      className="rounded-full"
       aria-label="Add to cart"
       onClick={handleOnClick}
       disabled={isPending}
@@ -52,7 +50,6 @@ export function ProductLikeButton({
       ) : (
         <Icons.heart className="h-4 w-4" />
       )}
-      {layout === "default" && <span>Like</span>}
     </Button>
   );
 }

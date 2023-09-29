@@ -5,13 +5,13 @@ import { db } from "@/db";
 import { ProductImageUploadedFile } from "@/types";
 import { and, eq } from "drizzle-orm";
 
-import { collectionProducts, collections, Product } from "@/db/schema";
+import { collectionProducts, collections } from "@/db/schema";
 
-import { authOptions } from "../auth";
-import { getSession } from "../session";
-import { generatedId, getProductThumbnailImage } from "../utils";
-import { CollectionSchema } from "../validations/collection";
-import { getProduct, getProductThumbnail } from "./product";
+import { getProductThumbnail } from "@/lib/actions/product";
+import { authOptions } from "@/lib/auth";
+import { getSession } from "@/lib/session";
+import { generatedId } from "@/lib/utils";
+import { CollectionSchema } from "@/lib/validations/collection";
 
 export async function getUserCollections(userId: string) {
   try {

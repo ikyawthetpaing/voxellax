@@ -6,9 +6,9 @@ import { SidebarNavItem } from "@/types";
 import { Store } from "@/db/schema";
 
 import { Button } from "@/components/ui/button";
-import { AddProductFormSheet } from "@/components/dashboard/add-product-form-sheet";
 import { DashboardMobileNav } from "@/components/dashboard/mobile-nav";
 import { Icons } from "@/components/icons";
+import { AddProductFormSheet } from "@/components/sheets/add-product-form-sheet";
 import { Shell } from "@/components/shell";
 
 interface DashboardHeaderProps {

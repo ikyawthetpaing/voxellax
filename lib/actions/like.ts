@@ -6,9 +6,8 @@ import { and, eq } from "drizzle-orm";
 
 import { likes } from "@/db/schema";
 
+import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";
-
-import { authOptions } from "../auth";
 
 export async function isUserLiked(productId: string) {
   try {

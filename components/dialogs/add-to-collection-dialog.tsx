@@ -29,19 +29,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CreateCollectionForm } from "@/components/forms/create-collection-form";
 import { Icons } from "@/components/icons";
 
-interface AddToCollectionDialogProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface AddToCollectionDialogProps {
   productId: string;
 }
 
 export function AddToCollectionDialog({
   productId,
-  className,
 }: AddToCollectionDialogProps) {
-  // State variables to manage component behavior
-  const { collections } = useUserCollections();
+  const { collections, loading } = useUserCollections();
   const [isCollectionCreating, setIsCollectionCreating] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     // The component's UI is composed using various child components
@@ -51,7 +47,7 @@ export function AddToCollectionDialog({
           variant="secondary"
           size="icon"
           aria-label="Add to collection"
-          className={className}
+          className="rounded-full"
         >
           <Icons.bookmark className="h-4 w-4" />
         </Button>
@@ -63,7 +59,6 @@ export function AddToCollectionDialog({
             Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        {/* Conditionally render either the create collection form or the list of existing collections */}
         {isCollectionCreating ? (
           <div className="px-6">
             <CreateCollectionForm setCreating={setIsCollectionCreating} />
@@ -71,8 +66,7 @@ export function AddToCollectionDialog({
         ) : (
           <ScrollArea className="px-6">
             <div className="grid max-h-96 gap-4">
-              {isLoading ? (
-                // Display skeleton placeholders while loading collections
+              {loading ? (
                 Array.from({ length: 4 }, (_, i) => i).map((index) => (
                   <div
                     key={index}
@@ -94,7 +88,6 @@ export function AddToCollectionDialog({
                   no collection
                 </div>
               ) : (
-                // Display existing collections
                 collections.map((collection) => (
                   <CollectionCard
                     key={collection.id}
@@ -107,7 +100,6 @@ export function AddToCollectionDialog({
           </ScrollArea>
         )}
         {!isCollectionCreating && (
-          // Display a button to create a new collection
           <div className="grid px-6">
             <Button
               variant="outline"
