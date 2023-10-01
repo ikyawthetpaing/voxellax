@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useTransition } from "react";
 
-import { isUserLiked, toggleLike } from "@/lib/actions/like";
+import { toggleLike } from "@/lib/actions/like";
 import { catchError } from "@/lib/utils";
+import { useUserLikes } from "@/context/user-likes";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
@@ -17,12 +18,12 @@ export function ProductLikeButton({
 }: ProductLikeButtonProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const { data } = useUserLikes();
 
   useEffect(() => {
-    startTransition(async () => {
-      setIsLiked(await isUserLiked(productId));
-    });
-  }, [productId]);
+    const item = data.find((item) => item.productId === productId);
+    setIsLiked(!!item);
+  }, [data, productId]);
 
   async function handleOnClick() {
     startTransition(async () => {
@@ -37,7 +38,7 @@ export function ProductLikeButton({
 
   return (
     <Button
-      variant={isLiked ? "default" : "secondary"}
+      variant={isLiked ? "added" : "not_added"}
       size="icon"
       className="rounded-full"
       aria-label="Add to cart"

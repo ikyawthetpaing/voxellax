@@ -21,7 +21,7 @@ export function RenderStars({
       {reviewStars.map((i) => (
         <Icons.star
           key={i}
-          className={cn(`w-${size} h-${size}`, {
+          className={cn(`w-${size} h-${size} text-muted-foreground`, {
             "text-blue-500": i < averageRate,
           })}
         />

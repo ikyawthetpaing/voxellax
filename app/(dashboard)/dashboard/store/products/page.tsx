@@ -119,11 +119,7 @@ export default async function StoreProductsPage({
 
   return (
     <Shell layout="dashboard">
-      <ProductsTable
-        data={storeProducts}
-        pageCount={pageCount}
-        storeId={store.id}
-      />
+      <ProductsTable data={storeProducts} pageCount={pageCount} />
       {editProduct && <UpdateProductFormSheet product={editProduct} />}
     </Shell>
   );

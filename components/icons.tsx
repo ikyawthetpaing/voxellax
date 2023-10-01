@@ -35,6 +35,7 @@ import {
   Minus,
   MoreHorizontal,
   MoveRight,
+  Package,
   PackageSearch,
   Plus,
   PlusCircle,
@@ -105,6 +106,7 @@ export const Icons = {
   verified: BadgeCheck,
   starHalf: StarHalf,
   share: Share,
+  package: Package,
   voxellax: ({ ...props }: LucideProps) => {
     const id1 = cuid.slug();
     const id2 = cuid.slug();

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { type ColumnDef } from "@tanstack/react-table";
@@ -29,22 +29,17 @@ import { Icons } from "@/components/icons";
 interface ProductsTableProps {
   data: Product[];
   pageCount: number;
-  storeId: string;
 }
 
-export function ProductsTable({
-  data,
-  pageCount,
-  storeId,
-}: ProductsTableProps) {
-  const [isPending, startTransition] = React.useTransition();
-  const [selectedRowIds, setSelectedRowIds] = React.useState<string[]>([]);
+export function ProductsTable({ data, pageCount }: ProductsTableProps) {
+  const [isPending, startTransition] = useTransition();
+  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   // Memoize the columns so they don't re-render on every render
-  const columns = React.useMemo<ColumnDef<Product, unknown>[]>(
+  const columns = useMemo<ColumnDef<Product, unknown>[]>(
     () => [
       {
         id: "select",
@@ -208,7 +203,6 @@ export function ProductsTable({
           title: "names",
         },
       ]}
-      newRowLink={`/dashboard/stores/${storeId}/products/new`}
       deleteRowsAction={() => void deleteSelectedRows()}
     />
   );

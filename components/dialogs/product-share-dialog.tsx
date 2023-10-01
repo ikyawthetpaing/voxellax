@@ -43,7 +43,7 @@ export function ProductShareDialog({ product }: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
+          variant="not_added"
           size="icon"
           aria-label="Add to collection"
           className="rounded-full"

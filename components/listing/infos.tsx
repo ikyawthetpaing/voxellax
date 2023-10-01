@@ -1,10 +1,11 @@
 import { HTMLAttributes } from "react";
 import Link from "next/link";
 
-import { Store, User } from "@/db/schema";
+import { Product, Store, User } from "@/db/schema";
 
 import { siteConfig } from "@/config/site";
 
+import { formatBytes, formatDate } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -18,16 +19,17 @@ import { Icons } from "@/components/icons";
 interface ProductDetailsProps extends HTMLAttributes<HTMLDivElement> {
   seller: User | undefined;
   store: Store | undefined;
-  description: string;
+  product: Product;
 }
 
 export async function Infos({
   seller,
   store,
-  description,
+  product,
   className,
   ...props
 }: ProductDetailsProps) {
+  const { description, createdAt } = product;
   return (
     <div className={className} {...props}>
       <Accordion type="multiple" className="w-full">
@@ -38,8 +40,26 @@ export async function Infos({
         <AccordionItem value="item-2">
           <AccordionTrigger>Highlights</AccordionTrigger>
           <AccordionContent>
-            Yes. It comes with default styles that matches the other
-            components&apos; aesthetic.
+            <div className="grid gap-2">
+              <div className="flex items-center gap-2">
+                <Icons.calendar className="h-4 w-4" />
+                <div>
+                  Created:{" "}
+                  <span className="text-muted-foreground">
+                    {formatDate(createdAt)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icons.package className="h-4 w-4" />
+                <div>
+                  File Size:{" "}
+                  <span className="text-muted-foreground">
+                    {formatBytes(1000003)}
+                  </span>
+                </div>
+              </div>
+            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
@@ -134,7 +154,7 @@ export async function Infos({
                     <Link href={`/store/${store?.id}`}>{store?.name}</Link>
                   </p>
                   <Button variant="secondary" size="sm" className="w-fit p-2">
-                    <Icons.heart className="mr-2 h-4 w-4" /> Follow shop
+                    Contact The Seller
                   </Button>
                 </div>
               </div>

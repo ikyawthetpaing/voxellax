@@ -8,19 +8,26 @@ import {
   useState,
 } from "react";
 
-import { cn, formatDate, groupArray } from "@/lib/utils";
+import { formatDate, groupArray } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+import { Review } from "@/components/listing";
 import { RenderStars } from "@/components/listing/render-stars";
 
-import { Review } from ".";
+import { Separator } from "../ui/separator";
 
 interface ProductReviewsProps extends HTMLAttributes<HTMLDivElement> {
   reviews: Review[];
 }
 
-export function Reviews({ reviews, className, ...props }: ProductReviewsProps) {
+export function Reviews({ reviews, ...props }: ProductReviewsProps) {
   const [currentReviewsGroup, setCurrentReviewsGroup] = useState(1);
 
   const totalReviewsPerGroup = 3;
@@ -30,54 +37,68 @@ export function Reviews({ reviews, className, ...props }: ProductReviewsProps) {
   );
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <div className="grid items-center gap-2">
-        <h1>Reviews ({reviews.length})</h1>
-        <hr />
-      </div>
-      <div className="grid gap-6">
-        {reviewGroups[currentReviewsGroup - 1].map((index) => (
-          <div key={index}>
-            <div className="flex gap-3">
-              <Avatar className="h-9 w-9 shrink-0">
-                {/* <AvatarImage
+    <div {...props}>
+      <Accordion
+        type="single"
+        defaultValue="reviews"
+        collapsible
+        className="w-full"
+      >
+        <AccordionItem value="reviews">
+          <AccordionTrigger>Reviews ({reviews.length})</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid gap-6">
+              <Separator orientation="horizontal" />
+              <div className="grid gap-6">
+                {reviewGroups[currentReviewsGroup - 1].map((index) => (
+                  <div key={index}>
+                    <div className="flex gap-3">
+                      <Avatar className="h-9 w-9 shrink-0">
+                        {/* <AvatarImage
               src={user.image?.toString()}
               alt={user.name?.toString()}
             /> */}
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-2">
-                <div className="grid gap-1">
-                  <h1 className="font-semibold">{reviews[index].name}</h1>
-                  <div className="flex items-center gap-2 opacity-75">
-                    <Icons.calendar className="h-3 w-3" />
-                    <span className="text-xs">
-                      {formatDate(reviews[index].createdAt)}
-                    </span>
+                        <AvatarFallback>
+                          {reviews[index].name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="grid gap-2">
+                        <div className="grid gap-1">
+                          <h1 className="text-sm font-semibold">
+                            {reviews[index].name}
+                          </h1>
+                          <div className="flex items-center gap-2 opacity-75">
+                            <Icons.calendar className="h-3 w-3" />
+                            <span className="text-xs">
+                              {formatDate(reviews[index].createdAt)}
+                            </span>
+                          </div>
+                        </div>
+                        <RenderStars
+                          size={4}
+                          averageRate={reviews[index].rate}
+                        />
+                        <p className="text-sm">{reviews[index].message}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <RenderStars size={5} averageRate={reviews[index].rate} />
-                <p>{reviews[index].message}</p>
+                ))}
               </div>
+              <PaginationButton
+                currentPage={currentReviewsGroup}
+                setCurrentPage={setCurrentReviewsGroup}
+                pageCount={reviewGroups.length}
+                isPending={false}
+              />
             </div>
-          </div>
-        ))}
-      </div>
-      <PaginationButton
-        currentPage={currentReviewsGroup}
-        setCurrentPage={setCurrentReviewsGroup}
-        pageCount={reviewGroups.length}
-        isPending={false}
-      />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
 
-interface PaginationButtonProps
-  extends React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > {
+interface PaginationButtonProps {
   pageCount: number;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
@@ -91,8 +112,6 @@ export function PaginationButton({
   setCurrentPage,
   isPending,
   siblingCount = 1,
-  className,
-  ...props
 }: PaginationButtonProps) {
   const paginationRange = useMemo(() => {
     const delta = siblingCount;
@@ -122,13 +141,7 @@ export function PaginationButton({
   }, [pageCount, currentPage, siblingCount]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-wrap items-center justify-center gap-2",
-        className
-      )}
-      {...props}
-    >
+    <div className="flex flex-wrap items-center justify-center gap-2">
       <Button
         variant="outline"
         size="sm"

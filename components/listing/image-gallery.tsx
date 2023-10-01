@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { ProductActionButtons } from "@/components/product/product-action-buttons";
-
-import { ProductImage } from "../product/product-image";
+import { ProductImage } from "@/components/product/product-image";
 
 interface ImageGalleryProps extends HTMLAttributes<HTMLDivElement> {
   product: Product;
@@ -77,7 +76,7 @@ export function ImageGallery({
               image={image}
               key={index}
               className={cn(
-                "flex w-20 shrink-0  border border-background p-[1px] md:w-24",
+                "flex w-20 shrink-0  rounded-lg border border-background p-[1px] md:w-24",
                 { "border-primary": index === currentImageIndex }
               )}
               onMouseOver={() => setCurrentImageIndex(index)}

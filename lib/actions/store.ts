@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { and, eq, ne } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
-import { stores } from "@/db/schema";
+import { products, stores } from "@/db/schema";
 
 import { getSession } from "@/lib/session";
 import { AddStoreSchema, UpdateStoreSchema } from "@/lib/validations/store";
@@ -93,6 +93,14 @@ export async function updateStore(data: UpdateStoreSchema, storeId: string) {
       } catch (deleteError) {
         console.error("Error deleting cover on uploadthing:", deleteError);
       }
+    }
+
+    // new store id update storeId on products
+    if (store.id != data.id) {
+      await db
+        .update(products)
+        .set({ storeId: data.id })
+        .where(eq(products.storeId, store.id));
     }
 
     await db

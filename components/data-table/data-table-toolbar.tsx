@@ -1,26 +1,22 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
+import { useTransition } from "react";
 import type {
   DataTableFilterableColumn,
   DataTableSearchableColumn,
 } from "@/types";
 import type { Table } from "@tanstack/react-table";
 
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-
-import { Icons } from "../icons";
+import { Icons } from "@/components/icons";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filterableColumns?: DataTableFilterableColumn<TData>[];
   searchableColumns?: DataTableSearchableColumn<TData>[];
-  newRowLink?: string;
   deleteRowsAction?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -28,11 +24,10 @@ export function DataTableToolbar<TData>({
   table,
   filterableColumns = [],
   searchableColumns = [],
-  newRowLink,
   deleteRowsAction,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const [isPending, startTransition] = React.useTransition();
+  const [isPending, startTransition] = useTransition();
 
   return (
     <div className="flex w-full items-center justify-between space-x-2 overflow-auto p-1">
@@ -43,7 +38,7 @@ export function DataTableToolbar<TData>({
               table.getColumn(column.id ? String(column.id) : "") && (
                 <Input
                   key={String(column.id)}
-                  placeholder={`Filter ${column.title}...`}
+                  placeholder="Search"
                   value={
                     (table
                       .getColumn(String(column.id))
@@ -83,7 +78,7 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center space-x-2">
-        {deleteRowsAction && table.getSelectedRowModel().rows.length > 0 ? (
+        {deleteRowsAction && table.getSelectedRowModel().rows.length > 0 && (
           <Button
             aria-label="Delete selected rows"
             variant="outline"
@@ -100,22 +95,7 @@ export function DataTableToolbar<TData>({
             <Icons.trash className="mr-2 h-4 w-4" aria-hidden="true" />
             Delete
           </Button>
-        ) : newRowLink ? (
-          <Link aria-label="Create new row" href={newRowLink}>
-            <div
-              className={cn(
-                buttonVariants({
-                  variant: "outline",
-                  size: "sm",
-                  className: "h-8",
-                })
-              )}
-            >
-              <Icons.plusCircle className="mr-2 h-4 w-4" aria-hidden="true" />
-              New
-            </div>
-          </Link>
-        ) : null}
+        )}
         <DataTableViewOptions table={table} />
       </div>
     </div>

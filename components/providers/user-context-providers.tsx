@@ -1,5 +1,6 @@
 import { UserCartItemsProvdier } from "@/context/user-cart-items";
 import { UserCollectionsProvdier } from "@/context/user-collections";
+import { UserLikesProvdier } from "@/context/user-likes";
 
 interface Props {
   children: React.ReactNode;
@@ -8,7 +9,9 @@ interface Props {
 export function UserContextsProviders({ children }: Props) {
   return (
     <UserCartItemsProvdier>
-      <UserCollectionsProvdier>{children}</UserCollectionsProvdier>
+      <UserLikesProvdier>
+        <UserCollectionsProvdier>{children}</UserCollectionsProvdier>
+      </UserLikesProvdier>
     </UserCartItemsProvdier>
   );
 }

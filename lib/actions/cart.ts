@@ -9,26 +9,26 @@ import { cartItems } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";
 
-export async function isUserAddedCartItem(productId: string) {
-  try {
-    const session = await getSession();
-    if (!session) {
-      return false;
-    }
+// export async function isUserAddedCartItem(productId: string) {
+//   try {
+//     const session = await getSession();
+//     if (!session) {
+//       return false;
+//     }
 
-    const addedCartItem = await db.query.cartItems.findFirst({
-      where: and(
-        eq(cartItems.userId, session.user.id),
-        eq(cartItems.productId, productId)
-      ),
-    });
+//     const addedCartItem = await db.query.cartItems.findFirst({
+//       where: and(
+//         eq(cartItems.userId, session.user.id),
+//         eq(cartItems.productId, productId)
+//       ),
+//     });
 
-    return !!addedCartItem;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-}
+//     return !!addedCartItem;
+//   } catch (err) {
+//     console.error(err);
+//     throw err;
+//   }
+// }
 
 async function getUserCartItems(userId: string) {
   const userCartItems = await db.query.cartItems.findMany({

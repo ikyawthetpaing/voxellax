@@ -1,4 +1,10 @@
-import * as React from "react";
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type {
   DataTableFilterableColumn,
@@ -38,8 +44,7 @@ interface DataTableProps<TData, TValue> {
   pageCount: number;
   filterableColumns?: DataTableFilterableColumn<TData>[];
   searchableColumns?: DataTableSearchableColumn<TData>[];
-  newRowLink?: string;
-  deleteRowsAction?: React.MouseEventHandler<HTMLButtonElement>;
+  deleteRowsAction?: MouseEventHandler<HTMLButtonElement>;
 }
 
 export function DataTable<TData, TValue>({
@@ -48,7 +53,6 @@ export function DataTable<TData, TValue>({
   pageCount,
   filterableColumns = [],
   searchableColumns = [],
-  newRowLink,
   deleteRowsAction,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
@@ -62,7 +66,7 @@ export function DataTable<TData, TValue>({
   const [column, order] = sort?.split(".") ?? [];
 
   // Create query string
-  const createQueryString = React.useCallback(
+  const createQueryString = useCallback(
     (params: Record<string, string | number | null>) => {
       const newSearchParams = new URLSearchParams(searchParams?.toString());
 
@@ -80,21 +84,17 @@ export function DataTable<TData, TValue>({
   );
 
   // Table states
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   // Handle server-side pagination
-  const [{ pageIndex, pageSize }, setPagination] =
-    React.useState<PaginationState>({
-      pageIndex: Number(page) - 1,
-      pageSize: Number(per_page),
-    });
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: Number(page) - 1,
+    pageSize: Number(per_page),
+  });
 
-  const pagination = React.useMemo(
+  const pagination = useMemo(
     () => ({
       pageIndex,
       pageSize,
@@ -102,14 +102,14 @@ export function DataTable<TData, TValue>({
     [pageIndex, pageSize]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPagination({
       pageIndex: Number(page) - 1,
       pageSize: Number(per_page),
     });
   }, [page, per_page]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     router.push(
       `${pathname}?${createQueryString({
         page: pageIndex + 1,
@@ -124,14 +124,14 @@ export function DataTable<TData, TValue>({
   }, [pageIndex, pageSize]);
 
   // Handle server-side sorting
-  const [sorting, setSorting] = React.useState<SortingState>([
+  const [sorting, setSorting] = useState<SortingState>([
     {
       id: column ?? "",
       desc: order === "desc",
     },
   ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     router.push(
       `${pathname}?${createQueryString({
         page,
@@ -163,7 +163,7 @@ export function DataTable<TData, TValue>({
     return filterableColumns.find((column) => column.id === filter.id);
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     for (const column of debouncedSearchableColumnFilters) {
       if (typeof column.value === "string") {
         router.push(
@@ -197,7 +197,7 @@ export function DataTable<TData, TValue>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchableColumnFilters]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     for (const column of filterableColumnFilters) {
       if (typeof column.value === "object" && Array.isArray(column.value)) {
         router.push(
@@ -265,7 +265,6 @@ export function DataTable<TData, TValue>({
         table={table}
         filterableColumns={filterableColumns}
         searchableColumns={searchableColumns}
-        newRowLink={newRowLink}
         deleteRowsAction={deleteRowsAction}
       />
       <div className="rounded-md border">

@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonHTMLAttributes, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductImageUploadedFile } from "@/types";
@@ -38,13 +38,14 @@ export function AddToCollectionDialog({
 }: AddToCollectionDialogProps) {
   const { collections, loading } = useUserCollections();
   const [isCollectionCreating, setIsCollectionCreating] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
 
   return (
     // The component's UI is composed using various child components
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
+          variant={isAdded ? "added" : "not_added"}
           size="icon"
           aria-label="Add to collection"
           className="rounded-full"

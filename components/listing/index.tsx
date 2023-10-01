@@ -105,13 +105,15 @@ export async function Listing({ product }: { product: Product }) {
             averageRate={averageRate}
             totalReviews={reviews.length}
           />
-          <Infos
-            className="lg:w-96"
-            description={product.description || ""}
-            store={store}
-            seller={seller}
-          />
-          <Reviews reviews={reviews} className="lg:hidden" />
+          <div>
+            <Infos
+              className="lg:w-96"
+              product={product}
+              store={store}
+              seller={seller}
+            />
+            <Reviews reviews={reviews} className="lg:hidden" />
+          </div>
         </div>
       </div>
       <div className="space-y-4">

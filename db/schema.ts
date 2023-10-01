@@ -26,7 +26,7 @@ export const users = mysqlTable("user", {
   role: mysqlEnum("role", ["user", "seller", "admin"])
     .default("user")
     .notNull(),
-  createdAt: timestamp("createdAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 export type User = InferSelectModel<typeof users>;
 
@@ -107,7 +107,7 @@ export const stores = mysqlTable("store", {
   cover: json("cover").$type<UploadedFile | null>().default(null),
   contactEmail: varchar("contactEmail", { length: 255 }).notNull(),
   verified: boolean("verified").default(false).notNull(),
-  createdAt: timestamp("createdAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
   userId: varchar("userId", { length: 255 }).notNull(),
 });
 export type Store = InferSelectModel<typeof stores>;
@@ -129,7 +129,7 @@ export const products = mysqlTable("product", {
   subcategory: varchar("subcategory", { length: 255 }),
   images: json("images").$type<ProductImageUploadedFile[]>().default([]),
   files: json("files").$type<UploadedFile[]>().default([]),
-  createdAt: timestamp("createdAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
   storeId: varchar("storeId", { length: 255 }).notNull(),
 });
 export type Product = InferSelectModel<typeof products>;
@@ -147,7 +147,7 @@ export const cartItems = mysqlTable(
   {
     userId: varchar("userId", { length: 255 }).notNull(),
     productId: varchar("productId", { length: 255 }).notNull(),
-    createdAt: timestamp("createdAt").defaultNow(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
   },
   (cartItems) => ({
     pk: primaryKey(cartItems.userId, cartItems.productId),
@@ -171,7 +171,7 @@ export const likes = mysqlTable(
   {
     userId: varchar("userId", { length: 255 }).notNull(),
     productId: varchar("productId", { length: 255 }).notNull(),
-    createdAt: timestamp("createdAt").defaultNow(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
   },
   (likes) => ({
     pk: primaryKey(likes.userId, likes.productId),
@@ -196,7 +196,7 @@ export const collections = mysqlTable("collection", {
   privacy: mysqlEnum("privacy", ["public", "private", "unlisted"])
     .default("private")
     .notNull(),
-  createdAt: timestamp("createdAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
   userId: varchar("userId", { length: 255 }).notNull(),
 });
 export type Collection = InferSelectModel<typeof collections>;
@@ -212,7 +212,7 @@ export const collectionsRelations = relations(collections, ({ one, many }) => ({
 export const collectionProducts = mysqlTable("collection-product", {
   collectionId: varchar("collectionId", { length: 255 }).notNull(),
   productId: varchar("productId", { length: 255 }).notNull(),
-  createdAt: timestamp("createdAt").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 export type CollectionProduct = InferSelectModel<typeof collectionProducts>;
 
