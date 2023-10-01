@@ -25,7 +25,7 @@ export default function SignInPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Sign In</CardTitle>
           <CardDescription>
-            Choose your preferred sign in method
+            Sign in to your account to make purchases and for more features
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">

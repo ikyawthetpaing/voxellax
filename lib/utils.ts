@@ -1,4 +1,4 @@
-import { ProductImageUploadedFile } from "@/types";
+import { ProductImageUploadedFile, UploadedFile } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import cuid from "cuid";
 import dayjs from "dayjs";
@@ -134,4 +134,9 @@ export function catchError(err: unknown) {
   } else {
     return toast("Something went wrong, please try again later.");
   }
+}
+
+export function getFormatedProductFilesTotalSize(files: UploadedFile[]) {
+  const totalSizeBytes = files.reduce((total, file) => total + file.size, 0);
+  return formatBytes(totalSizeBytes);
 }

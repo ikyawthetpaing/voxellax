@@ -5,7 +5,11 @@ import { Product, Store, User } from "@/db/schema";
 
 import { siteConfig } from "@/config/site";
 
-import { formatBytes, formatDate } from "@/lib/utils";
+import {
+  formatBytes,
+  formatDate,
+  getFormatedProductFilesTotalSize,
+} from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -55,7 +59,7 @@ export async function Infos({
                 <div>
                   File Size:{" "}
                   <span className="text-muted-foreground">
-                    {formatBytes(1000003)}
+                    {getFormatedProductFilesTotalSize(product.files || [])}
                   </span>
                 </div>
               </div>
