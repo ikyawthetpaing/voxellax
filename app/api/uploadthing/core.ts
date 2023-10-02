@@ -1,6 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 import {
+  PRODUCT_DIGITAL_FILE_MAX_COUNT,
   PRODUCT_DIGITAL_FILE_MAX_SIZE,
   PRODUCT_IMAGE_FILE_MAX_SIZE,
 } from "@/constants/product";
@@ -42,7 +43,10 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async () => {}),
   productFileUploader: f({
-    image: { maxFileSize: PRODUCT_DIGITAL_FILE_MAX_SIZE },
+    image: {
+      maxFileSize: PRODUCT_DIGITAL_FILE_MAX_SIZE,
+      maxFileCount: PRODUCT_DIGITAL_FILE_MAX_COUNT,
+    },
   })
     .middleware(async () => {
       const session = await getSession();
