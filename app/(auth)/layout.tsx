@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="grid min-h-screen grid-cols-1 overflow-hidden md:grid-cols-3 lg:grid-cols-2">
       <AspectRatio ratio={16 / 9}>
         <Image
-          src="/images/auth-layout.jpg"
+          src="/images/auth-layout.png"
           alt="Nice digital products"
           fill
           className="absolute inset-0 object-cover"

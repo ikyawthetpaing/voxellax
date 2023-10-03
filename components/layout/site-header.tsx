@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { NavItem } from "@/types";
 
 import { User } from "@/db/schema";
 

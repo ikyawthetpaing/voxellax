@@ -33,8 +33,8 @@ export default async function IndexPage() {
             <Search size="lg" />
           </div>
           <div className="flex flex-wrap justify-center gap-2">
-            {productTags.map((value) => (
-              <Link href={`/search?query=${value}`}>
+            {productTags.map((value, index) => (
+              <Link key={index} href={`/search?query=${value}`}>
                 <div className="group flex items-center gap-2 rounded-2xl border px-7 py-3 hover:bg-accent">
                   <Icons.search className="hidden h-4 w-4 transition group-hover:block" />
                   <p>{value}</p>
@@ -47,13 +47,13 @@ export default async function IndexPage() {
         <div className="space-y-4">
           <Heading>Browse Trending Categories</Heading>
           <div className="grid grid-cols-3 gap-4 max-[600px]:grid-cols-2 lg:grid-cols-6">
-            {trendingCategories.map(({ title, href }) => (
-              <CategoryBox title={title} herf={href} />
+            {trendingCategories.map(({ title, href }, index) => (
+              <CategoryBox key={index} title={title} herf={href} />
             ))}
           </div>
         </div>
 
-        {baseConfig.featuredCategories.map(async (categoryValue) => {
+        {baseConfig.featuredCategories.map(async (categoryValue, index) => {
           const { items: products } = await getProducts({
             limit: 4,
             offset: 0,
@@ -65,7 +65,7 @@ export default async function IndexPage() {
           }
 
           return (
-            <div className="space-y-4">
+            <div key={index} className="space-y-4">
               <div className="flex justify-between">
                 <Heading>Latest {categoryValue}</Heading>
                 <Link

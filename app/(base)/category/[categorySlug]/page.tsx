@@ -105,10 +105,12 @@ export default async function CategoryPage({
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center">
-        {category.subcategories.map((subCategory) => (
+        {category.subcategories.map((subCategory, index) => (
           <CategoryBox
+            key={index}
             herf={`/category/${category.value}/${subCategory.value}`}
             title={subCategory.label}
+            className="w-full sm:w-48"
           />
         ))}
       </div>

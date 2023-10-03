@@ -15,7 +15,7 @@ import { Shell } from "@/components/shell";
 export const metadata: Metadata = {
   title: "Sign In",
   description:
-    "Sign In to your account to make purchases and for more features",
+    "Sign In to your account to make purchases and for more features.",
 };
 
 export default function SignInPage() {
@@ -25,7 +25,7 @@ export default function SignInPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Sign In</CardTitle>
           <CardDescription>
-            Sign in to your account to make purchases and for more features
+            Sign in to your account to make purchases and for more features.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -36,21 +36,13 @@ export default function SignInPage() {
             <span className="mr-1 hidden sm:inline-block">
               Don&apos;t have an account?
             </span>
-            <Link
-              aria-label="Sign up"
-              href="/signup"
-              className="text-primary underline-offset-4 transition-colors hover:underline"
-            >
+            <span className="cursor-not-allowed text-muted-foreground underline-offset-4 transition-colors hover:underline">
               Sign up
-            </Link>
+            </span>
           </div>
-          <Link
-            aria-label="Reset password"
-            href="/signin/reset-password"
-            className="text-sm text-primary underline-offset-4 transition-colors hover:underline"
-          >
+          <span className="cursor-not-allowed text-sm text-muted-foreground underline-offset-4 transition-colors hover:underline">
             Reset password
-          </Link>
+          </span>
         </CardFooter>
       </Card>
     </Shell>

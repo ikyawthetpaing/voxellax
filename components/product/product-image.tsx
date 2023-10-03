@@ -21,10 +21,9 @@ export function ProductImage({ image, className, ...props }: Props) {
           <Image
             alt={image.name}
             src={image.url}
-            layout="fill"
-            objectFit="cover"
+            fill
             className={cn(
-              "duration-700 ease-in-out group-hover:opacity-75",
+              "object-cover duration-700 ease-in-out group-hover:opacity-75",
               loading
                 ? "scale-110 blur-2xl grayscale"
                 : "scale-100 blur-0 grayscale-0"
