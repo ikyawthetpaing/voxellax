@@ -2,11 +2,13 @@
 
 Voxellax is a comprehensive e-commerce platform built specifically for digital products. With a sleek and user-friendly interface, Voxellax allows users to discover, purchase, and manage a wide range of digital products conveniently.
 
-<p align="center">
-  <a href="https://voxellax.vercel.app">
-    <img alt="Voxellax: Graphics, Fonts, Books, and Design Templates" src="https://voxellax.vercel.app/og.png">
-  </a>
-</p>
+| Landing Page                                                                                           | Search Products Page                                                                                                         |
+| ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| [![Voxellax Landing Page](./public/images/screenshots/landing-page.png)](https://voxellax.vercel.app/) | [![Voxellax Search Products Page](./public/images/screenshots/search-products-page.png)](https://voxellax.vercel.app/search) |
+
+| Product Details Page                                                                                                                                                                        | Store Dashboard Page                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| [![Voxellax View Product Page](./public/images/screenshots/view-product.png)](https://voxellax.vercel.app/listing/unleashing-your-potential-a-guide-to-personal-growth-and-success-dr007ad) | [![Voxellax Dashboard Page](./public/images/screenshots/store-dashboard-page.png)](https://voxellax.vercel.app/dashboard) |
 
 ## Technologies Used
 
