@@ -43,7 +43,7 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async () => {}),
   productFileUploader: f({
-    image: {
+    "application/zip": {
       maxFileSize: PRODUCT_DIGITAL_FILE_MAX_SIZE,
       maxFileCount: PRODUCT_DIGITAL_FILE_MAX_COUNT,
     },

@@ -63,7 +63,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <div className="space-y-4">
           {queryParam && <Heading size="lg">{queryParam}</Heading>}
           <p className="text-sm">
-            Explore 132,401 books design assets for sale
+            Found {productCount} {productCount > 1 ? "products" : "product"}{" "}
+            based on your search.
           </p>
         </div>
       </div>

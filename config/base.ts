@@ -43,10 +43,6 @@ export const baseConfig = {
         title: "Collections",
         href: `/user/${userId}/collections`,
       },
-      {
-        title: "About",
-        href: `/user/${userId}/about`,
-      },
     ];
     return { navItems };
   },

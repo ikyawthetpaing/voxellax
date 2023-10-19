@@ -4,7 +4,7 @@ import { Product } from "@/db/schema";
 
 import { getProducts } from "@/lib/actions/product";
 import { getStore } from "@/lib/actions/store";
-import { getUse } from "@/lib/actions/user";
+import { getUser } from "@/lib/actions/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heading } from "@/components/heading";
 import { Icons } from "@/components/icons";
@@ -58,7 +58,7 @@ const reviews: Review[] = [
 
 export async function Listing({ product }: { product: Product }) {
   const store = await getStore(product.storeId);
-  const seller = await getUse(store?.userId || "");
+  const seller = await getUser(store?.userId || "");
 
   const { items: products } = await getProducts({
     limit: 4,

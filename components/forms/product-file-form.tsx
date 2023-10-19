@@ -64,6 +64,7 @@ export function ProductFileForm({
     maxFiles,
     multiple: maxFiles > 1,
     disabled,
+    accept: { "application/zip": [] },
   });
 
   return (
@@ -102,7 +103,7 @@ export function ProductFileForm({
               aria-hidden="true"
             />
             <p className="mt-2 text-base font-medium text-muted-foreground">
-              Drop your file(s) here, or{" "}
+              Drop your zip file(s) here, or{" "}
               <span className="text-blue-500">click to browse</span>
             </p>
             <p className="text-sm text-slate-500">

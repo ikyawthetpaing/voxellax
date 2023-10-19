@@ -12,9 +12,10 @@ import {
   getCollectionThumbnails,
 } from "@/lib/actions/collections";
 import { getProduct } from "@/lib/actions/product";
-import { getUse } from "@/lib/actions/user";
+import { getUser } from "@/lib/actions/user";
 import { absoluteUrl, cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Icons } from "@/components/icons";
 import { ProductsList } from "@/components/product/products-list";
 
@@ -32,7 +33,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const user = await getUse(collection?.userId);
+  const user = await getUser(collection?.userId);
   if (!user) {
     return {};
   }
@@ -102,7 +103,7 @@ export default async function UserCollectionPage({
 
   return (
     <section className="space-y-8">
-      <div>
+      <div className="flex justify-between">
         <Link
           href={`/user/${collection.userId}/collections`}
           className={cn(
@@ -113,6 +114,21 @@ export default async function UserCollectionPage({
           <Icons.chevronLeft className="h-4 w-4" />
           Back to Collections
         </Link>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Add to collection"
+              className="rounded-full"
+            >
+              <Icons.penLine className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="gap-6 px-0 sm:max-w-[425px]">
+            Collection update form here
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="space-y-4">
         <h3 className="text-center text-2xl font-medium">{collection.name}</h3>

@@ -9,7 +9,7 @@ import { users } from "@/db/schema";
 import { getProduct } from "@/lib/actions/product";
 import { getSession } from "@/lib/session";
 
-export async function getUse(userId: string) {
+export async function getUser(userId: string) {
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
   });

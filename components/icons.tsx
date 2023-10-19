@@ -37,6 +37,7 @@ import {
   MoveRight,
   Package,
   PackageSearch,
+  PenLine,
   Plus,
   PlusCircle,
   Search,
@@ -107,6 +108,7 @@ export const Icons = {
   starHalf: StarHalf,
   share: Share,
   package: Package,
+  penLine: PenLine,
   voxellax: ({ ...props }: LucideProps) => {
     const id1 = cuid.slug();
     const id2 = cuid.slug();
