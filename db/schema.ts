@@ -1,4 +1,8 @@
-import { ProductImageUploadedFile, UploadedFile } from "@/types";
+import {
+  PasswordCredentials,
+  ProductImageUploadedFile,
+  UploadedFile,
+} from "@/types";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { InferSelectModel, relations } from "drizzle-orm";
 import {
@@ -18,6 +22,7 @@ export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
+  password: json("password").$type<PasswordCredentials | null>(),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
     fsp: 3,
@@ -191,7 +196,7 @@ export const likesRelations = relations(likes, ({ one }) => ({
 }));
 
 export const collections = mysqlTable("collection", {
-  id: varchar("id", { length: 255 }).notNull(),
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   privacy: mysqlEnum("privacy", ["public", "private", "unlisted"])
     .default("private")
@@ -209,11 +214,20 @@ export const collectionsRelations = relations(collections, ({ one, many }) => ({
   collectionProducts: many(collectionProducts),
 }));
 
-export const collectionProducts = mysqlTable("collection-product", {
-  collectionId: varchar("collectionId", { length: 255 }).notNull(),
-  productId: varchar("productId", { length: 255 }).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+export const collectionProducts = mysqlTable(
+  "collection-product",
+  {
+    collectionId: varchar("collectionId", { length: 255 }).notNull(),
+    productId: varchar("productId", { length: 255 }).notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  (collectionProducts) => ({
+    pk: primaryKey(
+      collectionProducts.collectionId,
+      collectionProducts.productId
+    ),
+  })
+);
 export type CollectionProduct = InferSelectModel<typeof collectionProducts>;
 
 export const collectionProductRealtions = relations(

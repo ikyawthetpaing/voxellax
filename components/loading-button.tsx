@@ -2,14 +2,14 @@ import { Button, ButtonProps } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
 interface LoadingButtonProps extends ButtonProps {
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 export function LoadingButton({
   variant,
   size,
   className,
-  isLoading,
+  isLoading = false,
   children,
   ...props
 }: LoadingButtonProps) {

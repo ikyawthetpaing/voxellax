@@ -109,3 +109,8 @@ export type Invoice = {
 };
 
 export type InvoiceProduct = Product & Invoice;
+
+export type PasswordCredentials = {
+  hashedPassword: string;
+  salt: string;
+};

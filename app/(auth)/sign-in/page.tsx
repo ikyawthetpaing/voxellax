@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
+import { siteConfig } from "@/config/site";
+
 import {
   Card,
   CardContent,
@@ -9,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { UserAuthForm } from "@/components/forms/user-auth-form";
+import { UserSignInForm } from "@/components/forms/user-sign-in-form";
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
@@ -20,25 +22,28 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <Shell layout="auth" className="max-sm:p-0">
-      <Card>
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Sign In</CardTitle>
+    <Shell layout="auth">
+      <Card className="space-y-6 max-sm:border-none sm:p-6">
+        <CardHeader className="space-y-1 p-0">
+          <CardTitle className="text-2xl">
+            Log in to {siteConfig.name}
+          </CardTitle>
           <CardDescription>
-            Sign in to your account to make purchases and for more features.
+            Login to your account to make purchases and for more features.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
-          <UserAuthForm />
+        <CardContent className="grid gap-4 p-0">
+          <UserSignInForm />
         </CardContent>
-        <CardFooter className="flex flex-wrap items-center justify-between gap-2">
+        <CardFooter className="flex flex-wrap items-center justify-between gap-2 p-0">
           <div className="text-sm text-muted-foreground">
-            <span className="mr-1 hidden sm:inline-block">
-              Don&apos;t have an account?
-            </span>
-            <span className="cursor-not-allowed text-muted-foreground underline-offset-4 transition-colors hover:underline">
+            <span className="mr-1">Don&apos;t have an account?</span>
+            <Link
+              href="sign-up"
+              className="text-muted-foreground underline-offset-4 transition-colors hover:underline"
+            >
               Sign up
-            </span>
+            </Link>
           </div>
           <span className="cursor-not-allowed text-sm text-muted-foreground underline-offset-4 transition-colors hover:underline">
             Reset password

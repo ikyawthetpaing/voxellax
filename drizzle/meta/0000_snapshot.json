@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "f1cdfb2f-b78a-4ae9-bb7f-ea6449720033",
+  "id": "7873a852-e76d-46f3-a705-a8e6a1847894",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -159,7 +159,12 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "collection-product_collectionId_productId": {
+          "name": "collection-product_collectionId_productId",
+          "columns": ["collectionId", "productId"]
+        }
+      },
       "uniqueConstraints": {}
     },
     "collection": {
@@ -205,7 +210,12 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "collection_id": {
+          "name": "collection_id",
+          "columns": ["id"]
+        }
+      },
       "uniqueConstraints": {}
     },
     "like": {
@@ -470,6 +480,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "password": {
+          "name": "password",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "emailVerified": {

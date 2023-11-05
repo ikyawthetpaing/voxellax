@@ -10,7 +10,7 @@ export function LoginButton() {
   const pathname = usePathname();
   return (
     <Link
-      href={`/login?from=${pathname}`}
+      href={`/sign-in?from=${pathname}`}
       className={cn(
         buttonVariants({ variant: "outline", size: "sm" }),
         "rounded-full"

@@ -23,7 +23,8 @@ CREATE TABLE `cartItem` (
 CREATE TABLE `collection-product` (
 	`collectionId` varchar(255) NOT NULL,
 	`productId` varchar(255) NOT NULL,
-	`createdAt` timestamp NOT NULL DEFAULT (now())
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `collection-product_collectionId_productId` PRIMARY KEY(`collectionId`,`productId`)
 );
 --> statement-breakpoint
 CREATE TABLE `collection` (
@@ -31,7 +32,8 @@ CREATE TABLE `collection` (
 	`name` varchar(255) NOT NULL,
 	`privacy` enum('public','private','unlisted') NOT NULL DEFAULT 'private',
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
-	`userId` varchar(255) NOT NULL
+	`userId` varchar(255) NOT NULL,
+	CONSTRAINT `collection_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `like` (
@@ -79,6 +81,7 @@ CREATE TABLE `user` (
 	`id` varchar(255) NOT NULL,
 	`name` varchar(255),
 	`email` varchar(255) NOT NULL,
+	`password` json,
 	`emailVerified` timestamp(3) DEFAULT (now()),
 	`image` varchar(255),
 	`role` enum('user','seller','admin') NOT NULL DEFAULT 'user',

@@ -1,3 +1,4 @@
+import * as crypto from "crypto";
 import { ProductImageUploadedFile, UploadedFile } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import cuid from "cuid";
@@ -97,6 +98,10 @@ export function slugify(str: string) {
     .replace(/--+/g, "-");
 }
 
+export function getUniqueId() {
+  return cuid();
+}
+
 export function getUniqueString() {
   return cuid.slug();
 }
@@ -139,4 +144,23 @@ export function catchError(err: unknown) {
 export function getFormatedProductFilesTotalSize(files: UploadedFile[]) {
   const totalSizeBytes = files.reduce((total, file) => total + file.size, 0);
   return formatBytes(totalSizeBytes);
+}
+
+export function generateSalt(): string {
+  return crypto.randomBytes(16).toString("hex");
+}
+
+export function hashPassword(password: string, salt: string): string {
+  const hash = crypto.createHash("sha256");
+  const hashedPassword = hash.update(password + salt).digest("hex");
+  return hashedPassword;
+}
+
+export function comparePasswords(
+  enteredPassword: string,
+  storedHashedPassword: string,
+  salt: string
+): boolean {
+  const hashedEnteredPassword = hashPassword(enteredPassword, salt);
+  return hashedEnteredPassword === storedHashedPassword;
 }
