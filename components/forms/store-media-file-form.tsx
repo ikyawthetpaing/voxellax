@@ -26,6 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { CropImageDialog } from "@/components/dialogs/crop-image-dialog";
 import { Icons } from "@/components/icons";
 
 interface StoreMediaFileFormProps {
@@ -93,16 +94,16 @@ export function StoreMediaFileForm({
     multiple: false,
     disabled: disabled,
   });
-  const [avatar, setAvatar] = useState<FileWithPreview>();
-  const [cover, setCover] = useState<FileWithPreview>();
+  const [avatar, setAvatar] = useState<FileWithPreview | null>(null);
+  const [cover, setCover] = useState<FileWithPreview | null>(null);
 
   useEffect(() => {
-    setAvatar(form.getValues("avatar"));
+    setAvatar(form.getValues("avatar") || null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("avatar")]);
 
   useEffect(() => {
-    setCover(form.getValues("cover"));
+    setCover(form.getValues("cover") || null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("cover")]);
 
@@ -171,9 +172,11 @@ export function StoreMediaFileForm({
                   </div>
                   {avatar && (
                     <div className="flex gap-2">
-                      <Button size="icon" variant="outline" type="button">
-                        <Icons.crop className="h-4 w-4" />
-                      </Button>
+                      <CropImageDialog
+                        file={avatar}
+                        setFile={setAvatar}
+                        aspectRatio={1 / 1}
+                      />
                       <Button
                         size="icon"
                         variant="outline"
@@ -270,9 +273,11 @@ export function StoreMediaFileForm({
                   )}
                   {cover && (
                     <div className="absolute right-2 top-2 flex gap-2">
-                      <Button size="icon" variant="secondary" type="button">
-                        <Icons.crop className="h-4 w-4" />
-                      </Button>
+                      <CropImageDialog
+                        file={cover}
+                        setFile={setCover}
+                        aspectRatio={5 / 1}
+                      />
                       <Button
                         type="button"
                         size="icon"

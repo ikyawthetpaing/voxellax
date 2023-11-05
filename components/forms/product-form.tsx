@@ -39,8 +39,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ProductFileForm } from "@/components/forms/product-file-form";
-
-import { ProductImageFileForm } from "./product-image-file-form";
+import { ProductImageFileForm } from "@/components/forms/product-image-file-form";
 
 interface ProductFormProps {
   form: UseFormReturn<ProductSchema>;
@@ -90,11 +89,12 @@ export function ProductForm({
                         <Input {...field} />
                       </FormControl>
                       <FormDescription>
-                        <p>Give your product a short and clear name.</p>
-                        <p>
+                        <span>Give your product a short and clear name.</span>
+                        <br />
+                        <span>
                           50-60 characters is the recommended length for search
                           engines.
-                        </p>
+                        </span>
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -110,11 +110,14 @@ export function ProductForm({
                         <Textarea {...field} />
                       </FormControl>
                       <FormDescription>
-                        <p>Give your product a short and clear description.</p>
-                        <p>
+                        <span>
+                          Give your product a short and clear description.
+                        </span>
+                        <br />
+                        <span>
                           120-160 characters is the recommended length for
                           search engines.
-                        </p>
+                        </span>
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

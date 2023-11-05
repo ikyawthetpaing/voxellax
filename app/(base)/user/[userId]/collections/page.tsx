@@ -5,7 +5,7 @@ import { Collection } from "@/db/schema";
 import { getUserCollections } from "@/lib/actions/collections";
 import { getSession } from "@/lib/session";
 import { CollectionsList } from "@/components/collections-list";
-import { Icons } from "@/components/icons";
+import { Empty } from "@/components/empty";
 
 export const metadata: Metadata = {
   title: "Collections",
@@ -26,19 +26,7 @@ export default async function UserCollectionsPage({
   const isCurrentUser = session?.user.id === params.userId;
 
   if (!collections.length) {
-    return (
-      <div>
-        <div className="mt-14 flex flex-col items-center">
-          <Icons.bookmark
-            className="mb-4 h-16 w-16 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <p className="text-xl font-medium text-muted-foreground">
-            No collections yet
-          </p>
-        </div>
-      </div>
-    );
+    return <Empty icon="bookmark" message="No collections yet" />;
   }
 
   if (!isCurrentUser) {

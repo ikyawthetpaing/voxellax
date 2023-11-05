@@ -25,7 +25,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           size="icon"
           variant="ghost"
           onClick={toggleShowPassword}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          className="absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground"
           type="button"
         >
           {showPassword ? <Icons.eyeOff /> : <Icons.eye />}

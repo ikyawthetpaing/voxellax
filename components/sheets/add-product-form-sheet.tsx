@@ -30,6 +30,8 @@ import {
 import { ProductForm } from "@/components/forms/product-form";
 import { Icons } from "@/components/icons";
 
+const SUBMIT_ID = "add-product-form-submit";
+
 interface AddProductFormSheetProps {
   storeId: string;
   trigger: JSX.Element;
@@ -39,7 +41,6 @@ export function AddProductFormSheet({
   storeId,
   trigger,
 }: AddProductFormSheetProps) {
-  const submitId = "add-product-form-submit";
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState<ProductImageWithPreview[]>([]);
   const [files, setFiles] = useState<ProductFileWithPath[]>([]);
@@ -121,7 +122,7 @@ export function AddProductFormSheet({
 
         <div className="hide-scrollbar flex-1 overflow-y-auto p-6">
           <ProductForm
-            submitId={submitId}
+            submitId={SUBMIT_ID}
             form={form}
             onSubmit={onSubmit}
             imageFiles={images}
@@ -141,9 +142,9 @@ export function AddProductFormSheet({
             Cancel
           </Button>
           <label
-            htmlFor={submitId}
-            className={cn(buttonVariants(), {
-              "pointer-events-none opacity-50": isPending,
+            htmlFor={SUBMIT_ID}
+            className={cn(buttonVariants(), "cursor-pointer", {
+              "pointer-events-none cursor-not-allowed opacity-50": isPending,
             })}
           >
             {isPending && (

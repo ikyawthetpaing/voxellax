@@ -2,10 +2,10 @@ import { FilterItem } from "@/types";
 
 import { Product } from "@/db/schema";
 
+import { Empty } from "@/components/empty";
 import { ProductFilterForm } from "@/components/forms/product-filter-form";
 import { ProductSortForm } from "@/components/forms/product-sort-form";
 import { Heading } from "@/components/heading";
-import { Icons } from "@/components/icons";
 import { PaginationButton } from "@/components/pagination-button";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductFilterFormSheet } from "@/components/sheets/product-filter-sheet";
@@ -47,17 +47,7 @@ export async function ProductsListWithFilter({
             ))}
           </div>
         ) : (
-          <div>
-            <div className="mt-14 flex flex-col items-center">
-              <Icons.packageSearch
-                className="mb-4 h-16 w-16 text-muted-foreground"
-                aria-hidden="true"
-              />
-              <div className="text-xl font-medium text-muted-foreground">
-                No product found
-              </div>
-            </div>
-          </div>
+          <Empty icon="packageSearch" message="No product found" />
         )}
         {products.length > 0 ? (
           <PaginationButton

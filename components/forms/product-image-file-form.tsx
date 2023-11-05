@@ -6,6 +6,7 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useState,
 } from "react";
 import Image from "next/image";
 import { ProductImageWithPreview } from "@/types";
@@ -13,6 +14,7 @@ import {
   DragDropContext,
   Draggable,
   Droppable,
+  DroppableProps,
   DropResult,
 } from "react-beautiful-dnd";
 import {
@@ -192,7 +194,7 @@ export function ProductImageFileForm({
         <div className="grid gap-2">
           <h1>Uploads: </h1>
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="product-images-droppable">
+            <StrictModeDroppable droppableId="product-images-droppable">
               {(provided) => (
                 <div
                   {...provided.droppableProps}
@@ -202,8 +204,8 @@ export function ProductImageFileForm({
                   {files.map((file, index) => (
                     <Draggable
                       index={index}
-                      draggableId={file.name + index}
-                      key={file.name + index}
+                      draggableId={`${file.name}-${index}`}
+                      key={`${file.name}-${index}`}
                       isDragDisabled={disabled}
                     >
                       {(provided, snapshot) => (
@@ -228,7 +230,7 @@ export function ProductImageFileForm({
                   {provided.placeholder}
                 </div>
               )}
-            </Droppable>
+            </StrictModeDroppable>
           </DragDropContext>
         </div>
       ) : null}
@@ -331,4 +333,19 @@ function FileCard({ i, file, files, setFiles, className }: FileCardProps) {
       </div>
     </div>
   );
+}
+
+function StrictModeDroppable({ children, ...props }: DroppableProps) {
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+  if (!enabled) {
+    return null;
+  }
+  return <Droppable {...props}>{children}</Droppable>;
 }

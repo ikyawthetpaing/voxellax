@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Empty } from "@/components/empty";
 import { CreateCollectionForm } from "@/components/forms/create-collection-form";
 import { Icons } from "@/components/icons";
 
@@ -85,9 +86,7 @@ export function AddToCollectionDialog({
                   </div>
                 ))
               ) : !collections.length ? (
-                <div className="flex items-center justify-center">
-                  no collection
-                </div>
+                <Empty icon="bookmark" message="No collections yet" />
               ) : (
                 collections.map((collection) => (
                   <CollectionCard

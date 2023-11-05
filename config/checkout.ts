@@ -1,11 +1,11 @@
-import { Icon } from "@/types";
+import { IconType } from "@/types";
 
 import { formatPrice } from "@/lib/utils";
 
 type CheckoutType = "credit_card" | "paypal" | "gpay";
 type CheckoutOptionType = {
   type: CheckoutType;
-  icons: Icon[];
+  icons: IconType[];
 };
 type Fee = {
   label: string;

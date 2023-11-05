@@ -35,7 +35,7 @@ interface Props {
 export function ProductShareDialog({ product }: Props) {
   const thumbnail = getProductThumbnailImage(product.images);
 
-  const description = `Hey! Checkout ${product.name} on ${siteConfig.name}.`;
+  const description = `Introducing the ${product.name}, the most innovative new product on ${siteConfig.name}! Get yours today and experience the difference.`;
   const shareUrl = absoluteUrl(`/listing/${product.id}`);
   const media = thumbnail ? thumbnail.url : siteConfig.ogImage;
 
@@ -45,7 +45,7 @@ export function ProductShareDialog({ product }: Props) {
         <Button
           variant="outline"
           size="icon"
-          aria-label="Add to collection"
+          aria-label="Share the product"
           className="rounded-full"
         >
           <Icons.share className="h-4 w-4" />

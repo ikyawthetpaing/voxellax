@@ -20,12 +20,12 @@ export type SiteConfig = {
   keywords: string[];
 };
 
-export type Icon = keyof typeof Icons;
+export type IconType = keyof typeof Icons;
 
 export type NavItem = {
   title: string;
   href: string;
-  icon?: Icon;
+  icon?: IconType;
   disabled?: boolean;
 };
 
