@@ -38,10 +38,9 @@ export function ProductLikeButton({
 
   return (
     <Button
-      variant={isLiked ? "added" : "not_added"}
+      variant={isLiked ? "default" : "outline"}
       size="icon"
       className="rounded-full"
-      aria-label="Add to cart"
       onClick={handleOnClick}
       disabled={isPending}
       {...props}

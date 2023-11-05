@@ -41,7 +41,7 @@ export function AddToCartButton({
 
   return (
     <Button
-      variant={isAdded ? "added" : "not_added"}
+      variant={isAdded ? "default" : "outline"}
       size={layout === "icon" ? "icon" : "default"}
       className={cn("gap-2", className, { "rounded-full": layout === "icon" })}
       aria-label="Add to cart"

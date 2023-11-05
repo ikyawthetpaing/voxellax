@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, useTransition } from "react";
+import { HTMLAttributes, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
@@ -9,16 +9,16 @@ import { toast } from "sonner";
 
 import { catchError, cn } from "@/lib/utils";
 import { UserSignInSchema, userSignInSchema } from "@/lib/validations/auth";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Icons } from "@/components/icons";
-
-import { LoadingButton } from "../loading-button";
+import { LoadingButton } from "@/components/loading-button";
+import { PasswordInput } from "@/components/password-input";
 
 interface UserSignInFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
+  const searchParams = useSearchParams();
+
   const {
     register,
     handleSubmit,
@@ -27,37 +27,40 @@ export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
     resolver: zodResolver(userSignInSchema),
   });
 
-  const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
+  const [isLoadingEmail, setIsLoadingEmail] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+  const disabled = isLoadingEmail || isLoadingGoogle;
 
-  const continueWithGoogle = () => {
-    startTransition(async () => {
-      try {
-        await signIn("google", {
-          callbackUrl: searchParams?.get("from") || "/",
-        });
-      } catch (err) {
-        catchError(err);
-      }
-    });
+  const continueWithGoogle = async () => {
+    setIsLoadingGoogle(true);
+    try {
+      await signIn("google", {
+        callbackUrl: searchParams?.get("from") || "/",
+      });
+    } catch (err) {
+      catchError(err);
+    } finally {
+      setIsLoadingGoogle(false);
+    }
   };
 
   async function onSubmit(data: UserSignInSchema) {
-    startTransition(async () => {
-      try {
-        const res = await signIn("credentials", {
-          callbackUrl: searchParams?.get("from") || "/",
-          email: data.email,
-          password: data.password,
-        });
+    setIsLoadingEmail(true);
+    try {
+      const res = await signIn("credentials", {
+        callbackUrl: searchParams?.get("from") || "/",
+        email: data.email,
+        password: data.password,
+      });
 
-        if (res && !res.ok) {
-          toast.error("Email or password does not match");
-        }
-      } catch (err) {
-        catchError(err);
+      if (res && !res.ok) {
+        toast.error("Email or password does not match");
       }
-    });
+    } catch (err) {
+      catchError(err);
+    } finally {
+      setIsLoadingEmail(false);
+    }
   }
 
   return (
@@ -69,13 +72,12 @@ export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
               Email
             </Label>
             <Input
-              id="email"
               placeholder="Email"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isPending}
+              disabled={disabled}
               {...register("email")}
             />
             {errors?.email && (
@@ -88,13 +90,11 @@ export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
             <Label className="sr-only" htmlFor="email">
               Password
             </Label>
-            <Input
-              id="password"
+            <PasswordInput
               placeholder="Password"
-              type="password"
               autoCapitalize="none"
               autoCorrect="off"
-              disabled={isPending}
+              disabled={disabled}
               {...register("password")}
             />
             {errors?.password && (
@@ -103,7 +103,7 @@ export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
               </p>
             )}
           </div>
-          <LoadingButton isLoading={isPending} disabled={isPending}>
+          <LoadingButton isLoading={isLoadingEmail} disabled={disabled}>
             Login
           </LoadingButton>
         </div>
@@ -118,19 +118,16 @@ export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
           </span>
         </div>
       </div>
-      <Button
+      <LoadingButton
+        icon="google"
         type="button"
         variant="outline"
         onClick={continueWithGoogle}
-        disabled={isPending}
+        isLoading={isLoadingGoogle}
+        disabled={disabled}
       >
-        {isPending ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}
         Continue with Google
-      </Button>
+      </LoadingButton>
     </div>
   );
 }

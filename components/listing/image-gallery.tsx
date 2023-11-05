@@ -78,15 +78,19 @@ export function ImageGallery({
       {sortedImages && (
         <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
           {sortedImages.map((image, index) => (
-            <ProductImage
-              image={image}
-              key={index}
+            <div
               className={cn(
-                "flex w-20 shrink-0  rounded-lg border border-background p-[1px] md:w-24",
+                "w-20 rounded-[8px] border border-background p-[1px] md:w-24",
                 { "border-primary": index === currentImageIndex }
               )}
-              onMouseOver={() => setCurrentImageIndex(index)}
-            />
+            >
+              <ProductImage
+                image={image}
+                key={index}
+                className="rounded-[7px]"
+                onMouseOver={() => setCurrentImageIndex(index)}
+              />
+            </div>
           ))}
         </div>
       )}

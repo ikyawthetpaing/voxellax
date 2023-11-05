@@ -128,13 +128,13 @@ export function ApplySellerApplicationForm({
   }
 
   return (
-    <Card className="grid gap-6 border-0 p-0 sm:border sm:p-6">
+    <Card className="grid gap-6 border-0 p-0 max-sm:shadow-none sm:border sm:p-6">
       {step === 1 ? (
         <>
           <CardHeader className="grid gap-4 p-0">
-            <CardTitle className="flex items-end justify-between gap-4">
+            <CardTitle className="flex flex-wrap items-end justify-between gap-4">
               <span>Share your work with us</span>
-              <span className="text-sm">Step {step} of 2</span>
+              <span className="text-base">Step {step} of 2</span>
             </CardTitle>
             <CardDescription>
               To maintain quality within our marketplace, we limit our seller
@@ -154,7 +154,7 @@ export function ApplySellerApplicationForm({
                     name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>First Name</FormLabel>
+                        <FormLabel>First Name *</FormLabel>
                         <FormControl>
                           <Input {...field} />
                         </FormControl>
@@ -167,7 +167,7 @@ export function ApplySellerApplicationForm({
                     name="lastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Last Name</FormLabel>
+                        <FormLabel>Last Name *</FormLabel>
                         <FormControl>
                           <Input {...field} />
                         </FormControl>
@@ -182,7 +182,7 @@ export function ApplySellerApplicationForm({
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>
-                        What category of products will you mainly sell?
+                        What category of products will you mainly sell? *
                       </FormLabel>
                       <FormControl>
                         <Select
@@ -219,11 +219,13 @@ export function ApplySellerApplicationForm({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Share a URL where we can view your work
+                        Share a URL where we can view your work. *
                       </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter a URL for your behance portfolio, dribbble page, or portfolio site"
+                          autoCapitalize="none"
+                          autoCorrect="off"
                           {...field}
                         />
                       </FormControl>
@@ -232,7 +234,7 @@ export function ApplySellerApplicationForm({
                   )}
                 />
                 <div className="grid grid-cols-2 gap-4">
-                  <div></div>
+                  <div />
                   <Button>Next</Button>
                 </div>
               </form>
@@ -242,9 +244,9 @@ export function ApplySellerApplicationForm({
       ) : (
         <>
           <CardHeader className="grid gap-4 p-0">
-            <CardTitle className="flex items-end justify-between gap-4">
+            <CardTitle className="flex flex-wrap items-end justify-between gap-4">
               <span>Tell us a little about yourself</span>
-              <span className="text-sm">Step {step} of 2</span>
+              <span className="text-base">Step {step} of 2</span>
             </CardTitle>
             <CardDescription>
               Your answers will help us better understand you as a shop owner.
@@ -263,7 +265,7 @@ export function ApplySellerApplicationForm({
                     name={`answers.${index}`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{question}</FormLabel>
+                        <FormLabel>{question} *</FormLabel>
                         <FormControl>
                           <Select
                             value={field.value?.answer}

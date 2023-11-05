@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, useTransition } from "react";
+import { HTMLAttributes, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
@@ -10,15 +10,17 @@ import { toast } from "sonner";
 import { addUser } from "@/lib/actions/user";
 import { catchError, cn } from "@/lib/utils";
 import { UserSignUpSchema, userSignUpSchema } from "@/lib/validations/auth";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Icons } from "@/components/icons";
 import { LoadingButton } from "@/components/loading-button";
+import { PasswordInput } from "@/components/password-input";
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -27,37 +29,39 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
     resolver: zodResolver(userSignUpSchema),
   });
 
-  const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const [isLoadingEmail, setIsLoadingEmail] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+  const disabled = isLoadingEmail || isLoadingGoogle;
 
-  const continueWithGoogle = () => {
-    startTransition(async () => {
-      try {
-        await signIn("google", {
-          callbackUrl: searchParams?.get("from") || "/",
-        });
-      } catch (err) {
-        catchError(err);
-      }
-    });
+  const continueWithGoogle = async () => {
+    setIsLoadingGoogle(true);
+    try {
+      await signIn("google", {
+        callbackUrl: searchParams?.get("from") || "/",
+      });
+    } catch (err) {
+      catchError(err);
+    } finally {
+      setIsLoadingGoogle(false);
+    }
   };
 
   async function onSubmit(data: UserSignUpSchema) {
-    startTransition(async () => {
-      try {
-        const res = await addUser(data);
+    setIsLoadingEmail(true);
+    try {
+      const res = await addUser(data);
 
-        if (res.ok) {
-          toast.success("Account created successfully.");
-          router.push("/sign-in");
-        } else {
-          toast.error(res.error);
-        }
-      } catch (err) {
-        catchError(err);
+      if (res.ok) {
+        toast.success("Account created successfully.");
+        router.push("/sign-in");
+      } else {
+        toast.error(res.error);
       }
-    });
+    } catch (err) {
+      catchError(err);
+    } finally {
+      setIsLoadingEmail(false);
+    }
   }
 
   return (
@@ -71,8 +75,9 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
               </Label>
               <Input
                 placeholder="First Name"
+                autoCapitalize="words"
+                disabled={disabled}
                 {...register("firstName")}
-                disabled={isPending}
               />
               {errors?.firstName && (
                 <p className="px-1 text-xs text-red-600">
@@ -86,8 +91,9 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
               </Label>
               <Input
                 placeholder="Last Name"
+                autoCapitalize="words"
+                disabled={disabled}
                 {...register("lastName")}
-                disabled={isPending}
               />
               {errors?.lastName && (
                 <p className="px-1 text-xs text-red-600">
@@ -106,7 +112,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isPending}
+              disabled={disabled}
               {...register("email")}
             />
             {errors?.email && (
@@ -119,12 +125,11 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
             <Label className="sr-only" htmlFor="email">
               Password
             </Label>
-            <Input
+            <PasswordInput
               placeholder="Password"
-              type="password"
               autoCapitalize="none"
               autoCorrect="off"
-              disabled={isPending}
+              disabled={disabled}
               {...register("password")}
             />
             {errors?.password && (
@@ -133,7 +138,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
               </p>
             )}
           </div>
-          <LoadingButton isLoading={isPending} disabled={isPending}>
+          <LoadingButton isLoading={isLoadingEmail} disabled={disabled}>
             Sign Up
           </LoadingButton>
         </div>
@@ -148,19 +153,16 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button
+      <LoadingButton
+        icon="google"
         type="button"
         variant="outline"
         onClick={continueWithGoogle}
-        disabled={isPending}
+        isLoading={isLoadingGoogle}
+        disabled={disabled}
       >
-        {isPending ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}
         Continue with Google
-      </Button>
+      </LoadingButton>
     </div>
   );
 }

@@ -45,7 +45,7 @@ export function AddToCollectionDialog({
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant={isAdded ? "added" : "not_added"}
+          variant={isAdded ? "default" : "outline"}
           size="icon"
           aria-label="Add to collection"
           className="rounded-full"

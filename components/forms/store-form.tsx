@@ -62,7 +62,7 @@ export function StoreForm({
                   </FormDescription>
                 </div>
                 <FormControl>
-                  <Input {...field} />
+                  <Input autoCapitalize="words" {...field} />
                 </FormControl>
               </div>
               <FormMessage />
@@ -107,6 +107,8 @@ export function StoreForm({
                     <DebounceInput
                       className="pl-9"
                       placeholder="Type your store handle here..."
+                      autoCapitalize="none"
+                      autoCorrect="off"
                       {...field}
                     />
                   </div>
@@ -134,7 +136,14 @@ export function StoreForm({
                 <FormControl>
                   <div className="relative">
                     <Icons.mail className="absolute top-1/2 ml-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input className="pl-10" {...field} />
+                    <Input
+                      type="email"
+                      className="pl-10"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      autoCorrect="off"
+                      {...field}
+                    />
                   </div>
                 </FormControl>
               </div>

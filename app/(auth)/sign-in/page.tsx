@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function SignInPage() {
   return (
     <Shell layout="auth">
-      <Card className="space-y-6 max-sm:border-none sm:p-6">
+      <Card className="space-y-6 max-sm:border-none max-sm:shadow-none sm:p-6">
         <CardHeader className="space-y-1 p-0">
           <CardTitle className="text-2xl">
             Log in to {siteConfig.name}
