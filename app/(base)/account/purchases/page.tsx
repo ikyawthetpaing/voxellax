@@ -1,20 +1,15 @@
 import { Metadata } from "next";
-import { InvoiceProduct } from "@/types";
 
-import { getProduct } from "@/lib/actions/product";
-import { getUserInvoiceProducts } from "@/lib/actions/user";
-import { formatDate, formatPrice, getProductThumbnailImage } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { getUserPurchasedProducts } from "@/lib/actions/user";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Heading } from "@/components/heading";
-import { ProductImage } from "@/components/product/product-image";
+import { PurchaseProductTableRow } from "@/components/purchase-product-table-row";
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
@@ -23,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AccountPurchasesPage() {
-  const invoiceProducts = await getUserInvoiceProducts();
+  const purchasedProducts = await getUserPurchasedProducts();
 
   return (
     <Shell>
@@ -43,61 +38,15 @@ export default async function AccountPurchasesPage() {
             </TableRow>
           </TableHeader>
           <TableBody className="font-light">
-            {invoiceProducts.map((invoiceProduct, index) => (
-              <ProductTableRow key={index} invoiceProduct={invoiceProduct} />
+            {purchasedProducts.map((invoiceProduct, index) => (
+              <PurchaseProductTableRow
+                key={index}
+                purchasedProduct={invoiceProduct}
+              />
             ))}
           </TableBody>
         </Table>
       </div>
     </Shell>
-  );
-}
-
-async function ProductTableRow({
-  invoiceProduct,
-}: {
-  invoiceProduct: InvoiceProduct;
-}) {
-  const { productId, cost, purchasedAt } = invoiceProduct;
-
-  const product = await getProduct(productId);
-  if (!product) {
-    return null;
-  }
-
-  const thumbnail = getProductThumbnailImage(product.images);
-
-  return (
-    <TableRow>
-      <TableCell>
-        <div className="flex gap-4">
-          <ProductImage
-            image={thumbnail}
-            className="w-24 shrink-0 overflow-hidden rounded-lg border"
-          />
-          <div className="space-y-2">
-            <h1 className="line-clamp-1 font-medium">{product.name}</h1>
-            <p className="line-clamp-1 capitalize">{product.category}</p>
-          </div>
-        </div>
-      </TableCell>
-      <TableCell>{formatPrice(cost)}</TableCell>
-      <TableCell>{formatDate(purchasedAt)}</TableCell>
-      <TableCell>
-        <Badge className="w-max cursor-pointer" variant="secondary">
-          Add Review
-        </Badge>
-      </TableCell>
-      <TableCell>
-        <Badge className="w-max cursor-pointer" variant="secondary">
-          Download
-        </Badge>
-      </TableCell>
-      <TableCell>
-        <Badge className="w-max cursor-pointer" variant="secondary">
-          Download
-        </Badge>
-      </TableCell>
-    </TableRow>
   );
 }

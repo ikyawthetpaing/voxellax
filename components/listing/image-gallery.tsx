@@ -79,8 +79,9 @@ export function ImageGallery({
         <div className="hide-scrollbar flex w-full gap-3 overflow-x-scroll">
           {sortedImages.map((image, index) => (
             <div
+              key={index}
               className={cn(
-                "w-20 rounded-[8px] border border-background p-[1px] md:w-24",
+                "w-20 shrink-0 rounded-[8px] border border-background p-[1px] md:w-24",
                 { "border-primary": index === currentImageIndex }
               )}
             >

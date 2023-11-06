@@ -9,14 +9,14 @@ export const siteConfig: SiteConfig = {
     "Elevate your creative endeavors with millions distinctive fonts, graphics, themes, images, and templates crafted by talented independent creators worldwide.",
   url: absoluteUrl(),
   ogImage: absoluteUrl("/og.png"),
-  links: {
-    twitter: "https://twitter.com/voxellax",
-    github: "https://github.com/ikyawthetpaing/voxellax",
-  },
   authors: [
-    { name: "@ikyawthetpaing", url: "https://github.com/ikyawthetpaing" },
+    { name: "Voxellax", url: "https://voxellax.vercel.app" },
+    { name: "Kyaw Thet Paing", url: "https://ikyawthetpaing.vercel.app" },
   ],
-  creator: "@ikyawthetpaing",
+  creator: {
+    name: "Kyaw Thet Paing",
+    username: "@ikyawthetpaing",
+  },
   keywords: [
     "Voxellax",
     "Digital Products",

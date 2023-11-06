@@ -86,8 +86,8 @@ export function ProductShareDialog({ product }: Props) {
           <TwitterShareButton
             url={shareUrl}
             title={description}
-            related={[siteConfig.creator, "voxellax"]}
-            hashtags={[siteConfig.name]}
+            related={[siteConfig.creator.username]}
+            hashtags={[siteConfig.name.toLowerCase()]}
           >
             <div className="flex items-center justify-center gap-2 py-3">
               <TwitterIcon className="h-6 w-6 rounded-full" />

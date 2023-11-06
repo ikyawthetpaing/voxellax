@@ -238,8 +238,8 @@ export function UpdateProductFormSheet({
           </Button>
           <label
             htmlFor={submitId}
-            className={cn(buttonVariants(), {
-              "pointer-events-none opacity-50": isPending,
+            className={cn(buttonVariants(), "cursor-pointer", {
+              "pointer-events-none cursor-not-allowed opacity-50": isPending,
             })}
           >
             {isPending && (

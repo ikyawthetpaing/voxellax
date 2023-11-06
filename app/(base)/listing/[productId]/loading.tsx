@@ -10,10 +10,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductsListSkeleton } from "@/components/product/products-list";
@@ -43,7 +41,7 @@ export default function ListingLoadingPage() {
           </div>
         </div>
         <div className="space-y-4">
-          <h1 className="text-xl font-medium capitalize">You may also like</h1>
+          <Skeleton className="h-5 w-32" />
           <ProductsListSkeleton />
         </div>
       </div>
@@ -120,30 +118,16 @@ function DetailCardSkeleton() {
   return (
     <Card className="w-full lg:w-96">
       <CardHeader>
-        <CardTitle className="flex gap-6">
+        <div className="flex gap-6">
           <Skeleton className="h-5 w-full" />
           <Skeleton className="h-5 w-1/3" />
-        </CardTitle>
-        <CardDescription>
-          <Skeleton className="h-5 w-1/4" />
-        </CardDescription>
+        </div>
+        <Skeleton className="h-5 w-1/4" />
       </CardHeader>
       <CardContent className="grid gap-6">
         <div className="space-y-1">
           <Skeleton className="h-5 w-full" />
           <Skeleton className="h-5 w-1/2" />
-        </div>
-
-        <div className="grid gap-2">
-          {/* License type */}
-          <div className="flex gap-6">
-            <Skeleton className="h-5 w-full" />
-            <Skeleton className="h-5 w-1/3" />
-          </div>
-
-          {Array.from({ length: 3 }, (_, i) => i).map((index) => (
-            <Skeleton className="h-5 w-full" key={index} />
-          ))}
         </div>
 
         <div className="flex gap-6">

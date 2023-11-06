@@ -27,7 +27,7 @@ export async function ProductsList({ products }: ProductsListProps) {
 export function ProductsListSkeleton() {
   return (
     <Grid>
-      {Array.from({ length: 8 }, (_, i) => i).map((index) => (
+      {Array.from({ length: 4 }, (_, i) => i).map((index) => (
         <ProductCardSkeleton key={index} />
       ))}
     </Grid>

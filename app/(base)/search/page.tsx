@@ -63,8 +63,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <div className="space-y-4">
           {queryParam && <Heading size="lg">{queryParam}</Heading>}
           <p className="text-sm">
-            Found {productCount} {productCount > 1 ? "products" : "product"}{" "}
-            based on your search.
+            We found {productCount} {productCount > 1 ? "products" : "product"}{" "}
+            matching your search.
           </p>
         </div>
       </div>

@@ -27,7 +27,7 @@ export async function generateMetadata({
   }
 
   const userName = user.name ?? "Unknown";
-  const description = `${userName} is on Voxellax.`;
+  const description = `${userName} is on ${siteConfig.name}.`;
 
   const ogUrl = new URL(user.image ?? siteConfig.ogImage);
   ogUrl.searchParams.set("heading", userName);
@@ -49,8 +49,8 @@ export async function generateMetadata({
       images: [
         {
           url: ogUrl.toString(),
-          width: 1200,
-          height: 900,
+          width: 512,
+          height: 512,
           alt: userName,
         },
       ],

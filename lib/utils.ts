@@ -3,6 +3,7 @@ import { ProductImageUploadedFile, UploadedFile } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import cuid from "cuid";
 import dayjs from "dayjs";
+import { saveAs } from "file-saver";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import * as z from "zod";
@@ -163,4 +164,28 @@ export function comparePasswords(
 ): boolean {
   const hashedEnteredPassword = hashPassword(enteredPassword, salt);
   return hashedEnteredPassword === storedHashedPassword;
+}
+
+export async function downloadProductFiles(
+  files: UploadedFile[] | null | undefined
+) {
+  const saveFile = (url: string, name: string) => {
+    return new Promise<void>((resolve, reject) => {
+      fetch(url)
+        .then((response) => response.blob())
+        .then((blob) => {
+          saveAs(blob, name);
+          resolve();
+        })
+        .catch((error) => {
+          console.error("Error downloading file:", error);
+          reject(error);
+        });
+    });
+  };
+  if (files && files.length > 0) {
+    const downloadPromises = files.map((file) => saveFile(file.url, file.name));
+
+    await Promise.all(downloadPromises);
+  }
 }

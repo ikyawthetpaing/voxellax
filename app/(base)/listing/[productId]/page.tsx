@@ -32,12 +32,13 @@ export async function generateMetadata({
   ogUrl.searchParams.set("mode", "dark");
 
   const description =
-    product.description ?? `Check out ${product.name} on ${siteConfig.name}`;
+    product.description || `Check out ${product.name} on ${siteConfig.name}`;
 
   return {
     title: product.name,
     description: description,
     openGraph: {
+      siteName: siteConfig.name,
       title: product.name,
       description: description,
       type: "article",

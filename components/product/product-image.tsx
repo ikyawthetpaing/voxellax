@@ -28,7 +28,9 @@ export function ProductImage({ image, className, ...props }: Props) {
                 ? "scale-110 blur-2xl grayscale"
                 : "scale-100 blur-0 grayscale-0"
             )}
-            onLoadingComplete={() => setLoading(false)}
+            onLoad={() => setLoading(false)}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-muted-foreground">

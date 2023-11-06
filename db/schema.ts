@@ -34,7 +34,6 @@ export const users = mysqlTable("user", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 export type User = InferSelectModel<typeof users>;
-
 export const usersRelations = relations(users, ({ many, one }) => ({
   account: one(accounts, {
     fields: [users.id],
@@ -48,6 +47,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   cartItems: many(cartItems),
   likes: many(likes),
   collections: many(collections),
+  purchases: many(purchases),
 }));
 
 export const accounts = mysqlTable(
@@ -116,7 +116,6 @@ export const stores = mysqlTable("store", {
   userId: varchar("userId", { length: 255 }).notNull(),
 });
 export type Store = InferSelectModel<typeof stores>;
-
 export const storesRelations = relations(stores, ({ many, one }) => ({
   user: one(users, {
     fields: [stores.userId],
@@ -138,7 +137,6 @@ export const products = mysqlTable("product", {
   storeId: varchar("storeId", { length: 255 }).notNull(),
 });
 export type Product = InferSelectModel<typeof products>;
-
 export const productsRelations = relations(products, ({ one, many }) => ({
   store: one(stores, {
     fields: [products.storeId],
@@ -159,7 +157,6 @@ export const cartItems = mysqlTable(
   })
 );
 export type CartItem = InferSelectModel<typeof cartItems>;
-
 export const cartItemsRelations = relations(cartItems, ({ one }) => ({
   user: one(users, {
     fields: [cartItems.userId],
@@ -183,7 +180,6 @@ export const likes = mysqlTable(
   })
 );
 export type Like = InferSelectModel<typeof likes>;
-
 export const likesRelations = relations(likes, ({ one }) => ({
   user: one(users, {
     fields: [likes.userId],
@@ -205,7 +201,6 @@ export const collections = mysqlTable("collection", {
   userId: varchar("userId", { length: 255 }).notNull(),
 });
 export type Collection = InferSelectModel<typeof collections>;
-
 export const collectionsRelations = relations(collections, ({ one, many }) => ({
   user: one(users, {
     fields: [collections.userId],
@@ -229,7 +224,6 @@ export const collectionProducts = mysqlTable(
   })
 );
 export type CollectionProduct = InferSelectModel<typeof collectionProducts>;
-
 export const collectionProductRealtions = relations(
   collectionProducts,
   ({ one }) => ({
@@ -239,3 +233,23 @@ export const collectionProductRealtions = relations(
     }),
   })
 );
+
+export const purchases = mysqlTable(
+  "purchases",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    productId: varchar("productId", { length: 255 }).notNull(),
+    cost: double("cost", { precision: 10, scale: 2 }).notNull().default(0.0),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  (purchases) => ({
+    pk: primaryKey(purchases.userId, purchases.productId),
+  })
+);
+export type Purchase = InferSelectModel<typeof purchases>;
+export const purchaseRealtions = relations(purchases, ({ one }) => ({
+  user: one(users, {
+    fields: [purchases.userId],
+    references: [users.id],
+  }),
+}));

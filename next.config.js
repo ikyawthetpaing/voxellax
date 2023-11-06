@@ -4,7 +4,12 @@ import("./env.mjs");
 
 const nextConfig = {
   images: {
-    domains: ["uploadthing.com", "utfs.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 };
 

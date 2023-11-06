@@ -41,10 +41,6 @@ export async function generateMetadata({
   return {
     title: subcategory.label,
     description: subcategory.description,
-    authors: [
-      { name: siteConfig.name, url: siteConfig.url },
-      ...siteConfig.authors,
-    ],
     openGraph: {
       title: subcategory.label,
       description: subcategory.description,

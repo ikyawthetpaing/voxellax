@@ -1,16 +1,18 @@
 "use server";
 
 import { db } from "@/db";
-import { Invoice, InvoiceProduct } from "@/types";
+import { PurchasedProduct } from "@/types";
 import cuid from "cuid";
 import { eq } from "drizzle-orm";
 
-import { users } from "@/db/schema";
+import { Product, Purchase, users } from "@/db/schema";
 
 import { getProduct } from "@/lib/actions/product";
 import { getSession } from "@/lib/session";
 import { generateSalt, hashPassword } from "@/lib/utils";
 import { UserSignUpSchema } from "@/lib/validations/auth";
+
+import { getUserPurchases } from "./purchase";
 
 export async function addUser(
   data: UserSignUpSchema
@@ -66,33 +68,20 @@ export async function approveSeller(userId: string) {
   await db.update(users).set({ role: "seller" }).where(eq(users.id, userId));
 }
 
-// dev
-export async function getUserInvoiceProducts() {
-  const devInvoices: Invoice[] = [
-    {
-      productId: "elegant-ai-generated-wall-art-printable-download-dn108sf",
-      purchasedAt: new Date("2023-09-22T02:43:30.000Z"),
-      cost: 69,
-    },
-    {
-      productId:
-        "unsplash-your-potential-unlock-creativity-inspiration-and-success-vj05b3z",
-      purchasedAt: new Date("2023-09-22T02:43:30.000Z"),
-      cost: 39,
-    },
-  ];
+export async function getUserPurchasedProducts() {
+  const userPurchases = await getUserPurchases();
 
-  const invoiceProducts: InvoiceProduct[] = [];
+  const purchasedProducts: PurchasedProduct[] = [];
 
   await Promise.all(
-    devInvoices.map(async (invoice) => {
-      const product = await getProduct(invoice.productId);
+    userPurchases.map(async (purchase) => {
+      const product = await getProduct(purchase.productId);
 
       if (product) {
-        invoiceProducts.push({ ...product, ...invoice });
+        return purchasedProducts.push({ ...product, ...purchase });
       }
     })
   );
 
-  return invoiceProducts;
+  return purchasedProducts;
 }

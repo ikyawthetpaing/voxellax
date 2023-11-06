@@ -1,7 +1,7 @@
 import { Author } from "next/dist/lib/metadata/types/metadata-types";
 import { FileWithPath } from "react-dropzone";
 
-import { Product } from "@/db/schema";
+import { Product, Purchase } from "@/db/schema";
 
 import { type Icons } from "@/components/icons";
 
@@ -11,12 +11,11 @@ export type SiteConfig = {
   description: string;
   url: string;
   ogImage: string;
-  links: {
-    twitter: string;
-    github: string;
-  };
   authors: Author[];
-  creator: string;
+  creator: {
+    name: string;
+    username: string;
+  };
   keywords: string[];
 };
 
@@ -102,13 +101,7 @@ export type QueryParam = {
   value: string | null;
 };
 
-export type Invoice = {
-  productId: string;
-  cost: number;
-  purchasedAt: Date;
-};
-
-export type InvoiceProduct = Product & Invoice;
+export type PurchasedProduct = Product & Purchase;
 
 export type PasswordCredentials = {
   hashedPassword: string;
