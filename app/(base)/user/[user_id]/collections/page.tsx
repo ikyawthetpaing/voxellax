@@ -9,21 +9,20 @@ import { Empty } from "@/components/empty";
 
 export const metadata: Metadata = {
   title: "Collections",
-  description: "View and share the collections with your friends and family.",
+  description:
+    "Discover, curate, and share collections with friends and family. Collaborate on your favorite collections and explore a world of creativity and inspiration.",
 };
 
-interface UserCollectionsPageProps {
+interface Props {
   params: {
-    userId: string;
+    user_id: string;
   };
 }
 
-export default async function UserCollectionsPage({
-  params,
-}: UserCollectionsPageProps) {
-  const collections: Collection[] = await getUserCollections(params.userId);
+export default async function UserCollectionsPage({ params }: Props) {
+  const collections: Collection[] = await getUserCollections(params.user_id);
   const session = await getSession();
-  const isCurrentUser = session?.user.id === params.userId;
+  const isCurrentUser = session?.user.id === params.user_id;
 
   if (!collections.length) {
     return <Empty icon="bookmark" message="No collections yet" />;

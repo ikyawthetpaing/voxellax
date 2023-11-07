@@ -2,11 +2,11 @@ import Link from "next/link";
 
 import { Icons } from "@/components/icons";
 
-interface AuthLayoutProps {
+interface Props {
   children: React.ReactNode;
 }
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthLayout({ children }: Props) {
   return (
     <div className="relative grid min-h-screen items-center justify-center">
       <Link

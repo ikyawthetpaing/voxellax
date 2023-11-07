@@ -17,11 +17,10 @@ import {
 } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/icons";
-import { Review } from "@/components/listing";
 import { RenderStars } from "@/components/listing/render-stars";
-
-import { Separator } from "../ui/separator";
+import { Review } from "@/app/(base)/listing/[product_id]/page";
 
 interface ProductReviewsProps extends HTMLAttributes<HTMLDivElement> {
   reviews: Review[];

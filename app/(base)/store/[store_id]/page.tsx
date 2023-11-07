@@ -9,7 +9,7 @@ import { Shell } from "@/components/shell";
 
 interface StorePageProps {
   params: {
-    storeId: string;
+    store_id: string;
   };
   searchParams: {
     [key: string]: string | string[] | undefined;
@@ -20,7 +20,7 @@ export default async function StorePage({
   params,
   searchParams,
 }: StorePageProps) {
-  const store = await getStore(params.storeId);
+  const store = await getStore(params.store_id);
 
   if (!store) {
     notFound();

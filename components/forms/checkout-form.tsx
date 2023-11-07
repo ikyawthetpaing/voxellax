@@ -10,11 +10,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CheckoutDetails } from "@/components/checkout-details";
 import { Icons } from "@/components/icons";
 
-type Fee = {
-  label: string;
-  priceLabel: string;
-};
-
 interface Props {
   products: Product[];
 }

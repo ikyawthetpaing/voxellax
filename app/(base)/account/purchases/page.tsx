@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+import { siteConfig } from "@/config/site";
+
 import { getUserPurchasedProducts } from "@/lib/actions/user";
 import {
   Table,
@@ -13,8 +15,8 @@ import { PurchaseProductTableRow } from "@/components/purchase-product-table-row
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
-  title: "Purchases",
-  description: "Manage your purchases",
+  title: "Manage Purchases",
+  description: `Effectively manage and control your purchases on ${siteConfig.name}. Easily view, track, and take action on your orders and transactions.`,
 };
 
 export default async function AccountPurchasesPage() {

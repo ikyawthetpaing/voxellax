@@ -7,8 +7,8 @@ export default withAuth(
     const token = await getToken({ req });
     const isAuth = !!token;
     const isAuthPage =
-      req.nextUrl.pathname.startsWith("/sign-in") ||
-      req.nextUrl.pathname.startsWith("/sign-up");
+      req.nextUrl.pathname.startsWith("/login") ||
+      req.nextUrl.pathname.startsWith("/register");
 
     if (isAuthPage) {
       if (isAuth) {
@@ -25,7 +25,7 @@ export default withAuth(
       }
 
       return NextResponse.redirect(
-        new URL(`/sign-in?from=${encodeURIComponent(from)}`, req.url)
+        new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
       );
     }
   },
@@ -42,5 +42,12 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/sign-in", "/sign-up"],
+  matcher: [
+    "/dashboard/:path*",
+    "/login",
+    "/register",
+    "/account/:path*",
+    "/seller/apply",
+    "/seller/new-store",
+  ],
 };

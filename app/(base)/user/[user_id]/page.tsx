@@ -5,14 +5,14 @@ import { getProduct } from "@/lib/actions/product";
 import { Empty } from "@/components/empty";
 import { ProductsList } from "@/components/product/products-list";
 
-interface UserLikesPageProps {
+interface Props {
   params: {
-    userId: string;
+    user_id: string;
   };
 }
 
-export default async function UserLikesPage({ params }: UserLikesPageProps) {
-  const userId = params.userId;
+export default async function UserLikesPage({ params }: Props) {
+  const userId = params.user_id;
 
   const userLikes = await getUserLikes(userId);
   const userLikedProducts: Product[] = [];

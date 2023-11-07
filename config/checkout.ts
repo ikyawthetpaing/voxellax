@@ -2,7 +2,11 @@ import { IconType } from "@/types";
 
 import { formatPrice } from "@/lib/utils";
 
-type CheckoutType = "credit_card" | "paypal" | "gpay";
+enum CheckoutType {
+  CreditCard = "CreditCard",
+  PayPal = "PayPal",
+  GPay = "GPay",
+}
 type CheckoutOptionType = {
   type: CheckoutType;
   icons: IconType[];
@@ -12,18 +16,18 @@ type Fee = {
   priceLabel: string;
 };
 
-export const defaultCheckoutType: CheckoutType = "paypal";
+export const defaultCheckoutType: CheckoutType = CheckoutType.PayPal;
 export const checkoutOptions: CheckoutOptionType[] = [
   {
-    type: "credit_card",
+    type: CheckoutType.CreditCard,
     icons: ["visa", "master"],
   },
   {
-    type: "paypal",
+    type: CheckoutType.PayPal,
     icons: ["paypal"],
   },
   {
-    type: "gpay",
+    type: CheckoutType.GPay,
     icons: ["gpay"],
   },
 ];
@@ -57,7 +61,7 @@ export function getCalculatedFees({
     },
   ];
 
-  const totalPrice = subTotal + PLATFORM_FEE + SHIPPING_FEE;
+  const totalPrice = subTotal + PLATFORM_FEE * itemCount + SHIPPING_FEE;
 
   return { totalPrice, fees };
 }

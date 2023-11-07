@@ -24,6 +24,7 @@ import { CheckoutDialog } from "@/components/dialogs/checkout-dialog";
 import { Icons } from "@/components/icons";
 import { UpdateCart } from "@/components/update-cart";
 
+import { CartItemProducts } from "../cart-item-products";
 import { ProductImage } from "../product/product-image";
 
 export function CartSheet() {
@@ -87,35 +88,7 @@ export function CartSheet() {
         {itemCount > 0 ? (
           <>
             <ScrollArea className="h-full px-6">
-              <div className="flex flex-1 flex-col gap-4 overflow-hidden py-6">
-                {cartProducts.map(
-                  ({ id, name, category, images, price }, index) => {
-                    const thumbnail = getProductThumbnailImage(images);
-
-                    return (
-                      <div key={index} className="space-y-4">
-                        <div className="flex items-center space-x-4">
-                          <ProductImage
-                            image={thumbnail}
-                            className="w-24 rounded-lg border"
-                          />
-                          <div className="flex flex-1 flex-col gap-1 self-start text-sm">
-                            <span className="line-clamp-1">{name}</span>
-                            <span className="line-clamp-1 text-muted-foreground">
-                              {formatPrice(price, 2)}
-                            </span>
-                            <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                              {`${category}`}
-                            </span>
-                          </div>
-                          <UpdateCart productId={id} />
-                        </div>
-                        <Separator />
-                      </div>
-                    );
-                  }
-                )}
-              </div>
+              <CartItemProducts cartProducts={cartProducts} className="py-6" />
             </ScrollArea>
             <div className="bottom-0 grid w-full gap-1.5 border-t p-6">
               <CheckoutDetails itemCount={itemCount} subTotal={subTotal} />

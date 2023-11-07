@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     "Discover a vast library of digital assets and design resources to fuel your creativity.",
 };
 
-interface SearchPageProps {
+interface Props {
   searchParams: {
     [key: string]: string | string[] | undefined;
   };
 }
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
+export default async function SearchPage({ searchParams }: Props) {
   const {
     page,
     per_page,

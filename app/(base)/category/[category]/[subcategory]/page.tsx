@@ -11,23 +11,18 @@ import { Heading } from "@/components/heading";
 import { ProductsListWithFilter } from "@/components/product/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
-interface SubcategoryPageProps {
+interface Props {
   params: {
-    categorySlug: string;
-    subcategorySlug: string;
+    category: string;
+    subcategory: string;
   };
   searchParams: {
     [key: string]: string | string[] | undefined;
   };
 }
 
-export async function generateMetadata({
-  params,
-}: SubcategoryPageProps): Promise<Metadata> {
-  const subcategory = getSubcategory(
-    params.categorySlug,
-    params.subcategorySlug
-  );
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const subcategory = getSubcategory(params.category, params.subcategory);
 
   if (!subcategory) {
     return {};
@@ -45,7 +40,7 @@ export async function generateMetadata({
       title: subcategory.label,
       description: subcategory.description,
       type: "website",
-      url: absoluteUrl(`/category/${params.categorySlug}/${subcategory.value}`),
+      url: absoluteUrl(`/category/${params.category}/${subcategory.value}`),
       images: [
         {
           url: ogUrl.toString(),
@@ -64,14 +59,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function SubcategoryPage({
-  params,
-  searchParams,
-}: SubcategoryPageProps) {
-  const subcategory = getSubcategory(
-    params.categorySlug,
-    params.subcategorySlug
-  );
+export default async function SubcategoryPage({ params, searchParams }: Props) {
+  const subcategory = getSubcategory(params.category, params.subcategory);
 
   if (!subcategory) {
     notFound();
@@ -88,8 +77,8 @@ export default async function SubcategoryPage({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,
-    categories: params.categorySlug,
-    subcategories: params.subcategorySlug,
+    categories: params.category,
+    subcategories: params.subcategory,
     price_range: typeof price_range === "string" ? price_range : null,
   });
 

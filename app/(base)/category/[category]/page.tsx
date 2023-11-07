@@ -12,19 +12,17 @@ import { Heading } from "@/components/heading";
 import { ProductsListWithFilter } from "@/components/product/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
-interface CategoryPageProps {
+interface Props {
   params: {
-    categorySlug: string;
+    category: string;
   };
   searchParams: {
     [key: string]: string | string[] | undefined;
   };
 }
 
-export async function generateMetadata({
-  params,
-}: CategoryPageProps): Promise<Metadata> {
-  const category = getCategory(params.categorySlug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const category = getCategory(params.category);
 
   if (!category) {
     return {};
@@ -61,11 +59,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({
-  params,
-  searchParams,
-}: CategoryPageProps) {
-  const category = getCategory(params.categorySlug);
+export default async function CategoryPage({ params, searchParams }: Props) {
+  const category = getCategory(params.category);
 
   if (!category) {
     notFound();

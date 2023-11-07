@@ -14,10 +14,17 @@ import { Heading } from "@/components/heading";
 import { Icons } from "@/components/icons";
 import { Tabs } from "@/components/tabs";
 
+interface StoreLayoutPageProps {
+  params: {
+    store_id: string;
+  };
+  children: React.ReactNode;
+}
+
 export async function generateMetadata({
   params,
 }: StoreLayoutPageProps): Promise<Metadata> {
-  const store = await getStore(params.storeId);
+  const store = await getStore(params.store_id);
 
   if (!store) {
     return {};
@@ -64,18 +71,11 @@ export async function generateMetadata({
   };
 }
 
-interface StoreLayoutPageProps {
-  params: {
-    storeId: string;
-  };
-  children: React.ReactNode;
-}
-
 export default async function StoreLayoutPage({
   params,
   children,
 }: StoreLayoutPageProps) {
-  const store = await getStore(params.storeId);
+  const store = await getStore(params.store_id);
 
   if (!store) {
     notFound();
@@ -144,7 +144,7 @@ export default async function StoreLayoutPage({
       </div>
       <div className="container mt-6">
         <Tabs
-          items={navItems}
+          navItems={navItems}
           style={{
             gridTemplateColumns: `repeat(${navItemsLength}, minmax(0, 1fr))`,
           }}

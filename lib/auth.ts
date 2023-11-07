@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
   },
   secret: env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/sign-in",
+    signIn: "/login",
   },
   providers: [
     GoogleProvider({

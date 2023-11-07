@@ -10,17 +10,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Shell } from "@/components/shell";
 import { Tabs } from "@/components/tabs";
 
-interface UserProfileLayoutProps {
+interface Props {
   children: React.ReactNode;
   params: {
-    userId: string;
+    user_id: string;
   };
 }
 
-export async function generateMetadata({
-  params,
-}: UserProfileLayoutProps): Promise<Metadata> {
-  const user = await getUser(params.userId);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const user = await getUser(params.user_id);
 
   if (!user) {
     return {};
@@ -64,11 +62,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function UserProfileLayout({
-  children,
-  params,
-}: UserProfileLayoutProps) {
-  const user = await getUser(params.userId);
+export default async function UserProfileLayout({ children, params }: Props) {
+  const user = await getUser(params.user_id);
 
   if (!user) {
     notFound();
@@ -91,7 +86,7 @@ export default async function UserProfileLayout({
       </div>
       <div className="flex justify-center">
         <Tabs
-          items={navItems}
+          navItems={navItems}
           style={{
             gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))`,
           }}

@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+import { siteConfig } from "@/config/site";
+
 import {
   Card,
   CardContent,
@@ -14,7 +16,7 @@ import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Track your store analytics",
+  description: `Explore comprehensive store analytics on ${siteConfig.name}'s dashboard to make informed decisions and optimize your store.`,
 };
 
 export default function DashboardOverviewPage() {

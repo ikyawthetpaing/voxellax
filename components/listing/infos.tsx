@@ -144,8 +144,8 @@ export async function Infos({
               <div className="flex gap-4">
                 <Avatar className="h-16 w-16 cursor-pointer">
                   <AvatarImage
-                    src={seller.image?.toString()}
-                    alt={seller.name?.toString()}
+                    src={seller.image || ""}
+                    alt={seller.name || ""}
                   />
                   <AvatarFallback>{seller.name?.charAt(0)}</AvatarFallback>
                 </Avatar>

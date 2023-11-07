@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
+import { siteConfig } from "@/config/site";
+
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/heading";
@@ -8,7 +10,7 @@ import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Become a Seller",
-  description: "Become a seller on Voxellax.",
+  description: `Join ${siteConfig.name}'s seller program and start selling your products online. Grow your business and reach a wider audience.`,
 };
 
 export default function SellOnVoxellaxPage() {

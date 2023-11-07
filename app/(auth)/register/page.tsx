@@ -16,7 +16,7 @@ import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Sign Up",
-  description: "Create an account to make purchases and for more features.",
+  description: `Join ${siteConfig.name} today to create an account, make purchases, and access a world of exclusive features and benefits.`,
 };
 
 export default function SignUpPage() {
@@ -38,7 +38,7 @@ export default function SignUpPage() {
           <div className="text-sm text-muted-foreground">
             <span className="mr-1">Have an account?</span>
             <Link
-              href="/sign-in"
+              href="/login"
               className="text-muted-foreground underline-offset-4 transition-colors hover:underline"
             >
               Login

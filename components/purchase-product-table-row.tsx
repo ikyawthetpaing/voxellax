@@ -4,13 +4,15 @@ import Link from "next/link";
 import { PurchasedProduct } from "@/types";
 
 import {
+  cn,
   downloadProductFiles,
   formatDate,
   formatPrice,
   getProductThumbnailImage,
 } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { Badge, badgeVariants } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { AddReviewDialog } from "@/components/dialogs/add-review-dialog";
 import { ProductImage } from "@/components/product/product-image";
 
 export function PurchaseProductTableRow({
@@ -42,21 +44,30 @@ export function PurchaseProductTableRow({
       <TableCell>{formatPrice(cost)}</TableCell>
       <TableCell>{formatDate(createdAt)}</TableCell>
       <TableCell>
-        <Badge className="w-max cursor-pointer" variant="secondary">
-          Add Review
-        </Badge>
+        <AddReviewDialog
+          trigger={
+            <div
+              className={cn(
+                badgeVariants({ variant: "outline" }),
+                "w-max cursor-pointer"
+              )}
+            >
+              Add Review
+            </div>
+          }
+        />
       </TableCell>
       <TableCell>
         <Badge
           className="w-max cursor-pointer"
-          variant="secondary"
+          variant="outline"
           onClick={() => downloadProductFiles(files)}
         >
           Download
         </Badge>
       </TableCell>
       <TableCell>
-        <Badge className="w-max cursor-pointer" variant="secondary">
+        <Badge className="w-max cursor-pointer" variant="outline">
           Download
         </Badge>
       </TableCell>

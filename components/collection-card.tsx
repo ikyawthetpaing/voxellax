@@ -80,31 +80,3 @@ export async function CollectionCard({ collection }: CollectionCardProps) {
     </Link>
   );
 }
-
-export function CollectionCardSkeleton() {
-  return (
-    <div className="grid gap-3">
-      <div className="overflow-hidden rounded-lg">
-        <AspectRatio ratio={4.5 / 3}>
-          <Skeleton className="h-full w-full" />
-        </AspectRatio>
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="overflow-hidden rounded-lg">
-          <AspectRatio ratio={4.5 / 3}>
-            <Skeleton className="h-full w-full" />
-          </AspectRatio>
-        </div>
-        <div className="overflow-hidden rounded-lg">
-          <AspectRatio ratio={4.5 / 3}>
-            <Skeleton className="h-full w-full" />
-          </AspectRatio>
-        </div>
-      </div>
-      <div className="flex justify-between">
-        <Skeleton className="h-5 w-1/4" />
-        <Skeleton className="h-5 w-1/4" />
-      </div>
-    </div>
-  );
-}

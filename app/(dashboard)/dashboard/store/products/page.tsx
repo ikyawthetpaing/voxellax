@@ -5,8 +5,6 @@ import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm";
 
 import { Product, products } from "@/db/schema";
 
-import { env } from "@/env.mjs";
-
 import { getProduct } from "@/lib/actions/product";
 import { getCurrentUserStore } from "@/lib/actions/store";
 import { ProductsTable } from "@/components/dashboard/products-table";
@@ -14,8 +12,8 @@ import { UpdateProductFormSheet } from "@/components/sheets/update-product-form-
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
-  title: "Products",
-  description: "Manage your products",
+  title: "Product Management",
+  description: `Effortlessly manage and organize your products with the Product Management system. Streamline your product catalog and enhance customer experience.`,
 };
 
 interface ProductsPageProps {

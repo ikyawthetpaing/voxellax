@@ -16,8 +16,7 @@ import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description:
-    "Sign In to your account to make purchases and for more features.",
+  description: `Sign in to your account on ${siteConfig.name} to access exclusive features, make purchases, and enjoy a personalized experience.`,
 };
 
 export default function SignInPage() {
@@ -39,7 +38,7 @@ export default function SignInPage() {
           <div className="text-sm text-muted-foreground">
             <span className="mr-1">Don&apos;t have an account?</span>
             <Link
-              href="sign-up"
+              href="/register"
               className="text-muted-foreground underline-offset-4 transition-colors hover:underline"
             >
               Sign up

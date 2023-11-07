@@ -19,16 +19,14 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Icons } from "@/components/icons";
 import { ProductsList } from "@/components/product/products-list";
 
-interface UserCollectionPageProps {
+interface Props {
   params: {
-    collectionId: string;
+    collection_id: string;
   };
 }
 
-export async function generateMetadata({
-  params,
-}: UserCollectionPageProps): Promise<Metadata> {
-  const collection = await getCollection(params.collectionId);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const collection = await getCollection(params.collection_id);
   if (!collection) {
     return {};
   }
@@ -40,7 +38,7 @@ export async function generateMetadata({
 
   const userName = user.name ?? "Unknown";
   const title = `${user.name}'s ${collection.name} collection`;
-  const description = `Check out ${collection.name} collection by ${user.name}.`;
+  const description = `Explore ${user.name}'s exclusive ${collection.name} collection. Find high-quality ${collection.name} products and more in ${user.name}'s online store.`;
 
   const thumbnails = await getCollectionThumbnails(collection.id, 1);
   const ogImage = thumbnails.length ? thumbnails[0].url : siteConfig.ogImage;
@@ -77,10 +75,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function UserCollectionPage({
-  params,
-}: UserCollectionPageProps) {
-  const collection = await getCollection(params.collectionId);
+export default async function UserCollectionPage({ params }: Props) {
+  const collection = await getCollection(params.collection_id);
 
   if (!collection) {
     notFound();
