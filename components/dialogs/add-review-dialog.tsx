@@ -1,5 +1,11 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
+
+import { addReview } from "@/lib/actions/review";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,14 +14,49 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { AddReviewForm } from "../forms/add-review-form";
+import { ReviewForm } from "@/components/forms/review-form";
+import { LoadingButton } from "@/components/loading-button";
 
 interface Props {
+  productId: string;
   trigger: React.ReactNode;
 }
 
-export function AddReviewDialog({ trigger }: Props) {
+export function AddReviewDialog({ trigger, productId }: Props) {
+  const [review, setReview] = useState<{
+    rate: number | null;
+    message: string | null;
+  }>({
+    rate: null,
+    message: null,
+  });
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = () => {
+    startTransition(async () => {
+      if (review.rate) {
+        try {
+          const res = await addReview({
+            productId: productId,
+            rate: review.rate,
+            message: review.message,
+          });
+
+          if (res.ok) {
+            toast.success("Review has been added successfully!");
+          } else {
+            toast.error("Failed to add the review. Please try again later.");
+          }
+        } catch (error) {
+          console.error("Error adding review:", error);
+          toast.error(
+            "An error occurred while adding the review. Please try again later."
+          );
+        }
+      }
+    });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -27,12 +68,18 @@ export function AddReviewDialog({ trigger }: Props) {
             helps others make informed decisions.
           </DialogDescription>
         </DialogHeader>
-        <AddReviewForm />
+        <ReviewForm review={review} setReview={setReview} />
         <div className="grid grid-cols-2 gap-6">
           <DialogTrigger className={cn(buttonVariants({ variant: "outline" }))}>
             Cancel
           </DialogTrigger>
-          <Button type="submit">Add Review</Button>
+          <LoadingButton
+            isLoading={isPending}
+            onClick={handleSubmit}
+            disabled={!review.rate || isPending}
+          >
+            Add Review
+          </LoadingButton>
         </div>
       </DialogContent>
     </Dialog>

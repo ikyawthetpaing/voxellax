@@ -1,14 +1,10 @@
-"use client";
-
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes } from "react";
 import Link from "next/link";
-import { toast } from "sonner";
 
 import { Product } from "@/db/schema";
 
-import { addPurchase, getPurchase } from "@/lib/actions/purchase";
-import { downloadProductFiles, formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn, formatPrice } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { CheckoutDialog } from "@/components/dialogs/checkout-dialog";
 import { RenderStars } from "@/components/listing/render-stars";
+import { ProductFilesDownloadButton } from "@/components/product-files-download-button";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
 
 interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -34,40 +31,6 @@ export function DetailsCard({
   className,
   ...props
 }: DetailsCardProps) {
-  const [purchased, setPurchased] = useState(false);
-
-  useEffect(() => {
-    const fetchPurchaseStatus = async () => {
-      try {
-        const value = await getPurchase({ productId: product.id });
-        setPurchased(!!value);
-      } catch (error) {
-        console.error("Error fetching purchase status:", error);
-      }
-    };
-
-    fetchPurchaseStatus();
-  }, [product.id]);
-
-  const onClickDownload = async () => {
-    await downloadProductFiles(product.files);
-
-    if (!purchased) {
-      try {
-        await addPurchase({
-          cost: product.price,
-          productId: product.id,
-        });
-        setPurchased(true);
-      } catch (error) {
-        toast.error(
-          "Oops! We encountered an issue while processing your purchase. Please try again later or contact support for assistance."
-        );
-        console.error("Error purchasing the product:", error);
-      }
-    }
-  };
-
   return (
     <div className={className} {...props}>
       <Card className="w-full">
@@ -79,17 +42,15 @@ export function DetailsCard({
           <CardDescription>VAT Included</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {totalReviews !== 0 && (
-            <div className="flex justify-between">
-              <h1 className="text-sm font-semibold">Reviews</h1>
-              <div className="flex items-center gap-2">
-                <RenderStars size={3} averageRate={averageRate} />
-                <p className="text-xs">
-                  {totalReviews} {totalReviews > 1 ? "Reviews" : "Review"}
-                </p>
-              </div>
+          <div className="flex justify-between">
+            <h1 className="text-sm font-semibold">Reviews</h1>
+            <div className="flex items-center gap-2">
+              <RenderStars size={3} averageRate={averageRate} />
+              <p className="text-xs">
+                {totalReviews} {totalReviews > 1 ? "Reviews" : "Review"}
+              </p>
             </div>
-          )}
+          </div>
           <div className="flex min-w-0 items-center justify-between gap-3">
             <h1 className="text-sm font-semibold">Category</h1>
             <div className="truncate text-xs capitalize">
@@ -112,11 +73,16 @@ export function DetailsCard({
         </CardContent>
         <CardFooter className="grid gap-3">
           <AddToCartButton
+            productPrice={product.price}
             productId={product.id}
-            disabled={product.price === 0 || purchased}
           />
           {!product.price ? (
-            <Button onClick={onClickDownload}>Download now</Button>
+            <ProductFilesDownloadButton
+              files={product.files}
+              className={cn(buttonVariants())}
+            >
+              Download now
+            </ProductFilesDownloadButton>
           ) : (
             <CheckoutDialog
               products={[product]}

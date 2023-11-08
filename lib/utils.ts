@@ -183,9 +183,9 @@ export async function downloadProductFiles(
         });
     });
   };
+
   if (files && files.length > 0) {
     const downloadPromises = files.map((file) => saveFile(file.url, file.name));
-
     await Promise.all(downloadPromises);
   }
 }

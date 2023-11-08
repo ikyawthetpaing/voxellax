@@ -1,18 +1,14 @@
 "use server";
 
 import { db } from "@/db";
-import { PurchasedProduct } from "@/types";
 import cuid from "cuid";
 import { eq } from "drizzle-orm";
 
-import { Product, Purchase, users } from "@/db/schema";
+import { users } from "@/db/schema";
 
-import { getProduct } from "@/lib/actions/product";
 import { getSession } from "@/lib/session";
 import { generateSalt, hashPassword } from "@/lib/utils";
 import { UserSignUpSchema } from "@/lib/validations/auth";
-
-import { getUserPurchases } from "./purchase";
 
 export async function addUser(
   data: UserSignUpSchema
@@ -66,22 +62,4 @@ export async function getCurrentUser() {
 
 export async function approveSeller(userId: string) {
   await db.update(users).set({ role: "seller" }).where(eq(users.id, userId));
-}
-
-export async function getUserPurchasedProducts() {
-  const userPurchases = await getUserPurchases();
-
-  const purchasedProducts: PurchasedProduct[] = [];
-
-  await Promise.all(
-    userPurchases.map(async (purchase) => {
-      const product = await getProduct(purchase.productId);
-
-      if (product) {
-        return purchasedProducts.push({ ...product, ...purchase });
-      }
-    })
-  );
-
-  return purchasedProducts;
 }

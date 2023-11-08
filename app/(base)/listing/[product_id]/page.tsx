@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { siteConfig } from "@/config/site";
 
 import { getProduct } from "@/lib/actions/product";
+import { getReviews } from "@/lib/actions/review";
 import { getStore } from "@/lib/actions/store";
 import { getUser } from "@/lib/actions/user";
 import { absoluteUrl, getProductThumbnailImage } from "@/lib/utils";
@@ -17,48 +18,6 @@ import { Infos } from "@/components/listing/infos";
 import { Reviews } from "@/components/listing/reviews";
 import { StoreRelatedProducts } from "@/components/listing/store-related-products";
 import { Shell } from "@/components/shell";
-
-// below still in development
-export type Review = {
-  message: string;
-  rate: 1 | 2 | 3 | 4 | 5;
-  name: string;
-  createdAt: Date;
-};
-
-const reviews: Review[] = [
-  {
-    message: "Great product!",
-    rate: 5,
-    name: "John Doe",
-    createdAt: new Date("2023-09-29T10:00:00Z"),
-  },
-  {
-    message: "Good quality.",
-    rate: 4,
-    name: "Jane Smith",
-    createdAt: new Date("2023-09-29T09:30:00Z"),
-  },
-  {
-    message: "Could be better.",
-    rate: 3,
-    name: "Alice Johnson",
-    createdAt: new Date("2023-09-28T15:45:00Z"),
-  },
-  {
-    message: "Not satisfied.",
-    rate: 2,
-    name: "Bob Brown",
-    createdAt: new Date("2023-09-28T14:20:00Z"),
-  },
-  {
-    message: "Terrible experience!",
-    rate: 1,
-    name: "Eve Wilson",
-    createdAt: new Date("2023-09-27T20:15:00Z"),
-  },
-];
-// above still in development
 
 interface ProductPageProps {
   params: {
@@ -125,7 +84,7 @@ export default async function ListingPage({ params }: ProductPageProps) {
 
   if (!store || !seller) return null;
 
-  // dev
+  const reviews = await getReviews(product.id);
   const totalRates = reviews.reduce((sum, review) => sum + review.rate, 0);
   const averageRate = totalRates / reviews.length;
 
@@ -134,6 +93,7 @@ export default async function ListingPage({ params }: ProductPageProps) {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           <Heading className="line-clamp-2">{product.name}</Heading>
+          <p className="sr-only">{product.description}</p>
           <Link href={`/store/${store.id}`}>
             <div className="flex items-center gap-2">
               <Avatar className="h-6 w-6">

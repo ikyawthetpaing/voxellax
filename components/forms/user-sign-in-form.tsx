@@ -1,7 +1,7 @@
 "use client";
 
 import { HTMLAttributes, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ interface UserSignInFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const {
     register,
@@ -51,10 +52,17 @@ export function UserSignInForm({ className, ...props }: UserSignInFormProps) {
         callbackUrl: searchParams?.get("from") || "/",
         email: data.email,
         password: data.password,
+        redirect: false,
       });
 
-      if (res && !res.ok) {
-        toast.error("Email or password does not match");
+      console.log(res);
+
+      if (res) {
+        if (res.ok) {
+          router.refresh();
+        } else {
+          toast.error("Email or password does not match");
+        }
       }
     } catch (err) {
       catchError(err);

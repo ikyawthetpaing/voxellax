@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 
 import { toggleCartItem } from "@/lib/actions/cart";
+import { getCurrentUserPurchase } from "@/lib/actions/purchase";
 import { catchError, cn } from "@/lib/utils";
 import { useUserCartItems } from "@/context/user-cart-items";
 import { Button, ButtonProps } from "@/components/ui/button";
@@ -10,23 +11,34 @@ import { Icons } from "@/components/icons";
 
 interface AddToCartButtonProps extends ButtonProps {
   productId: string;
+  productPrice: number;
   layout?: "icon" | "default";
 }
 
 export function AddToCartButton({
   productId,
+  productPrice,
   layout = "default",
   className,
   ...props
 }: AddToCartButtonProps) {
   const [isAdded, setIsAdded] = useState(false);
+  const [isPurchased, setIsPurchased] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { data, setRefresh } = useUserCartItems();
+
+  const disabled = isPending || isPurchased || productPrice === 0;
 
   useEffect(() => {
     const item = data.find((item) => item.productId === productId);
     setIsAdded(!!item);
   }, [data, productId]);
+
+  useEffect(() => {
+    getCurrentUserPurchase({ productId: productId }).then((value) =>
+      setIsPurchased(!!value)
+    );
+  }, [productId]);
 
   async function handleOnClick() {
     startTransition(async () => {
@@ -46,7 +58,7 @@ export function AddToCartButton({
       className={cn("gap-2", className, { "rounded-full": layout === "icon" })}
       aria-label="Add to cart"
       onClick={handleOnClick}
-      disabled={isPending}
+      disabled={disabled}
       {...props}
     >
       {isPending ? (

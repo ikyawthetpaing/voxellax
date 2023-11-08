@@ -29,10 +29,11 @@ CREATE TABLE `collection-product` (
 --> statement-breakpoint
 CREATE TABLE `collection` (
 	`id` varchar(255) NOT NULL,
+	`userId` varchar(255) NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`privacy` enum('public','private','unlisted') NOT NULL DEFAULT 'private',
+	`items` json,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
-	`userId` varchar(255) NOT NULL,
 	CONSTRAINT `collection_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
@@ -50,11 +51,28 @@ CREATE TABLE `product` (
 	`price` double(10,2) NOT NULL DEFAULT 0,
 	`category` varchar(255) NOT NULL,
 	`subcategory` varchar(255),
-	`images` json DEFAULT ('[]'),
-	`files` json DEFAULT ('[]'),
+	`images` json,
+	`files` json,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`storeId` varchar(255) NOT NULL,
 	CONSTRAINT `product_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `purchases` (
+	`userId` varchar(255) NOT NULL,
+	`productId` varchar(255) NOT NULL,
+	`cost` double(10,2) NOT NULL DEFAULT 0,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `purchases_productId_userId` PRIMARY KEY(`productId`,`userId`)
+);
+--> statement-breakpoint
+CREATE TABLE `reviews` (
+	`userId` varchar(255) NOT NULL,
+	`productId` varchar(255) NOT NULL,
+	`rate` int NOT NULL,
+	`message` varchar(255),
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `reviews_productId_userId` PRIMARY KEY(`productId`,`userId`)
 );
 --> statement-breakpoint
 CREATE TABLE `session` (

@@ -9,27 +9,6 @@ import { cartItems } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";
 
-// export async function isUserAddedCartItem(productId: string) {
-//   try {
-//     const session = await getSession();
-//     if (!session) {
-//       return false;
-//     }
-
-//     const addedCartItem = await db.query.cartItems.findFirst({
-//       where: and(
-//         eq(cartItems.userId, session.user.id),
-//         eq(cartItems.productId, productId)
-//       ),
-//     });
-
-//     return !!addedCartItem;
-//   } catch (err) {
-//     console.error(err);
-//     throw err;
-//   }
-// }
-
 async function getUserCartItems(userId: string) {
   const userCartItems = await db.query.cartItems.findMany({
     where: eq(cartItems.userId, userId),
@@ -41,13 +20,9 @@ async function getUserCartItems(userId: string) {
 export async function getCurrentUserCartItems() {
   try {
     const session = await getSession();
-    if (!session) {
-      return [];
-    }
+    if (!session) return [];
 
-    const currentUserCartItems = await getUserCartItems(session.user.id);
-
-    return currentUserCartItems;
+    return await getUserCartItems(session.user.id);
   } catch (error) {
     console.error(error);
     throw error;

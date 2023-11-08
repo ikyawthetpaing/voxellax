@@ -7,8 +7,8 @@ import { Purchase, purchases } from "@/db/schema";
 
 import { getSession } from "@/lib/session";
 
-export async function getPurchase(
-  input: Omit<Purchase, "createdAt" | "cost" | "userId">
+export async function getCurrentUserPurchase(
+  input: Pick<Purchase, "productId">
 ) {
   const session = await getSession();
   if (!session) return null;
@@ -23,7 +23,7 @@ export async function getPurchase(
   return purchase || null;
 }
 
-export async function getUserPurchases() {
+export async function getCurrentUserPurchases() {
   const session = await getSession();
   if (!session) return [];
 
@@ -34,15 +34,8 @@ export async function getUserPurchases() {
   return purchase;
 }
 
-export async function addPurchase(
-  input: Omit<Purchase, "createdAt" | "userId">
-) {
+export async function addPurchase(input: Pick<Purchase, "productId" | "cost">) {
   const session = await getSession();
   if (!session) return;
-
-  const existingPurchase = await getPurchase({ productId: input.productId });
-
-  if (!existingPurchase) {
-    await db.insert(purchases).values({ ...input, userId: session.user.id });
-  }
+  await db.insert(purchases).values({ ...input, userId: session.user.id });
 }

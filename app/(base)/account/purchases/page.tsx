@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 import { siteConfig } from "@/config/site";
 
-import { getUserPurchasedProducts } from "@/lib/actions/user";
+import { getCurrentUserPurchases } from "@/lib/actions/purchase";
 import {
   Table,
   TableBody,
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AccountPurchasesPage() {
-  const purchasedProducts = await getUserPurchasedProducts();
+  const purchases = await getCurrentUserPurchases();
 
   return (
     <Shell>
@@ -40,11 +40,8 @@ export default async function AccountPurchasesPage() {
             </TableRow>
           </TableHeader>
           <TableBody className="font-light">
-            {purchasedProducts.map((invoiceProduct, index) => (
-              <PurchaseProductTableRow
-                key={index}
-                purchasedProduct={invoiceProduct}
-              />
+            {purchases.map((purchase, index) => (
+              <PurchaseProductTableRow key={index} purchase={purchase} />
             ))}
           </TableBody>
         </Table>

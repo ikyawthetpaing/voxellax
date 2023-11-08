@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -32,7 +33,9 @@ export default function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 p-0">
-          <UserSignInForm />
+          <Suspense>
+            <UserSignInForm />
+          </Suspense>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2 p-0">
           <div className="text-sm text-muted-foreground">

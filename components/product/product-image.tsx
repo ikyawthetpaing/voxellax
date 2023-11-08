@@ -29,7 +29,7 @@ export function ProductImage({ image, className, ...props }: Props) {
                 : "scale-100 blur-0 grayscale-0"
             )}
             onLoad={() => setLoading(false)}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 0px) 100vw"
             priority
           />
         ) : (

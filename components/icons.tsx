@@ -18,6 +18,7 @@ import {
   CreditCard,
   Crop,
   DollarSign,
+  Download,
   Eye,
   EyeOff,
   Facebook,
@@ -124,6 +125,7 @@ export const Icons = {
   package: Package,
   penLine: PenLine,
   undo: Undo,
+  download: Download,
   voxellax: ({ ...props }: LucideProps) => {
     const id = getUniqueId();
     return (

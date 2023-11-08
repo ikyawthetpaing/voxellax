@@ -101,9 +101,18 @@ export type QueryParam = {
   value: string | null;
 };
 
-export type PurchasedProduct = Product & Purchase;
-
 export type PasswordCredentials = {
   hashedPassword: string;
   salt: string;
+};
+
+export type ErrorResponse = {
+  error?: string;
+  ok: boolean;
+  statusCode: number;
+};
+
+export type EditReview = {
+  rate: number | null;
+  message: string | null;
 };

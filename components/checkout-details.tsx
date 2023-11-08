@@ -1,8 +1,7 @@
 import { getCalculatedFees } from "@/config/checkout";
 
 import { formatPrice } from "@/lib/utils";
-
-import { Separator } from "./ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 interface Props {
   itemCount: number;

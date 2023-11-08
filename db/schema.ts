@@ -48,6 +48,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   likes: many(likes),
   collections: many(collections),
   purchases: many(purchases),
+  reviews: many(reviews),
 }));
 
 export const accounts = mysqlTable(
@@ -131,8 +132,8 @@ export const products = mysqlTable("product", {
   price: double("price", { precision: 10, scale: 2 }).notNull().default(0.0),
   category: varchar("category", { length: 255 }).notNull(),
   subcategory: varchar("subcategory", { length: 255 }),
-  images: json("images").$type<ProductImageUploadedFile[]>().default([]),
-  files: json("files").$type<UploadedFile[]>().default([]),
+  images: json("images").$type<ProductImageUploadedFile[]>(),
+  files: json("files").$type<UploadedFile[]>(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   storeId: varchar("storeId", { length: 255 }).notNull(),
 });
@@ -143,6 +144,8 @@ export const productsRelations = relations(products, ({ one, many }) => ({
     references: [stores.id],
   }),
   cartItems: many(cartItems),
+  purchases: many(purchases),
+  likes: many(likes),
 }));
 
 export const cartItems = mysqlTable(
@@ -193,12 +196,13 @@ export const likesRelations = relations(likes, ({ one }) => ({
 
 export const collections = mysqlTable("collection", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  userId: varchar("userId", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   privacy: mysqlEnum("privacy", ["public", "private", "unlisted"])
     .default("private")
     .notNull(),
+  // items: json("items").$type<string[]>().default([]),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  userId: varchar("userId", { length: 255 }).notNull(),
 });
 export type Collection = InferSelectModel<typeof collections>;
 export const collectionsRelations = relations(collections, ({ one, many }) => ({
@@ -251,5 +255,34 @@ export const purchaseRealtions = relations(purchases, ({ one }) => ({
   user: one(users, {
     fields: [purchases.userId],
     references: [users.id],
+  }),
+  product: one(products, {
+    fields: [purchases.productId],
+    references: [products.id],
+  }),
+}));
+
+export const reviews = mysqlTable(
+  "reviews",
+  {
+    userId: varchar("userId", { length: 255 }).notNull(),
+    productId: varchar("productId", { length: 255 }).notNull(),
+    rate: int("rate").notNull(),
+    message: varchar("message", { length: 255 }),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  (reviews) => ({
+    pk: primaryKey(reviews.userId, reviews.productId),
+  })
+);
+export type Review = InferSelectModel<typeof reviews>;
+export const reviewRealtions = relations(reviews, ({ one }) => ({
+  user: one(users, {
+    fields: [reviews.userId],
+    references: [users.id],
+  }),
+  product: one(products, {
+    fields: [reviews.productId],
+    references: [products.id],
   }),
 }));

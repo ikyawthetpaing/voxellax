@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "0b12b2bd-8994-4aec-b90f-f0bd76abf582",
-  "prevId": "c5473cf4-bfea-4c80-9253-d03e7891e21c",
+  "id": "9d33f1b5-3d9c-40d7-a8a5-09f0a095b335",
+  "prevId": "0b12b2bd-8994-4aec-b90f-f0bd76abf582",
   "tables": {
     "account": {
       "name": "account",
@@ -198,14 +198,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'private'"
-        },
-        "items": {
-          "name": "items",
-          "type": "json",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "('[]')"
         },
         "createdAt": {
           "name": "createdAt",

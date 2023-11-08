@@ -8,6 +8,10 @@ import { ProductShareDialog } from "@/components/dialogs/product-share-dialog";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
 import { ProductLikeButton } from "@/components/product/product-like-button";
 
+import { Icons } from "../icons";
+import { ProductFilesDownloadButton } from "../product-files-download-button";
+import { buttonVariants } from "../ui/button";
+
 interface ProductActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
   product: Product;
   layout: "card" | "listing";
@@ -28,7 +32,23 @@ export function ProductActionButtons({
         <ProductLikeButton productId={product.id} />
       </div>
       <div>
-        <AddToCartButton layout="icon" productId={product.id} />
+        {product.price === 0.0 ? (
+          <ProductFilesDownloadButton
+            files={product.files}
+            className={cn(
+              buttonVariants({ size: "icon", variant: "outline" }),
+              "rounded-full"
+            )}
+          >
+            <Icons.download className="h-4 w-4" />
+          </ProductFilesDownloadButton>
+        ) : (
+          <AddToCartButton
+            layout="icon"
+            productPrice={product.price}
+            productId={product.id}
+          />
+        )}
       </div>
       <div
         className={cn({
