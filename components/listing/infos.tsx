@@ -157,9 +157,6 @@ export async function Infos({
                     <span className="text-foreground/75">Owner of </span>
                     <Link href={`/store/${store?.id}`}>{store?.name}</Link>
                   </p>
-                  <Button variant="secondary" size="sm" className="w-fit p-2">
-                    Contact The Seller
-                  </Button>
                 </div>
               </div>
             </AccordionContent>

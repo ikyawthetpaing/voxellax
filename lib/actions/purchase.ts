@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/db";
+import { ActionResponse } from "@/types";
 import { and, eq } from "drizzle-orm";
 
 import { Purchase, purchases } from "@/db/schema";
@@ -34,8 +35,12 @@ export async function getCurrentUserPurchases() {
   return purchase;
 }
 
-export async function addPurchase(input: Pick<Purchase, "productId" | "cost">) {
+export async function addPurchase(
+  input: Pick<Purchase, "productId" | "cost">
+): Promise<ActionResponse> {
   const session = await getSession();
-  if (!session) return;
+  if (!session) return { statusCode: 403, ok: false, error: "Unauthorized" };
+
   await db.insert(purchases).values({ ...input, userId: session.user.id });
+  return { statusCode: 200, ok: true };
 }

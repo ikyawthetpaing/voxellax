@@ -34,6 +34,7 @@ import {
   MapPin,
   Megaphone,
   Menu,
+  MessagesSquare,
   Minus,
   MoreHorizontal,
   MoveRight,
@@ -126,6 +127,7 @@ export const Icons = {
   penLine: PenLine,
   undo: Undo,
   download: Download,
+  messagesSquare: MessagesSquare,
   voxellax: ({ ...props }: LucideProps) => {
     const id = getUniqueId();
     return (

@@ -25,6 +25,8 @@ import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/icons";
 import { RenderStars } from "@/components/listing/render-stars";
 
+import { Empty } from "../empty";
+
 interface ProductReviewsProps extends HTMLAttributes<HTMLDivElement> {
   reviews: Review[];
 }
@@ -42,7 +44,7 @@ export function Reviews({ reviews, ...props }: ProductReviewsProps) {
     <div {...props}>
       <Accordion
         type="single"
-        defaultValue="reviews"
+        defaultValue={reviews.length > 0 ? "reviews" : undefined}
         collapsible
         className="w-full"
       >
@@ -58,7 +60,7 @@ export function Reviews({ reviews, ...props }: ProductReviewsProps) {
                       <ReviewItem key={index} review={reviews[index]} />
                     ))}
                   </div>
-                  <PaginationButton
+                  <ReviewPaginationButton
                     currentPage={currentReviewsGroup}
                     setCurrentPage={setCurrentReviewsGroup}
                     pageCount={reviewGroups.length}
@@ -66,7 +68,9 @@ export function Reviews({ reviews, ...props }: ProductReviewsProps) {
                   />
                 </>
               ) : (
-                <div>no review</div>
+                <div>
+                  <Empty icon="messagesSquare" message="No review yet" />
+                </div>
               )}
             </div>
           </AccordionContent>
@@ -117,7 +121,7 @@ interface PaginationButtonProps {
   isPending: boolean;
   siblingCount?: number;
 }
-export function PaginationButton({
+export function ReviewPaginationButton({
   pageCount,
   currentPage,
   setCurrentPage,

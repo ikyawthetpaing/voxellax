@@ -106,7 +106,7 @@ export type PasswordCredentials = {
   salt: string;
 };
 
-export type ErrorResponse = {
+export type ActionResponse = {
   error?: string;
   ok: boolean;
   statusCode: number;

@@ -1,16 +1,18 @@
-import { HTMLAttributes } from "react";
+"use client";
+
+import { HTMLAttributes, useEffect, useState } from "react";
 
 import { Product } from "@/db/schema";
 
+import { addPurchase, getCurrentUserPurchase } from "@/lib/actions/purchase";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { AddToCollectionDialog } from "@/components/dialogs/add-to-collection-dialog";
 import { ProductShareDialog } from "@/components/dialogs/product-share-dialog";
+import { Icons } from "@/components/icons";
+import { ProductFilesDownloadButton } from "@/components/product-files-download-button";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
 import { ProductLikeButton } from "@/components/product/product-like-button";
-
-import { Icons } from "../icons";
-import { ProductFilesDownloadButton } from "../product-files-download-button";
-import { buttonVariants } from "../ui/button";
 
 interface ProductActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
   product: Product;
@@ -23,6 +25,14 @@ export function ProductActionButtons({
   className,
   ...props
 }: ProductActionButtonsProps) {
+  const [isPurchased, setIsPurchased] = useState(false);
+
+  useEffect(() => {
+    getCurrentUserPurchase({ productId: product.id }).then((value) =>
+      setIsPurchased(!!value)
+    );
+  }, [product.id]);
+
   return (
     <div
       className={cn("flex flex-col gap-2 duration-100", className)}
@@ -39,6 +49,16 @@ export function ProductActionButtons({
               buttonVariants({ size: "icon", variant: "outline" }),
               "rounded-full"
             )}
+            onClickDownload={() => {
+              if (!isPurchased) {
+                addPurchase({
+                  cost: product.price,
+                  productId: product.id,
+                }).then((res) => {
+                  if (res.ok) setIsPurchased(true);
+                });
+              }
+            }}
           >
             <Icons.download className="h-4 w-4" />
           </ProductFilesDownloadButton>
@@ -47,6 +67,7 @@ export function ProductActionButtons({
             layout="icon"
             productPrice={product.price}
             productId={product.id}
+            purchased={isPurchased}
           />
         )}
       </div>

@@ -12,12 +12,14 @@ import { Icons } from "@/components/icons";
 interface AddToCartButtonProps extends ButtonProps {
   productId: string;
   productPrice: number;
+  purchased: boolean;
   layout?: "icon" | "default";
 }
 
 export function AddToCartButton({
   productId,
   productPrice,
+  purchased,
   layout = "default",
   className,
   ...props
@@ -27,7 +29,7 @@ export function AddToCartButton({
   const [isPending, startTransition] = useTransition();
   const { data, setRefresh } = useUserCartItems();
 
-  const disabled = isPending || isPurchased || productPrice === 0;
+  const disabled = isPending || isPurchased || productPrice === 0 || purchased;
 
   useEffect(() => {
     const item = data.find((item) => item.productId === productId);

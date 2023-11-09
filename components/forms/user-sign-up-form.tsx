@@ -53,7 +53,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
 
       if (res.ok) {
         toast.success("Account created successfully.");
-        router.push("/sign-in");
+        router.push("/login");
       } else {
         toast.error(res.error);
       }

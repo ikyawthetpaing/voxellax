@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { ErrorResponse } from "@/types";
+import { ActionResponse } from "@/types";
 import { and, eq } from "drizzle-orm";
 
 import { Review, reviews } from "@/db/schema";
@@ -34,7 +34,7 @@ export async function getReviews(productId: string): Promise<Review[]> {
 
 export async function addReview(
   input: Omit<Review, "userId" | "createdAt">
-): Promise<ErrorResponse> {
+): Promise<ActionResponse> {
   try {
     const session = await getSession();
 
@@ -61,7 +61,7 @@ export async function addReview(
 
 export async function updateReview(
   input: Pick<Review, "rate" | "message" | "productId">
-): Promise<ErrorResponse> {
+): Promise<ActionResponse> {
   try {
     const session = await getSession();
 
@@ -94,7 +94,7 @@ export async function updateReview(
 
 export async function deleteReview(
   input: Pick<Review, "productId">
-): Promise<ErrorResponse> {
+): Promise<ActionResponse> {
   try {
     const session = await getSession();
 

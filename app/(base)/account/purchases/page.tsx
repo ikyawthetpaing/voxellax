@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Empty } from "@/components/empty";
 import { Heading } from "@/components/heading";
 import { PurchaseProductTableRow } from "@/components/purchase-product-table-row";
 import { Shell } from "@/components/shell";
@@ -27,25 +28,29 @@ export default async function AccountPurchasesPage() {
       <div className="border-b pb-2">
         <Heading>Purchases</Heading>
       </div>
-      <div className="hide-scrollbar overflow-x-scroll rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow className="uppercase">
-              <TableHead>Info</TableHead>
-              <TableHead>Cost</TableHead>
-              <TableHead>Purchased</TableHead>
-              <TableHead>Reviews</TableHead>
-              <TableHead>Product</TableHead>
-              <TableHead>Invoice</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="font-light">
-            {purchases.map((purchase, index) => (
-              <PurchaseProductTableRow key={index} purchase={purchase} />
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      {purchases.length > 0 ? (
+        <div className="hide-scrollbar overflow-x-scroll rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className="uppercase">
+                <TableHead>Info</TableHead>
+                <TableHead>Cost</TableHead>
+                <TableHead>Purchased</TableHead>
+                <TableHead>Reviews</TableHead>
+                <TableHead>Product</TableHead>
+                <TableHead>Invoice</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="font-light">
+              {purchases.map((purchase, index) => (
+                <PurchaseProductTableRow key={index} purchase={purchase} />
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <Empty icon="package" message="No purchase yet" />
+      )}
     </Shell>
   );
 }
