@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 import { getProduct } from "@/lib/actions/product";
 import { getReviews } from "@/lib/actions/review";
-import { getStore } from "@/lib/actions/store";
+import { getStoreById } from "@/lib/actions/store";
 import { getUser } from "@/lib/actions/user";
 import { absoluteUrl, getProductThumbnailImage } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -79,7 +79,7 @@ export default async function ListingPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const store = await getStore(product.storeId);
+  const store = await getStoreById(product.storeId);
   const seller = await getUser(store?.userId || "");
 
   if (!store || !seller) return null;

@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { ActionResponse } from "@/types";
 import { and, eq } from "drizzle-orm";
@@ -26,7 +25,7 @@ export async function getCurrentUserReview(
   return review || null;
 }
 
-export async function getReviews(productId: string): Promise<Review[]> {
+export async function getReviews(productId: string) {
   return await db.query.reviews.findMany({
     where: eq(reviews.productId, productId),
   });
@@ -51,7 +50,6 @@ export async function addReview(
 
     await db.insert(reviews).values(newReview);
 
-    revalidatePath("/account/purchases");
     return { statusCode: 200, ok: true };
   } catch (error) {
     console.error("Error adding review:", error);
@@ -84,7 +82,6 @@ export async function updateReview(
         )
       );
 
-    revalidatePath("/account/purchases");
     return { statusCode: 200, ok: true };
   } catch (error) {
     console.error("Error adding review:", error);
@@ -111,7 +108,6 @@ export async function deleteReview(
         )
       );
 
-    revalidatePath("/account/purchases");
     return { statusCode: 200, ok: true };
   } catch (error) {
     console.error("Error adding review:", error);

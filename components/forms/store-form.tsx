@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 
-import { isValidStoreId } from "@/lib/actions/store";
+import { isValidStoreHandle } from "@/lib/actions/store";
 import { StoreSchema } from "@/lib/validations/store";
 import {
   Form,
@@ -35,15 +35,15 @@ export function StoreForm({
 }: StoreFormProps) {
   const [validStoreId, setValidStoreId] = useState(true);
 
-  const storeId = form.watch("id");
+  const storeHandle = form.watch("handle");
 
   useEffect(() => {
-    isValidStoreId(storeId)
+    isValidStoreHandle(storeHandle)
       .then((result) => {
         setValidStoreId(result);
       })
       .catch((err) => console.error(err));
-  }, [storeId]);
+  }, [storeHandle]);
 
   return (
     <Form {...form}>
@@ -91,7 +91,7 @@ export function StoreForm({
         />
         <FormField
           control={form.control}
-          name="id"
+          name="handle"
           render={({ field }) => (
             <FormItem>
               <div className="grid gap-2 lg:grid-cols-2">

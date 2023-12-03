@@ -12,8 +12,8 @@ export function CheckoutDetails({ itemCount, subTotal }: Props) {
   const { fees, totalPrice } = getCalculatedFees({ itemCount, subTotal });
   return (
     <>
-      {fees.map((fee) => (
-        <div className="flex justify-between gap-6">
+      {fees.map((fee, index) => (
+        <div key={index} className="flex justify-between gap-6">
           <span className="font-medium">{fee.label}</span>
           <span className="font-light">{fee.priceLabel}</span>
         </div>

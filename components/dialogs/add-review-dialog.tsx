@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { addReview } from "@/lib/actions/review";
@@ -31,6 +32,7 @@ export function AddReviewDialog({ trigger, productId }: Props) {
     message: null,
   });
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleSubmit = () => {
     startTransition(async () => {
@@ -47,6 +49,8 @@ export function AddReviewDialog({ trigger, productId }: Props) {
           } else {
             toast.error("Failed to add the review. Please try again later.");
           }
+
+          router.refresh();
         } catch (error) {
           console.error("Error adding review:", error);
           toast.error(

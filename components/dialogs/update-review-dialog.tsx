@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { EditReview } from "@/types";
 import { toast } from "sonner";
 
 import { deleteReview, updateReview } from "@/lib/actions/review";
@@ -16,19 +18,17 @@ import { ReviewForm } from "@/components/forms/review-form";
 import { LoadingButton } from "@/components/loading-button";
 
 interface Props {
-  review: { rate: number; message: string | null };
+  review: EditReview;
   productId: string;
   trigger: React.ReactNode;
 }
 
 export function UpdateReviewDialog({ review, trigger, productId }: Props) {
-  const [newReview, setNewReview] = useState<{
-    rate: number | null;
-    message: string | null;
-  }>(review);
+  const [newReview, setNewReview] = useState(review);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (
@@ -42,19 +42,20 @@ export function UpdateReviewDialog({ review, trigger, productId }: Props) {
   }, [newReview, review.message, review.rate]);
 
   const handleUpdate = async () => {
-    if (review.rate) {
+    if (newReview.rate) {
       setIsUpdating(true);
       try {
         const res = await updateReview({
           productId: productId,
-          rate: review.rate,
-          message: review.message,
+          rate: newReview.rate,
+          message: newReview.message,
         });
         if (res.ok) {
-          toast.success("Review has been updated successfully!");
+          toast.success("Review has been updated successfully.");
         } else {
           toast.error("Failed to update the review. Please try again later.");
         }
+        router.refresh();
       } catch (error) {
         console.error("Error updating review:", error);
         toast.error(

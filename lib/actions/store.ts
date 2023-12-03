@@ -1,17 +1,25 @@
 "use server";
 
 import { db } from "@/db";
+import cuid from "cuid";
 import { and, eq, ne } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
-import { products, stores } from "@/db/schema";
+import { stores } from "@/db/schema";
 
 import { getSession } from "@/lib/session";
 import { AddStoreSchema, UpdateStoreSchema } from "@/lib/validations/store";
 
-export async function getStore(storeId: string) {
+export async function getStoreById(storeId: string) {
   const store = await db.query.stores.findFirst({
     where: eq(stores.id, storeId),
+  });
+  return store;
+}
+
+export async function getStoreByHandle(handle: string) {
+  const store = await db.query.stores.findFirst({
+    where: eq(stores.handle, handle),
   });
   return store;
 }
@@ -41,13 +49,14 @@ export async function addStore(data: AddStoreSchema) {
       throw new Error("Unauthorized");
     }
 
-    const validStoreId = await isValidStoreId(data.id);
+    const validStoreId = await isValidStoreHandle(data.handle);
     if (!validStoreId) {
       throw new Error("Handle already taken.");
     }
 
     await db.insert(stores).values({
-      id: data.id,
+      id: cuid(),
+      handle: data.handle,
       name: data.name,
       description: data.description,
       contactEmail: data.contactEmail,
@@ -68,8 +77,7 @@ export async function updateStore(data: UpdateStoreSchema, storeId: string) {
       throw new Error("Unauthorized");
     }
 
-    const validStoreId = await isValidStoreId(data.id);
-    if (!validStoreId) {
+    if (!(await isValidStoreHandle(data.handle))) {
       throw new Error("Handle already taken.");
     }
 
@@ -95,18 +103,10 @@ export async function updateStore(data: UpdateStoreSchema, storeId: string) {
       }
     }
 
-    // new store id update storeId on products
-    if (store.id != data.id) {
-      await db
-        .update(products)
-        .set({ storeId: data.id })
-        .where(eq(products.storeId, store.id));
-    }
-
     await db
       .update(stores)
       .set({
-        id: data.id,
+        handle: data.handle,
         name: data.name,
         description: data.description,
         avatar: data.avatar,
@@ -127,9 +127,7 @@ export async function deleteStore(storeId: string) {
       throw new Error("Unauthorized");
     }
 
-    const store = await db.query.stores.findFirst({
-      where: eq(stores.id, storeId),
-    });
+    const store = await getStoreById(storeId);
     if (!store) {
       throw new Error("Store not found");
     }
@@ -162,12 +160,12 @@ export async function deleteStore(storeId: string) {
   }
 }
 
-export async function isValidStoreId(storeId: string) {
+export async function isValidStoreHandle(handle: string) {
   const session = await getSession();
 
   const store = await db.query.stores.findFirst({
     where: and(
-      eq(stores.id, storeId),
+      eq(stores.handle, handle),
       ne(stores.userId, session?.user.id || "")
     ),
   });

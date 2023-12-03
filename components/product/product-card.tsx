@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Product } from "@/db/schema";
 
-import { getStore } from "@/lib/actions/store";
+import { getStoreById } from "@/lib/actions/store";
 import { formatPrice, getProductThumbnailImage } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -20,7 +20,7 @@ interface ProductCardProps {
 }
 
 export async function ProductCard({ product }: ProductCardProps) {
-  const store = await getStore(product.storeId);
+  const store = await getStoreById(product.storeId);
   const thumbnail = getProductThumbnailImage(product.images);
 
   return (
@@ -45,7 +45,7 @@ export async function ProductCard({ product }: ProductCardProps) {
         <CardFooter className="p-2 pt-0">
           <div className="text-xs">
             <span className="text-muted-foreground">by </span>
-            <Link href={`/store/${store.id}`}>{store.name}</Link>
+            <Link href={`/store/${store.handle}`}>{store.name}</Link>
             <span className="text-muted-foreground"> in </span>
             <Link href={`/category/${product.category}`} className="capitalize">
               {product.category}

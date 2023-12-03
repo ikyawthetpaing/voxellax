@@ -5,15 +5,14 @@ import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm";
 
 import { Product, products } from "@/db/schema";
 
-import { getProduct } from "@/lib/actions/product";
 import { getCurrentUserStore } from "@/lib/actions/store";
 import { ProductsTable } from "@/components/dashboard/products-table";
-import { UpdateProductFormSheet } from "@/components/sheets/update-product-form-sheet";
 import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Product Management",
-  description: `Effortlessly manage and organize your products with the Product Management system. Streamline your product catalog and enhance customer experience.`,
+  description:
+    "Effortlessly manage and organize your products with the Product Management system. Streamline your product catalog and enhance customer experience.",
 };
 
 interface ProductsPageProps {
@@ -31,7 +30,7 @@ export default async function StoreProductsPage({
     notFound();
   }
 
-  const { page, per_page, sort, name, category, edit } = searchParams ?? {};
+  const { page, per_page, sort, name, category } = searchParams ?? {};
 
   // Number of items per page
   const limit = typeof per_page === "string" ? parseInt(per_page) : 10;
@@ -109,16 +108,9 @@ export default async function StoreProductsPage({
 
   const pageCount = Math.ceil(totalProducts / limit);
 
-  let editProduct = undefined;
-
-  if (edit && typeof edit === "string") {
-    editProduct = await getProduct(edit);
-  }
-
   return (
     <Shell layout="dashboard">
       <ProductsTable data={storeProducts} pageCount={pageCount} />
-      {editProduct && <UpdateProductFormSheet product={editProduct} />}
     </Shell>
   );
 }

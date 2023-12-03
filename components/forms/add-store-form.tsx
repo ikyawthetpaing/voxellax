@@ -37,7 +37,7 @@ export function AddStoreForm() {
     startTransition(async () => {
       try {
         const postData: AddStoreSchema = {
-          id: data.id,
+          handle: data.handle,
           name: data.name,
           description: data.description,
           contactEmail: data.contactEmail,

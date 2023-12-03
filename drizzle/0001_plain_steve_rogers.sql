@@ -1,1 +1,0 @@
-ALTER TABLE `collection` MODIFY COLUMN `items` json DEFAULT ('[]');

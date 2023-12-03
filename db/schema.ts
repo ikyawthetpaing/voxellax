@@ -107,6 +107,7 @@ export const verificationTokens = mysqlTable(
 
 export const stores = mysqlTable("store", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  handle: varchar("handle", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
   avatar: json("avatar").$type<UploadedFile | null>().default(null),

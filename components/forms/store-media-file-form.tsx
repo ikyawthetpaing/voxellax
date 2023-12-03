@@ -26,7 +26,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { CropImageDialog } from "@/components/dialogs/crop-image-dialog";
 import { Icons } from "@/components/icons";
 
 interface StoreMediaFileFormProps {
@@ -171,21 +170,14 @@ export function StoreMediaFileForm({
                     )}
                   </div>
                   {avatar && (
-                    <div className="flex gap-2">
-                      <CropImageDialog
-                        file={avatar}
-                        setFile={setAvatar}
-                        aspectRatio={1 / 1}
-                      />
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={() => field.onChange(undefined)}
-                        type="button"
-                      >
-                        <Icons.trash className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => field.onChange(undefined)}
+                      type="button"
+                    >
+                      <Icons.trash className="h-4 w-4" />
+                    </Button>
                   )}
                 </div>
               </FormControl>
@@ -273,11 +265,6 @@ export function StoreMediaFileForm({
                   )}
                   {cover && (
                     <div className="absolute right-2 top-2 flex gap-2">
-                      <CropImageDialog
-                        file={cover}
-                        setFile={setCover}
-                        aspectRatio={5 / 1}
-                      />
                       <Button
                         type="button"
                         size="icon"

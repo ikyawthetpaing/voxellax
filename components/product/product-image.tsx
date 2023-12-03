@@ -21,7 +21,6 @@ export function ProductImage({ image, className, ...props }: Props) {
           <Image
             alt={image.name}
             src={image.url}
-            fill
             className={cn(
               "object-cover duration-700 ease-in-out group-hover:opacity-75",
               loading
@@ -29,8 +28,9 @@ export function ProductImage({ image, className, ...props }: Props) {
                 : "scale-100 blur-0 grayscale-0"
             )}
             onLoad={() => setLoading(false)}
-            sizes="(max-width: 0px) 100vw"
-            priority
+            fill
+            sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
+            loading="lazy"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-muted-foreground">

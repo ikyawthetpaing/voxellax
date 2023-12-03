@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1699433273405,
-      "tag": "0000_dazzling_meggan",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1699433432305,
-      "tag": "0001_plain_steve_rogers",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1699433478025,
-      "tag": "0002_warm_whiplash",
+      "when": 1701584634234,
+      "tag": "0000_easy_prowler",
       "breakpoints": true
     }
   ]

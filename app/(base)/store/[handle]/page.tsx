@@ -3,13 +3,13 @@ import { notFound } from "next/navigation";
 import { categoriesFilterItem, priceRangeFilterItem } from "@/config/filter";
 
 import { getProducts } from "@/lib/actions/product";
-import { getStore } from "@/lib/actions/store";
+import { getStoreByHandle } from "@/lib/actions/store";
 import { ProductsListWithFilter } from "@/components/product/products-list-with-filter";
 import { Shell } from "@/components/shell";
 
 interface StorePageProps {
   params: {
-    store_id: string;
+    handle: string;
   };
   searchParams: {
     [key: string]: string | string[] | undefined;
@@ -20,7 +20,7 @@ export default async function StorePage({
   params,
   searchParams,
 }: StorePageProps) {
-  const store = await getStore(params.store_id);
+  const store = await getStoreByHandle(params.handle);
 
   if (!store) {
     notFound();

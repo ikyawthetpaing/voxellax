@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { baseConfig } from "@/config/base";
 import { siteConfig } from "@/config/site";
 
-import { getStore } from "@/lib/actions/store";
+import { getStoreByHandle } from "@/lib/actions/store";
 import { getUser } from "@/lib/actions/user";
 import { absoluteUrl } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -16,7 +16,7 @@ import { Tabs } from "@/components/tabs";
 
 interface StoreLayoutPageProps {
   params: {
-    store_id: string;
+    handle: string;
   };
   children: React.ReactNode;
 }
@@ -24,7 +24,7 @@ interface StoreLayoutPageProps {
 export async function generateMetadata({
   params,
 }: StoreLayoutPageProps): Promise<Metadata> {
-  const store = await getStore(params.store_id);
+  const store = await getStoreByHandle(params.handle);
 
   if (!store) {
     return {};
@@ -75,7 +75,7 @@ export default async function StoreLayoutPage({
   params,
   children,
 }: StoreLayoutPageProps) {
-  const store = await getStore(params.store_id);
+  const store = await getStoreByHandle(params.handle);
 
   if (!store) {
     notFound();

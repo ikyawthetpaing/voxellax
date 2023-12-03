@@ -4,7 +4,7 @@ import * as z from "zod";
 export const storeSchema = z.object({
   name: z.string().min(2).max(50),
   description: z.string().max(255).optional(),
-  id: z
+  handle: z
     .string()
     .min(3, "Username must be at least 3 characters long")
     .max(20, "Username cannot exceed 20 characters")

@@ -2,7 +2,6 @@
 
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { type ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
@@ -34,9 +33,6 @@ interface ProductsTableProps {
 export function ProductsTable({ data, pageCount }: ProductsTableProps) {
   const [isPending, startTransition] = useTransition();
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // Memoize the columns so they don't re-render on every render
   const columns = useMemo<ColumnDef<Product, unknown>[]>(
@@ -102,13 +98,6 @@ export function ProductsTable({ data, pageCount }: ProductsTableProps) {
         cell: ({ cell }) => formatPrice(cell.getValue() as number, 2),
       },
       {
-        accessorKey: "rating",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Rating" />
-        ),
-        cell: () => 0,
-      },
-      {
         accessorKey: "createdAt",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Created At" />
@@ -130,18 +119,10 @@ export function ProductsTable({ data, pageCount }: ProductsTableProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-              <DropdownMenuItem
-                onClick={() => {
-                  const current = new URLSearchParams(
-                    Array.from(searchParams.entries())
-                  );
-                  current.set("edit", row.original.id);
-                  const search = current.toString();
-                  const query = search ? `?${search}` : "";
-                  router.push(`${pathname}${query}`);
-                }}
-              >
-                <span>Edit</span>
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/store/products/${row.original.id}`}>
+                  Edit
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={`/listing/${row.original.id}`}>View</Link>
@@ -168,7 +149,7 @@ export function ProductsTable({ data, pageCount }: ProductsTableProps) {
         ),
       },
     ],
-    [data, isPending, pathname, router, searchParams]
+    [data, isPending]
   );
 
   function deleteSelectedRows() {
