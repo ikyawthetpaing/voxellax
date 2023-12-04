@@ -147,6 +147,7 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   cartItems: many(cartItems),
   purchases: many(purchases),
   likes: many(likes),
+  reviews: many(reviews),
 }));
 
 export const cartItems = mysqlTable(
@@ -202,7 +203,6 @@ export const collections = mysqlTable("collection", {
   privacy: mysqlEnum("privacy", ["public", "private", "unlisted"])
     .default("private")
     .notNull(),
-  // items: json("items").$type<string[]>().default([]),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 export type Collection = InferSelectModel<typeof collections>;

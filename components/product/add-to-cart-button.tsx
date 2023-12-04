@@ -42,7 +42,7 @@ export function AddToCartButton({
     );
   }, [productId]);
 
-  async function handleOnClick() {
+  const handleOnClick = async () => {
     startTransition(async () => {
       try {
         await toggleCartItem(productId);
@@ -51,7 +51,7 @@ export function AddToCartButton({
         catchError(err);
       }
     });
-  }
+  };
 
   return (
     <Button

@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { ActionResponse } from "@/types";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 import { Review, reviews } from "@/db/schema";
 
@@ -25,10 +25,34 @@ export async function getCurrentUserReview(
   return review || null;
 }
 
-export async function getReviews(productId: string) {
-  return await db.query.reviews.findMany({
-    where: eq(reviews.productId, productId),
+export async function getReviews({
+  limit,
+  offset,
+}: {
+  limit: number;
+  offset: number;
+}) {
+  const { items, count } = await db.transaction(async (tx) => {
+    const items = await tx.select().from(reviews).limit(limit).offset(offset);
+
+    const count = await tx
+      .select({
+        count: sql<number>`count(*)`,
+      })
+      .from(reviews)
+      .execute()
+      .then((res) => res[0]?.count ?? 0);
+
+    return {
+      items,
+      count,
+    };
   });
+
+  return {
+    items,
+    count,
+  };
 }
 
 export async function addReview(

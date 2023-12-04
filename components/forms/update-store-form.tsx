@@ -71,7 +71,7 @@ export function UpdateStoreForm({ store }: UpdateStoreFormProps) {
   const form = useForm<StoreSchema>({
     resolver: zodResolver(storeSchema),
     defaultValues: {
-      handle: store.id,
+      handle: store.handle,
       name: store.name,
       description: store.description ?? "",
       contactEmail: store.contactEmail,

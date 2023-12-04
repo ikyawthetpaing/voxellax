@@ -52,7 +52,7 @@ export async function generateMetadata({
       title: store.name,
       description: description,
       type: "profile",
-      url: absoluteUrl(`/store/${store.id}`),
+      url: absoluteUrl(`/store/${store.handle}`),
       images: [
         {
           url: ogUrl.toString(),
@@ -81,7 +81,7 @@ export default async function StoreLayoutPage({
     notFound();
   }
 
-  const navItems = baseConfig.storeProfile(store.id).navItems;
+  const navItems = baseConfig.storeProfile(store.handle).navItems;
   const navItemsLength = navItems.length;
 
   return (
@@ -127,7 +127,7 @@ export default async function StoreLayoutPage({
                 <Icons.verified className="h-5 w-5 text-blue-500" />
               )}
             </Heading>
-            <p className="text-muted-foreground">@{store.id}</p>
+            <p className="text-muted-foreground">@{store.handle}</p>
           </div>
           {store.description && (
             <div className="max-w-lg">

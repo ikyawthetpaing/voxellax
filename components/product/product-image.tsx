@@ -29,8 +29,9 @@ export function ProductImage({ image, className, ...props }: Props) {
             )}
             onLoad={() => setLoading(false)}
             fill
-            sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
+            sizes="(min-width: 0px) 100vw"
             loading="lazy"
+            quality={100}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-muted-foreground">

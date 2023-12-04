@@ -76,17 +76,6 @@ export function absoluteUrl(path?: string) {
   return `${appUrl}/${formattedPath}`;
 }
 
-export function groupArray(array: number[], groupSize: number): number[][] {
-  const groups: number[][] = [];
-
-  for (let i = 0; i < array.length; i += groupSize) {
-    const group = array.slice(i, i + groupSize);
-    groups.push(group);
-  }
-
-  return groups;
-}
-
 export function formatDate(date: Date | string) {
   return dayjs(date).format("MMMM D, YYYY");
 }

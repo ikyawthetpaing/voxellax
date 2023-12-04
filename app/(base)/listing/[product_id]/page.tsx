@@ -23,6 +23,9 @@ interface ProductPageProps {
   params: {
     product_id: string;
   };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
 
 export async function generateMetadata({
@@ -72,21 +75,33 @@ export async function generateMetadata({
   };
 }
 
-export default async function ListingPage({ params }: ProductPageProps) {
+export default async function ListingPage({
+  params,
+  searchParams,
+}: ProductPageProps) {
   const product = await getProduct(params.product_id);
-
-  if (!product) {
-    notFound();
-  }
+  if (!product) notFound();
 
   const store = await getStoreById(product.storeId);
-  const seller = await getUser(store?.userId || "");
+  if (!store) return null;
 
-  if (!store || !seller) return null;
+  const seller = await getUser(store.userId);
+  if (!seller) return null;
 
-  const reviews = await getReviews(product.id);
+  const { page, per_page } = searchParams;
+
+  // Products transaction
+  const _page = typeof page === "string" ? page : "1";
+  const limit = typeof per_page === "string" ? parseInt(per_page) : 3;
+  const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
+
+  const { count: reviewCount, items: reviews } = await getReviews({
+    limit,
+    offset,
+  });
+  const pageCount = Math.ceil(reviewCount / limit);
   const totalRates = reviews.reduce((sum, review) => sum + review.rate, 0);
-  const averageRate = totalRates / reviews.length;
+  const averageRate = totalRates / reviewCount;
 
   return (
     <Shell>
@@ -112,14 +127,21 @@ export default async function ListingPage({ params }: ProductPageProps) {
         <div className="grid gap-8 lg:flex">
           <div className="flex flex-1 flex-col gap-8">
             <ImageGallery product={product} />
-            <Reviews reviews={reviews} className="hidden lg:grid" />
+            <Reviews
+              reviews={reviews}
+              totalReviews={reviewCount}
+              className="hidden lg:grid"
+              page={_page}
+              per_page={String(limit)}
+              pageCount={pageCount}
+            />
           </div>
           <div className="flex flex-col gap-8">
             <DetailsCard
               className="lg:w-96"
               product={product}
               averageRate={averageRate}
-              totalReviews={reviews.length}
+              totalReviews={reviewCount}
             />
             <div>
               <Infos
@@ -128,7 +150,14 @@ export default async function ListingPage({ params }: ProductPageProps) {
                 store={store}
                 seller={seller}
               />
-              <Reviews reviews={reviews} className="lg:hidden" />
+              <Reviews
+                reviews={reviews}
+                totalReviews={reviewCount}
+                className="lg:hidden"
+                page={_page}
+                per_page={String(limit)}
+                pageCount={pageCount}
+              />
             </div>
           </div>
         </div>
