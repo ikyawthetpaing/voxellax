@@ -95,10 +95,13 @@ export default async function ListingPage({
   const limit = typeof per_page === "string" ? parseInt(per_page) : 3;
   const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
 
-  const { count: reviewCount, items: reviews } = await getReviews({
-    limit,
-    offset,
-  });
+  const { count: reviewCount, items: reviews } = await getReviews(
+    params.product_id,
+    {
+      limit,
+      offset,
+    }
+  );
   const pageCount = Math.ceil(reviewCount / limit);
   const totalRates = reviews.reduce((sum, review) => sum + review.rate, 0);
   const averageRate = totalRates / reviewCount;
@@ -124,44 +127,43 @@ export default async function ListingPage({
             </div>
           </Link>
         </div>
-        <div className="grid gap-8 lg:flex">
-          <div className="flex flex-1 flex-col gap-8">
-            <ImageGallery product={product} />
-            <Reviews
-              reviews={reviews}
-              totalReviews={reviewCount}
-              className="hidden lg:grid"
-              page={_page}
-              per_page={String(limit)}
-              pageCount={pageCount}
-            />
-          </div>
-          <div className="flex flex-col gap-8">
-            <DetailsCard
-              className="lg:w-96"
-              product={product}
-              averageRate={averageRate}
-              totalReviews={reviewCount}
-            />
-            <div>
+        <div>
+          <div className="grid gap-8 lg:flex">
+            <div className="flex-1">
+              <ImageGallery product={product} />
+            </div>
+            <div className="flex flex-col gap-8">
+              <DetailsCard
+                className="lg:w-96"
+                product={product}
+                averageRate={averageRate}
+                totalReviews={reviewCount}
+              />
               <Infos
                 className="lg:w-96"
                 product={product}
                 store={store}
                 seller={seller}
               />
+            </div>
+          </div>
+          {reviewCount > 0 && (
+            <div>
               <Reviews
                 reviews={reviews}
                 totalReviews={reviewCount}
-                className="lg:hidden"
+                className="lg:w-[calc(100%-384px-32px)]"
                 page={_page}
                 per_page={String(limit)}
                 pageCount={pageCount}
               />
             </div>
-          </div>
+          )}
         </div>
-        <StoreRelatedProducts storeId={store.id} />
+        <StoreRelatedProducts
+          storeId={store.id}
+          excludes={[params.product_id]}
+        />
       </div>
     </Shell>
   );

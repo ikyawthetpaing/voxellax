@@ -1,7 +1,18 @@
 "use server";
 
 import { db } from "@/db";
-import { and, asc, desc, eq, gte, inArray, like, lte, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gte,
+  inArray,
+  like,
+  lte,
+  notInArray,
+  sql,
+} from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
 import { Product, products } from "@/db/schema";
@@ -33,6 +44,7 @@ export async function getProducts(input: GetProductsSchema) {
   const subcategories = input.subcategories?.split(".") ?? [];
   const storeIds = input.store_ids?.split(".") ?? [];
   const queries = input.query ? `%${input.query}%` : undefined;
+  const excludes = input.excludes;
 
   const filter = and(
     categories.length ? inArray(products.category, categories) : undefined,
@@ -42,7 +54,8 @@ export async function getProducts(input: GetProductsSchema) {
     minPrice ? gte(products.price, minPrice) : undefined,
     maxPrice ? lte(products.price, maxPrice) : undefined,
     storeIds.length ? inArray(products.storeId, storeIds) : undefined,
-    queries ? like(products.name, queries) : undefined
+    queries ? like(products.name, queries) : undefined,
+    excludes ? notInArray(products.id, excludes) : undefined
   );
 
   const { items, count } = await db.transaction(async (tx) => {

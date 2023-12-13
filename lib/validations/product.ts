@@ -56,5 +56,6 @@ export const getProductsSchema = z.object({
     .regex(/^\d+.\d+$/)
     .optional()
     .nullable(),
+  excludes: z.array(z.string()).optional(),
 });
 export type GetProductsSchema = z.infer<typeof getProductsSchema>;

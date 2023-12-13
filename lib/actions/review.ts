@@ -25,21 +25,30 @@ export async function getCurrentUserReview(
   return review || null;
 }
 
-export async function getReviews({
-  limit,
-  offset,
-}: {
-  limit: number;
-  offset: number;
-}) {
+export async function getReviews(
+  productId: string,
+  {
+    limit,
+    offset,
+  }: {
+    limit: number;
+    offset: number;
+  }
+) {
   const { items, count } = await db.transaction(async (tx) => {
-    const items = await tx.select().from(reviews).limit(limit).offset(offset);
+    const items = await tx
+      .select()
+      .from(reviews)
+      .where(eq(reviews.productId, productId))
+      .limit(limit)
+      .offset(offset);
 
     const count = await tx
       .select({
         count: sql<number>`count(*)`,
       })
       .from(reviews)
+      .where(eq(reviews.productId, productId))
       .execute()
       .then((res) => res[0]?.count ?? 0);
 

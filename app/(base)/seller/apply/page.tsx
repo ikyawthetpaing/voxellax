@@ -58,8 +58,8 @@ export default async function ApplySellerPage() {
           {user.role === "user"
             ? renderApplicationForm(user)
             : isUserHaveStore
-            ? renderExistingStore()
-            : renderNewStore()}
+              ? renderExistingStore()
+              : renderNewStore()}
         </div>
       )}
     </Shell>
