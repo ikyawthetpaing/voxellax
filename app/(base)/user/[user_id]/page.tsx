@@ -12,9 +12,7 @@ interface Props {
 }
 
 export default async function UserLikesPage({ params }: Props) {
-  const userId = params.user_id;
-
-  const userLikes = await getUserLikes(userId);
+  const userLikes = await getUserLikes(params.user_id);
   const userLikedProducts: Product[] = [];
 
   await Promise.all(

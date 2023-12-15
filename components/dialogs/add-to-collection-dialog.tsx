@@ -1,18 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { ProductImageUploadedFile } from "@/types";
 
 import { Collection } from "@/db/schema";
 
 import {
   getCollectionProduct,
-  getCollectionThumbnails,
   toggleCollectionProduct,
 } from "@/lib/actions/collections";
-import { catchError } from "@/lib/utils";
 import { useUserCollections } from "@/context/user-collections";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -39,14 +35,12 @@ export function AddToCollectionDialog({
 }: AddToCollectionDialogProps) {
   const { collections, loading } = useUserCollections();
   const [isCollectionCreating, setIsCollectionCreating] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
 
   return (
-    // The component's UI is composed using various child components
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant={isAdded ? "default" : "outline"}
+          variant="outline"
           size="icon"
           aria-label="Add to collection"
           className="rounded-full"
@@ -69,7 +63,7 @@ export function AddToCollectionDialog({
           <ScrollArea className="px-6">
             <div className="grid max-h-96 gap-4">
               {loading ? (
-                Array.from({ length: 4 }, (_, i) => i).map((index) => (
+                Array.from({ length: 3 }, (_, i) => i).map((index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between"
@@ -120,68 +114,33 @@ interface CollectionCardProps {
 }
 
 function CollectionCard({ collection, productId }: CollectionCardProps) {
-  const [isAdding, setIsAdding] = useState(false);
-  const [isProductAdded, setIsProductAdded] = useState(false);
-  const [thumbnail, setThumbnail] = useState<ProductImageUploadedFile | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState(false);
-  const [refresh, setRefresh] = useState(true);
+  const [isAdded, setIsAdded] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const thumbnailData = await getCollectionThumbnails(collection.id, 1);
-      const added = await getCollectionProduct(collection.id, productId);
-      setThumbnail(thumbnailData[0]);
-      setIsProductAdded(!!added);
-      setIsLoading(false);
-    }
-    if (refresh) {
-      fetchData();
-      setRefresh(false);
-    }
-  }, [collection.id, productId, refresh]);
+    startTransition(async () => {
+      const collectionProduct = await getCollectionProduct(
+        collection.id,
+        productId
+      );
+      setIsAdded(!!collectionProduct);
+    });
+  }, [collection.id, productId]);
 
-  async function toggleProduct() {
-    setIsAdding(true);
-    try {
-      await toggleCollectionProduct(collection.id, productId);
-    } catch (err) {
-      catchError(err);
-    } finally {
-      setIsAdding(false);
-      setRefresh(true);
-    }
-  }
+  const toggleProduct = () => {
+    startTransition(async () => {
+      const res = await toggleCollectionProduct(collection.id, productId);
+      setIsAdded(res.added);
+    });
+  };
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <div className="w-24 overflow-hidden rounded-md">
-          <AspectRatio ratio={4 / 3}>
-            {/* Display an image with a placeholder URL */}
-            <Link
-              href={`/user/${collection.userId}/collections/${collection.id}`}
-            >
-              {isLoading ? (
-                <Skeleton className="h-full w-full" />
-              ) : thumbnail ? (
-                <Image
-                  src={thumbnail.url}
-                  alt={collection.name}
-                  fill
-                  className="object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="h-full w-full bg-accent"></div>
-              )}
-            </Link>
-          </AspectRatio>
+        <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-muted">
+          <Icons.shapes className="h-6 w-6 text-muted-foreground" />
         </div>
         <div>
-          {/* Display the collection name */}
           <Link
             href={`/user/${collection.userId}/collections/${collection.id}`}
           >
@@ -190,14 +149,13 @@ function CollectionCard({ collection, productId }: CollectionCardProps) {
         </div>
       </div>
       <div>
-        {/* Display a bookmark icon */}
         <Button
           size="icon"
-          variant={isProductAdded ? "secondary" : "ghost"}
+          variant={isAdded ? "secondary" : "ghost"}
           onClick={toggleProduct}
-          disabled={isAdding}
+          disabled={isPending}
         >
-          {isAdding || isLoading ? (
+          {isPending ? (
             <Icons.spinner className="h-4 w-4 animate-spin" />
           ) : (
             <Icons.bookmark className="h-4 w-4" />

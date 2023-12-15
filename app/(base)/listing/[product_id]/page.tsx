@@ -112,7 +112,7 @@ export default async function ListingPage({
         <div className="flex flex-col gap-2">
           <Heading className="line-clamp-2">{product.name}</Heading>
           <p className="sr-only">{product.description}</p>
-          <Link href={`/store/${store.id}`}>
+          <Link href={`/store/${store.handle}`}>
             <div className="flex items-center gap-2">
               <Avatar className="h-6 w-6">
                 <AvatarImage src={store.avatar?.url} alt={store.avatar?.name} />

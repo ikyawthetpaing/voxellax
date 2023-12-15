@@ -72,58 +72,60 @@ export function CreateCollectionForm({
   return (
     <Form {...form}>
       <form
-        className="grid w-full max-w-xl gap-4"
+        className="grid gap-6"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="privacy"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Privacy</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value}
-                  onValueChange={(value: typeof field.value) =>
-                    field.onChange(value)
-                  }
-                >
-                  <SelectTrigger className="capitalize">
-                    <SelectValue placeholder={field.value} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {collectionPrivacies.map((value) => (
-                        <SelectItem
-                          key={value}
-                          value={value}
-                          className="capitalize"
-                        >
-                          {value}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="privacy"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Privacy</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value}
+                    onValueChange={(value: typeof field.value) =>
+                      field.onChange(value)
+                    }
+                  >
+                    <SelectTrigger className="capitalize">
+                      <SelectValue placeholder={field.value} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {collectionPrivacies.map((value) => (
+                          <SelectItem
+                            key={value}
+                            value={value}
+                            className="capitalize"
+                          >
+                            {value}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-6">
           <Button
             variant="outline"
             type="button"

@@ -10,18 +10,11 @@ export const siteConfig: SiteConfig = {
   url: absoluteUrl(),
   ogImage: absoluteUrl("/og.png"),
   authors: [
-    { name: "Voxellax", url: "https://voxellax.vercel.app" },
     { name: "Kyaw Thet Paing", url: "https://ikyawthetpaing.vercel.app" },
   ],
   creator: {
     name: "Kyaw Thet Paing",
     username: "@ikyawthetpaing",
   },
-  keywords: [
-    "Voxellax",
-    "Digital Products",
-    "Ebooks",
-    "Canva Templates",
-    "Graphics",
-  ],
+  keywords: ["Voxellax", "Graphics", "Fonts", "Books", "Design", "Templates"],
 };

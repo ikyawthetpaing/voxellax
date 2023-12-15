@@ -1,10 +1,8 @@
-"use client";
-
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes } from "react";
 
 import { Product } from "@/db/schema";
 
-import { addPurchase, getCurrentUserPurchase } from "@/lib/actions/purchase";
+import { getCurrentUserPurchase } from "@/lib/actions/purchase";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { AddToCollectionDialog } from "@/components/dialogs/add-to-collection-dialog";
@@ -19,19 +17,15 @@ interface ProductActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
   layout: "card" | "listing";
 }
 
-export function ProductActionButtons({
+export async function ProductActionButtons({
   product,
   layout,
   className,
   ...props
 }: ProductActionButtonsProps) {
-  const [isPurchased, setIsPurchased] = useState(false);
-
-  useEffect(() => {
-    getCurrentUserPurchase({ productId: product.id }).then((value) =>
-      setIsPurchased(!!value)
-    );
-  }, [product.id]);
+  const isPurchased = !!(await getCurrentUserPurchase({
+    productId: product.id,
+  }));
 
   return (
     <div
@@ -42,23 +36,13 @@ export function ProductActionButtons({
         <ProductLikeButton productId={product.id} />
       </div>
       <div>
-        {product.price === 0.0 ? (
+        {product.price === 0 ? (
           <ProductFilesDownloadButton
             files={product.files}
             className={cn(
               buttonVariants({ size: "icon", variant: "outline" }),
               "rounded-full"
             )}
-            onClickDownload={() => {
-              if (!isPurchased) {
-                addPurchase({
-                  cost: product.price,
-                  productId: product.id,
-                }).then((res) => {
-                  if (res.ok) setIsPurchased(true);
-                });
-              }
-            }}
           >
             <Icons.download className="h-4 w-4" />
           </ProductFilesDownloadButton>

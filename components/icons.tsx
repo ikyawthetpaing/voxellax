@@ -45,6 +45,7 @@ import {
   PlusCircle,
   Search,
   Settings,
+  Shapes,
   Share,
   ShoppingCart,
   SlidersHorizontal,
@@ -128,6 +129,7 @@ export const Icons = {
   undo: Undo,
   download: Download,
   messagesSquare: MessagesSquare,
+  shapes: Shapes,
   voxellax: ({ ...props }: LucideProps) => {
     const id = getUniqueId();
     return (

@@ -115,7 +115,7 @@ export async function toggleCollectionProduct(
 
   if (!exiting) {
     await db.insert(collectionProducts).values({ collectionId, productId });
-    return;
+    return { added: true };
   }
 
   await db
@@ -126,4 +126,5 @@ export async function toggleCollectionProduct(
         eq(collectionProducts.productId, productId)
       )
     );
+  return { added: false };
 }

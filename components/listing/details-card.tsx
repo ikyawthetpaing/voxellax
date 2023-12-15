@@ -1,11 +1,9 @@
-"use client";
-
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes } from "react";
 import Link from "next/link";
 
 import { Product } from "@/db/schema";
 
-import { addPurchase, getCurrentUserPurchase } from "@/lib/actions/purchase";
+import { getCurrentUserPurchase } from "@/lib/actions/purchase";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -27,20 +25,16 @@ interface DetailsCardProps extends HTMLAttributes<HTMLDivElement> {
   product: Product;
 }
 
-export function DetailsCard({
+export async function DetailsCard({
   averageRate,
   totalReviews,
   product,
   className,
   ...props
 }: DetailsCardProps) {
-  const [isPurchased, setIsPurchased] = useState(false);
-
-  useEffect(() => {
-    getCurrentUserPurchase({ productId: product.id }).then((value) =>
-      setIsPurchased(!!value)
-    );
-  }, [product.id]);
+  const isPurchased = !!(await getCurrentUserPurchase({
+    productId: product.id,
+  }));
 
   return (
     <div className={className} {...props}>
@@ -92,16 +86,6 @@ export function DetailsCard({
             <ProductFilesDownloadButton
               files={product.files}
               className={cn(buttonVariants())}
-              onClickDownload={() => {
-                if (!isPurchased) {
-                  addPurchase({
-                    cost: product.price,
-                    productId: product.id,
-                  }).then((res) => {
-                    if (res.ok) setIsPurchased(true);
-                  });
-                }
-              }}
             >
               Download now
             </ProductFilesDownloadButton>

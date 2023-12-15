@@ -46,7 +46,7 @@ export function CartItemProducts({ cartProducts, className, ...props }: Props) {
               </div>
               <UpdateCart productId={id} />
             </div>
-            <Separator />
+            {index !== cartProducts.length - 1 && <Separator />}
           </div>
         );
       })}

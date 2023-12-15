@@ -9,26 +9,26 @@ import { likes } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";
 
-// export async function isUserLiked(productId: string) {
-//   try {
-//     const session = await getSession();
-//     if (!session) {
-//       return false;
-//     }
+export async function isUserLiked(productId: string) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return false;
+    }
 
-//     const likedProduct = await db.query.likes.findFirst({
-//       where: and(
-//         eq(likes.userId, session.user.id),
-//         eq(likes.productId, productId)
-//       ),
-//     });
+    const likedProduct = await db.query.likes.findFirst({
+      where: and(
+        eq(likes.userId, session.user.id),
+        eq(likes.productId, productId)
+      ),
+    });
 
-//     return !!likedProduct;
-//   } catch (err) {
-//     console.error(err);
-//     throw err;
-//   }
-// }
+    return !!likedProduct;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 
 export async function getUserLikes(userId: string) {
   const userLikes = await db.query.likes.findMany({

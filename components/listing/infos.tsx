@@ -5,11 +5,7 @@ import { Product, Store, User } from "@/db/schema";
 
 import { siteConfig } from "@/config/site";
 
-import {
-  formatBytes,
-  formatDate,
-  getFormatedProductFilesTotalSize,
-} from "@/lib/utils";
+import { formatDate, getFormatedProductFilesTotalSize } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -17,7 +13,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
 interface ProductDetailsProps extends HTMLAttributes<HTMLDivElement> {
@@ -142,20 +137,22 @@ export async function Infos({
             <AccordionTrigger>Meet the seller</AccordionTrigger>
             <AccordionContent>
               <div className="flex gap-4">
-                <Avatar className="h-16 w-16 cursor-pointer">
-                  <AvatarImage
-                    src={seller.image || ""}
-                    alt={seller.name || ""}
-                  />
-                  <AvatarFallback>{seller.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
+                <Link href={`/user/${store?.userId}`}>
+                  <Avatar className="h-16 w-16 cursor-pointer">
+                    <AvatarImage
+                      src={seller.image || ""}
+                      alt={seller.name || ""}
+                    />
+                    <AvatarFallback>{seller.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                </Link>
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-lg font-medium capitalize">
+                  <h2 className="text-lg font-medium capitalize">
                     {seller.name}
-                  </h1>
+                  </h2>
                   <p className="text-sm">
                     <span className="text-foreground/75">Owner of </span>
-                    <Link href={`/store/${store?.id}`}>{store?.name}</Link>
+                    <Link href={`/store/${store?.handle}`}>{store?.name}</Link>
                   </p>
                 </div>
               </div>

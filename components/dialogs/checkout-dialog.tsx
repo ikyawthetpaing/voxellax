@@ -1,10 +1,9 @@
 import { Product } from "@/db/schema";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
-import { CheckoutForm } from "../forms/checkout-form";
-import { Heading } from "../heading";
-import { Icons } from "../icons";
+import { CheckoutForm } from "@/components/forms/checkout-form";
+import { Heading } from "@/components/heading";
+import { Icons } from "@/components/icons";
 
 interface Props {
   trigger: JSX.Element;

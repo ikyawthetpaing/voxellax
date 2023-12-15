@@ -8,13 +8,11 @@ import { catchError, downloadProductFiles } from "@/lib/utils";
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   files: UploadedFile[] | null;
-  onClickDownload?: () => void;
   children: React.ReactNode;
 }
 
 export function ProductFilesDownloadButton({
   files,
-  onClickDownload,
   children,
   ...props
 }: Props) {
@@ -37,8 +35,6 @@ export function ProductFilesDownloadButton({
         },
       }
     );
-
-    if (onClickDownload) onClickDownload();
   };
 
   return (
