@@ -1,4 +1,6 @@
-import { HTMLAttributes } from "react";
+"use client";
+
+import { HTMLAttributes, useEffect, useState } from "react";
 
 import { Product } from "@/db/schema";
 
@@ -17,15 +19,19 @@ interface ProductActionButtonsProps extends HTMLAttributes<HTMLDivElement> {
   layout: "card" | "listing";
 }
 
-export async function ProductActionButtons({
+export function ProductActionButtons({
   product,
   layout,
   className,
   ...props
 }: ProductActionButtonsProps) {
-  const isPurchased = !!(await getCurrentUserPurchase({
-    productId: product.id,
-  }));
+  const [isPurchased, setIsPurchased] = useState(false);
+
+  useEffect(() => {
+    getCurrentUserPurchase({
+      productId: product.id,
+    }).then((value) => setIsPurchased(!!value));
+  }, [product.id]);
 
   return (
     <div
