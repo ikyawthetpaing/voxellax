@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { Product } from "@/db/schema";
 
-import { getCurrentUserPurchase } from "@/lib/actions/purchase";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -32,10 +31,6 @@ export async function DetailsCard({
   className,
   ...props
 }: DetailsCardProps) {
-  const isPurchased = !!(await getCurrentUserPurchase({
-    productId: product.id,
-  }));
-
   return (
     <div className={className} {...props}>
       <Card className="w-full">
@@ -79,7 +74,6 @@ export async function DetailsCard({
         <CardFooter className="grid gap-3">
           <AddToCartButton
             productPrice={product.price}
-            purchased={isPurchased}
             productId={product.id}
           />
           {!product.price ? (

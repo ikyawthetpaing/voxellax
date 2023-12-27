@@ -3,22 +3,20 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavItem } from "@/types";
 
 import { getCategories, getSubcategories } from "@/config/category";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Icons } from "@/components/icons";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
-import { ScrollArea } from "../ui/scroll-area";
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Icons } from "@/components/icons";
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -33,10 +31,10 @@ export function MobileNav() {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="pl-1 pr-0">
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+      <SheetContent side="right" className="pb-0 pl-1 pr-0">
+        <ScrollArea className="my-4 h-full pb-4 pl-6">
           <div className="pl-1 pr-7">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="multiple" className="w-full">
               {categories.map((category, index) => (
                 <AccordionItem value={category.value} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
@@ -72,6 +70,10 @@ export function MobileNav() {
                 </AccordionItem>
               ))}
             </Accordion>
+            <nav className="flex flex-col gap-4 py-6">
+              <Link href={"/login"}>Login</Link>
+              <Link href={"/register"}>Sign Up</Link>
+            </nav>
           </div>
         </ScrollArea>
       </SheetContent>

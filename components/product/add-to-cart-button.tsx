@@ -12,14 +12,12 @@ import { Icons } from "@/components/icons";
 interface AddToCartButtonProps extends ButtonProps {
   productId: string;
   productPrice: number;
-  purchased: boolean;
   layout?: "icon" | "default";
 }
 
 export function AddToCartButton({
   productId,
   productPrice,
-  purchased,
   layout = "default",
   className,
   ...props
@@ -27,9 +25,8 @@ export function AddToCartButton({
   const [isAdded, setIsAdded] = useState(false);
   const [isPurchased, setIsPurchased] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [isDisabled, setIsDisabled] = useState(false);
   const { data, setRefresh } = useUserCartItems();
-
-  const disabled = isPending || isPurchased || productPrice === 0 || purchased;
 
   useEffect(() => {
     const item = data.find((item) => item.productId === productId);
@@ -41,6 +38,10 @@ export function AddToCartButton({
       setIsPurchased(!!value)
     );
   }, [productId]);
+
+  useEffect(() => {
+    setIsDisabled(isPending || isPurchased || productPrice === 0);
+  }, [isPending, isPurchased, productPrice]);
 
   const handleOnClick = async () => {
     startTransition(async () => {
@@ -60,7 +61,7 @@ export function AddToCartButton({
       className={cn("gap-2", className, { "rounded-full": layout === "icon" })}
       aria-label="Add to cart"
       onClick={handleOnClick}
-      disabled={disabled}
+      disabled={isDisabled}
       {...props}
     >
       {isPending ? (

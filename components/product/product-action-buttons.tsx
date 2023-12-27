@@ -1,10 +1,7 @@
-"use client";
-
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes } from "react";
 
 import { Product } from "@/db/schema";
 
-import { getCurrentUserPurchase } from "@/lib/actions/purchase";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { AddToCollectionDialog } from "@/components/dialogs/add-to-collection-dialog";
@@ -25,14 +22,6 @@ export function ProductActionButtons({
   className,
   ...props
 }: ProductActionButtonsProps) {
-  const [isPurchased, setIsPurchased] = useState(false);
-
-  useEffect(() => {
-    getCurrentUserPurchase({
-      productId: product.id,
-    }).then((value) => setIsPurchased(!!value));
-  }, [product.id]);
-
   return (
     <div
       className={cn("flex flex-col gap-2 duration-100", className)}
@@ -57,7 +46,6 @@ export function ProductActionButtons({
             layout="icon"
             productPrice={product.price}
             productId={product.id}
-            purchased={isPurchased}
           />
         )}
       </div>
